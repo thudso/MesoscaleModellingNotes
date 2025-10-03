@@ -1,7 +1,7 @@
 project:
   type: book
   pre-render: ./build-tikz-figs.sh
-  output-dir: docs
+  output-dir: _docs
 
 book:
   title: "PX912 Continuum and Mesoscale Modelling"
