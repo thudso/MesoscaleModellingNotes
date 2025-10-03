@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; The Governing Equations of Fluid Dynamics – PX912 Continuum and Mesoscale Modelling</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./1-3-canonical.html" rel="next">
+<link href="./1-1-macro-fluids.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d166b450ba5a8e9f7a0ab969bf6592c1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-b7c2d8834e08b04a63bb76a724ffbcac.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-c1966a8c70583a3816b1e3a216c1caf1.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./1-0-fluids.html">Fluids</a></li><li class="breadcrumb-item"><a href="./1-2-equations.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Governing Equations of Fluid Dynamics</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">PX912 Continuum and Mesoscale Modelling</a> 
+        <div class="sidebar-tools-main">
+    <a href="./PX912-Continuum-and-Mesoscale-Modelling.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./0-preface.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Module overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./1-0-fluids.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fluids</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-1-macro-fluids.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Macroscopic Modelling of Fluids</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-2-equations.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Governing Equations of Fluid Dynamics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-3-canonical.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Canonical Flows</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-4-free-surfaces.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Free Surface Flows</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-5-thin-films.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Lubrication and Thin Film Dynamics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#conservation-of-mass" id="toc-conservation-of-mass" class="nav-link active" data-scroll-target="#conservation-of-mass"><span class="header-section-number">2.1</span> Conservation of Mass</a></li>
+  <li><a href="#conservation-of-momentum" id="toc-conservation-of-momentum" class="nav-link" data-scroll-target="#conservation-of-momentum"><span class="header-section-number">2.2</span> Conservation of Momentum</a>
+  <ul class="collapse">
+  <li><a href="#stress" id="toc-stress" class="nav-link" data-scroll-target="#stress">Stress</a></li>
+  <li><a href="#cauchys-momentum-equation" id="toc-cauchys-momentum-equation" class="nav-link" data-scroll-target="#cauchys-momentum-equation">Cauchy’s Momentum Equation</a></li>
+  <li><a href="#stress-tensor-for-an-inviscid-fluid" id="toc-stress-tensor-for-an-inviscid-fluid" class="nav-link" data-scroll-target="#stress-tensor-for-an-inviscid-fluid">Stress Tensor for an Inviscid fluid</a></li>
+  <li><a href="#sec-viscousstress" id="toc-sec-viscousstress" class="nav-link" data-scroll-target="#sec-viscousstress">Stress Tensor for a Viscous Fluid</a></li>
+  </ul></li>
+  <li><a href="#summary-the-governing-equations" id="toc-summary-the-governing-equations" class="nav-link" data-scroll-target="#summary-the-governing-equations"><span class="header-section-number">2.3</span> Summary: The Governing Equations</a></li>
+  <li><a href="#sec-flowparameters" id="toc-sec-flowparameters" class="nav-link" data-scroll-target="#sec-flowparameters"><span class="header-section-number">2.4</span> Controlling Flow Parameters</a>
+  <ul class="collapse">
+  <li><a href="#sec-Reynolds" id="toc-sec-Reynolds" class="nav-link" data-scroll-target="#sec-Reynolds">Reynolds number</a></li>
+  <li><a href="#similarity" id="toc-similarity" class="nav-link" data-scroll-target="#similarity">Similarity</a></li>
+  </ul></li>
+  <li><a href="#boundary-and-initial-conditions" id="toc-boundary-and-initial-conditions" class="nav-link" data-scroll-target="#boundary-and-initial-conditions"><span class="header-section-number">2.5</span> Boundary and initial conditions</a>
+  <ul class="collapse">
+  <li><a href="#initial-conditions" id="toc-initial-conditions" class="nav-link" data-scroll-target="#initial-conditions">Initial conditions</a></li>
+  <li><a href="#boundary-conditions-at-walls" id="toc-boundary-conditions-at-walls" class="nav-link" data-scroll-target="#boundary-conditions-at-walls">Boundary conditions at walls</a></li>
+  </ul></li>
+  <li><a href="#modelling-frameworks" id="toc-modelling-frameworks" class="nav-link" data-scroll-target="#modelling-frameworks"><span class="header-section-number">2.6</span> Modelling Frameworks</a></li>
+  <li><a href="#sec-flu-compressible" id="toc-sec-flu-compressible" class="nav-link" data-scroll-target="#sec-flu-compressible"><span class="header-section-number">2.7</span> Compressible Fluids*</a>
+  <ul class="collapse">
+  <li><a href="#conservation-of-mass-1" id="toc-conservation-of-mass-1" class="nav-link" data-scroll-target="#conservation-of-mass-1">Conservation of mass</a></li>
+  <li><a href="#newtons-second-law" id="toc-newtons-second-law" class="nav-link" data-scroll-target="#newtons-second-law">Newton’s Second Law</a></li>
+  <li><a href="#other-considerations" id="toc-other-considerations" class="nav-link" data-scroll-target="#other-considerations">Other considerations</a></li>
+  <li><a href="#initial-and-boundary-conditions" id="toc-initial-and-boundary-conditions" class="nav-link" data-scroll-target="#initial-and-boundary-conditions">Initial and boundary conditions</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./1-0-fluids.html">Fluids</a></li><li class="breadcrumb-item"><a href="./1-2-equations.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Governing Equations of Fluid Dynamics</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-flu-equations" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Governing Equations of Fluid Dynamics</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="hidden">
+
+</div>
+<p>From <a href="1-1-macro-fluids.html" class="quarto-xref"><span>Chapter 1</span></a>, we now have all of the tools required to derive the Navier-Stokes equations. We will focus here on incompressible flows with constant density, but the general case of conservation of mass for a compressible fluid can be found in the final section of this chapter.</p>
+<p>In general, there are a variety of ways to derive the equations of fluid mechanics, some of which are based on integral representations (see Batchelor’s book, or MA4J1 Continuum Mechanics) and some which directly form the required PDEs by a more <em>ad hoc</em> argument. We will take the latter approach. The route chosen is based on considering the conservation of mass and momentum over an infinitesimal cube in the fluid.</p>
+<section id="conservation-of-mass" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="conservation-of-mass"><span class="header-section-number">2.1</span> Conservation of Mass</h2>
+<p>Consider an infinitesimal volume fixed in space (so that it does not follow the fluid). For simplicity, we is choose this to be a cube, with sides of length <span class="math inline">\ell</span> aligned with a Cartesian axes (see <a href="#fig-mass" class="quarto-xref">Figure&nbsp;<span>2.1</span></a>). We assume the cube’s centre is at <span class="math inline">{{\boldsymbol{x}}_0} = (x_0, y_0, z_0)</span>.</p>
+<div id="fig-mass" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mass-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row quarto-layout-valign-bottom">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="tikz/CoM-a.svg" class="img-fluid figure-img"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="tikz/CoM-b.svg" class="img-fluid figure-img"></p>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mass-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.1: Left: An infinitesimal fluid cube aligned with Cartesian axes. Right: The mass flux <em>into</em> the face with outward normal <span class="math inline">{\boldsymbol{n}}={\boldsymbol{e}}_1 = (1, 0, 0)</span> is given by <span class="math inline">-\rho v_1(x_0+\tfrac12\ell,y_0,z_0)</span> multiplied by the area, <span class="math inline">A = \ell^2</span>.
+</figcaption>
+</figure>
+</div>
+<p>The law of conservation of mass tells us that because we have a fluid with constant density (and therefore <span class="math inline">\partial_t \rho=0</span>), the total mass flux in through its six sides must be zero: <span class="math display">
+\begin{aligned}
+  0
+  &amp;=\ell^2\Big(
+    -\rho u(x_0+\tfrac12\ell,y_0,z_0) + \rho u(x_0-\tfrac12\ell,y_0,z_0) \\
+  &amp;\hspace{11mm} - \rho v (x,y_0+\tfrac12\ell,z_0) + \rho v(x,y_0-\tfrac12\ell,z_0) \\
+  &amp;\hspace{11mm} - \rho w(x,y_0,z_0+\tfrac12\ell) + \rho w(x,y_0,z_0-\tfrac12\ell)\Big) \\
+  &amp;=
+               -\ell^3 \rho \left( \frac{\partial u}{\partial x} +\frac{\partial v}{\partial y} + \frac{\partial w}{\partial z}+O(\ell)\right).
+\end{aligned}
+</span> Now, if we assume this has to hold for all cubes as we shrink <span class="math inline">\ell</span>, we can take the limit and obtain the desired equation for incompressibility: <span id="eq-contEq"><span class="math display">
+\frac{\partial u}{\partial x} +\frac{\partial v}{\partial y} + \frac{\partial w}{\partial z} =  \nabla \cdot  {\boldsymbol{v}}=0.
+\tag{2.1}</span></span></p>
+</section>
+<section id="conservation-of-momentum" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="conservation-of-momentum"><span class="header-section-number">2.2</span> Conservation of Momentum</h2>
+<p>Here, we will formulate conservation of momentum for a fluid element (which follows the flow), which involves applying Newton’s second law to these material elements. As we already know how to calculate the acceleration using the material derivative, all we require is the forces acting on fluid element. These will split into two contributions - body forces (we will only consider gravitational forces in this course) and internal forces (pressure and stress).</p>
+<section id="stress" class="level3">
+<h3 class="anchored" data-anchor-id="stress">Stress</h3>
+<p>Stress is a crucial and fundamental concept in continuum mechanics. It is the way that we think about the forces which different parts of a continuum object exert on one another. Pressure is an example of a form of stress that you may be familiar with, but note that not all stresses can be thought of as pressure!</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Stress</strong> is the force per unit area acting on a surface either inside or on the exterior of a region of matter.</p>
+</div>
+</div>
+<p>In continuum modelling, a fundamental concept quantifying stresses acting across surfaces in a material (both internal and external) is the stress tensor.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The component of the <strong>Cauchy stress tensor</strong> <span class="math inline">S_{ij}</span> encodes the <span class="math inline">i</span>th component of the force per unit area vector (the stress vector) acting on the surface element which has outward normal <span class="math inline">{\boldsymbol{e}}_j</span> pointing in the <span class="math inline">j</span>th coordinate direction, see <a href="#fig-stresstensor" class="quarto-xref">Figure&nbsp;<span>2.2</span></a>.</p>
+</div>
+</div>
+<div id="fig-stresstensor" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-stresstensor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="tikz/StressTensor.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stresstensor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.2: An infinitesimal cubic fluid element. Shown are the components of the stress tensor acting on one face whose normal aligns with the x-axis. Here, <span class="math inline">S_11</span> is the <em>normal stress</em> acting on the face and <span class="math inline">S_{21}</span> and <span class="math inline">S_{31}</span> are components of <em>shear stress</em>. Summing up these components gives the stress vector acting on the face.
+</figcaption>
+</figure>
+</div>
+<p>For example, in Cartesian coordinates <span class="math inline">S_{32}=S_{zy}</span> would be the <span class="math inline">z</span>-component of stress acting on a face with normal <span class="math inline">(0,1,0)</span>. This encodes a component of ‘shear’ or ‘tangential’ stress, since the force per unit area acts in a different direction to the normal. We will consider cases in which <span class="math inline">S_{ij}=S_{ji}</span> is symmetric; this is actually a consequence of the balance of linear momentum, but we won’t discuss this further here.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In general, the stress at a point on a surface with outward-pointing normal <span class="math inline">{\boldsymbol{n}}= (n_1,n_2,n_3)</span> is <span class="math inline">S_{ij} n_j.</span> This generates a force <span class="math inline">\delta F_i = S_{ij} n_j \,\delta A</span> over an area <span class="math inline">\delta A</span>. The vector <span class="math inline">t_i = S_{ij} n_j</span> is known as the <strong>stress vector</strong>.</p>
+</div>
+</div>
+<p>Let us consider forces acting on a infinitesimal cubic fluid element (that follows the fluid) with side length <span class="math inline">\ell</span> and centre at <span class="math inline">{\boldsymbol{x}}= (x_0, y_0, z_0)</span>; see <a href="#fig-stresstensor" class="quarto-xref">Figure&nbsp;<span>2.2</span></a>. We will start with the <span class="math inline">x</span>-component of this force which will involve us calculating <span class="math inline">S_{1j} n_j \delta A</span> (with <span class="math inline">\delta A=\ell^2</span>) over all six sides of the cube. <span class="math display">
+\begin{aligned}
+  \delta F_1
+  &amp;= \ell^2 \Big(
+    S_{11}(x_0+\tfrac12\ell,y_0,z_0) - S_{11}(x_0-\tfrac12\ell,y_0,z_0)\\
+  &amp;\hspace{13mm}+S_{12}(x,y_0+\tfrac12\ell,z_0) - S_{12}(x,y_0-\tfrac12\ell,z_0)\\
+  &amp;\hspace{18mm}+S_{13}(x,y_0,z_0+\tfrac12\ell) - S_{13}(x,y_0,z_0-\tfrac12\ell)\Big).
+\end{aligned}
+</span> Taylor expanding this expression for small <span class="math inline">\ell</span> and keeping the leading order terms only, we have: <span class="math display">
+\delta F_1 = \ell^3 \left(\frac{\partial S_{11}(x,y,z)}{\partial x} +
+\frac{\partial S_{12}(x,y,z)}{\partial y} +  \frac{\partial S_{13}(x,y,z)}{\partial z} \right)
+= \ell^3\,\frac{\partial S_{1j}(x,y,z)}{\partial x_j},
+</span> where we have used the summation convention (with <span class="math inline">j</span> the repeated index).</p>
+<p>Repeating a similar calculuation for all of the other force components, we have <span class="math display">
+\delta F_i
+= \ell^3  ~\frac{\partial S_{ij}(x,y,z)}{\partial x_j}.
+</span> Symbolically, we can write this equation using the divergence of the stress tensor: <span class="math display">
+\delta {\boldsymbol{F}}= \ell^3 ~\nabla\cdot {\boldsymbol{S}}.
+</span> Just as the divergence turns a vector field into a scalar field, it turns a tensor field into a vector field.</p>
+</section>
+<section id="cauchys-momentum-equation" class="level3">
+<h3 class="anchored" data-anchor-id="cauchys-momentum-equation">Cauchy’s Momentum Equation</h3>
+<p>Recall that Newton’s second law states that</p>
+<blockquote class="blockquote">
+<p><em>“The net force on a material element is equal to its mass times its acceleration.”</em></p>
+</blockquote>
+<p>In our case, the net force will be composed of internal forces (<span class="math inline">\delta F_i</span>) and a body force from gravity, which we will choose to align with the <span class="math inline">z</span>-axis. Denoting the acceleration due to gravity as <span class="math inline">g</span> and putting together all the elements of our derivation so far, we have: <span class="math display">
+\underbrace{\vphantom{\frac{\partial S_{ij}}{\partial x_j}}(\rho \ell^3)}_{\text{Mass}} \,  \underbrace{\vphantom{\frac{\partial S_{ij}}{\partial x_j}}\frac{D v_i}{Dt}}_{\text{Acceleration}}
+= \underbrace{\ell^3 \,  \frac{\partial S_{ij}}{\partial x_j}}_{\text{Force from Stresses}}
+- \underbrace{\vphantom{\frac{\partial S_{ij}}{\partial x_j}}(\rho \ell^3) g \, \delta_{i3},}_{\text{Gravitational Body Force}}
+</span> where <span class="math inline">\delta_{i3}=1</span> if <span class="math inline">i=3</span> and 0 otherwise. Dividing this equation through by the mass term <span class="math inline">\rho \ell^3</span>, we finally have: <span id="eq-cauchy"><span class="math display">
+\frac{D v_i}{Dt} =  \frac 1 \rho \frac{ \partial S_{ij}}{\partial x_j}-g \, \delta_{i3}\qquad\text{or symbolically}\qquad
+\frac{D {\boldsymbol{v}}}{Dt} =  \frac 1 \rho \nabla\cdot{\boldsymbol{S}}-g{\boldsymbol{e}}_z,
+\tag{2.2}</span></span> which is called Cauchy’s momentum equation.</p>
+<div class="callout callout-style-default callout-caution no-icon callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>How many unknowns and how many equations do we have when we combine Cauchy’s momentum equation with conservation of mass?</p>
+</div>
+</div>
+<p>The momentum equation is valid for a broad range of continuous media (not only fluids and gases) – e.g.&nbsp;crystals or amorphous solids, and piles of sand or soil (in the continuum limit) – but to make it specifically a fluid equation, one has to specify a particular relevant form of the stress tensor. This particular choice is called a <em>constitutive law</em>, since it tells us what sort of matter constitutes (i.e.&nbsp;makes up) the continuum we are considering.</p>
+<p>We will start with the simplest case of an inviscid fluid and after consider the more complex case of a viscous (Newtonian) fluid which is more relevant for small scale flows.</p>
+</section>
+<section id="stress-tensor-for-an-inviscid-fluid" class="level3">
+<h3 class="anchored" data-anchor-id="stress-tensor-for-an-inviscid-fluid">Stress Tensor for an Inviscid fluid</h3>
+<p>In an inviscid fluid there is no friction acting between fluid elements. The only stress acting is a pressure, which is normal to all surfaces and points inward. Therefore, our particular form of the stress tensor (known as a constitutive relation) is <span class="math display">
+S_{ij} = - p \delta_{ij}.
+</span></p>
+<div id="fig-forces" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-forces-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="tikz/Forces.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-forces-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.3: In an inviscid fluid the stress is generated entirely by the pressure, which acts with equal magnitude on all faces of our infinitesimal cubic fluid element. Clearly, flow is driven by the pressure changing from point to point, i.e.&nbsp;by spatial gradients in pressure.
+</figcaption>
+</figure>
+</div>
+<p>Substituting into Cauchy’s equation <a href="#eq-cauchy" class="quarto-xref">Equation&nbsp;<span>2.2</span></a>, we arrive at the Euler equation which describes inviscid fluid flow: <span id="eq-euler100"><span class="math display">
+\frac{D v_i}{Dt}  =  -\frac 1 \rho \frac{\partial p}{\partial x_i}  -g \, \delta_{i3}\qquad\text{or symbolically}\qquad
+\frac{D {\boldsymbol{v}}}{Dt} =  -\frac 1 \rho \nabla p-g{\boldsymbol{e}}_z.
+\tag{2.3}</span></span></p>
+<p>Notably, in the absence of gravitational forces we can see clearly that gradients in pressure (<span class="math inline">\nabla p</span>) accelerate fluid elements from regions of high to low pressure. This is because at any point the pressure is the same in all directions, so there is only a net force on a fluid element if the pressure varies spatially.</p>
+<div class="callout callout-style-default callout-caution no-icon callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In the absence of fluid motion, what do we recover?</p>
+</div>
+</div>
+</section>
+<section id="sec-viscousstress" class="level3">
+<h3 class="anchored" data-anchor-id="sec-viscousstress">Stress Tensor for a Viscous Fluid</h3>
+<p>To describe a viscous fluid, we separate the pressure contribution to the stress tensor from the remaining terms — the latter will be associated with an internal friction (viscosity): <span id="eq-viscstress"><span class="math display">
+S_{ij} = - p \delta_{ij} + \sigma_{ij},
+\tag{2.4}</span></span> where <span class="math inline">\sigma_{ij}</span> is called the <em>viscous stress tensor</em>. Note that different texts may use alternative symbols for the stress tensor, viscous stress tensor and rate of strain tensors.</p>
+<p>In the previous Chapter, we saw that it is the rate of strain tensor <span class="math inline">e_{ij}</span> which describes the rate of deformation of the fluid, and it is this which generates the viscous stress <span class="math inline">\sigma_{ij}</span>. A <em>constitutive relation</em> provides the missing link between <span class="math inline">\sigma_{ij}</span> and <span class="math inline">e_{ij}</span>. When the relationship between these is linear, the fluid is called Newtonian.</p>
+<p>For an incompressible flow (<span class="math inline">e_{kk}=0</span>), this simplifies considerably to <span id="eq-viscstress0"><span class="math display">
+\sigma_{ij} = 2~ \mu ~e_{ij} \qquad\text{so that}\qquad S_{ij} = - p~\delta_{ij} + \mu\left(\frac{\partial v_i}{\partial x_j} + \frac{\partial v_j}{\partial x_i}  \right).
+\tag{2.5}</span></span> We see that for an incompressible fluid (<span class="math inline">e_{kk}=0</span>) the pressure <span class="math inline">p = -\text{$\frac{1}{3}$}(S_{11} + S_{22} + S_{33})</span> is the mean of the three normal stresses at a point.</p>
+<p>The dynamic viscosity <span class="math inline">\mu</span> (units kg m<span class="math inline">^{-1}</span> s<span class="math inline">^{-1}</span>) is the coefficient of proportionality between the rate of strain tensor and the stress tensor which describes how easily a fluid moves under a shear force. Fluids of high viscosity, like honey, flow less easily than those of low viscosity, like water (the density of each of these is similar).</p>
+<p>The flow of incompressible Newtonian fluids, i.e.&nbsp;those satisfying <a href="#eq-viscstress0" class="quarto-xref">Equation&nbsp;<span>2.5</span></a>, will be the focus of this course and will allow us to consider a huge range of phenomena. However, there are many cases in which non-Newtonian behaviour is encountered so that more complex constitutive relations than <a href="#eq-viscstress0" class="quarto-xref">Equation&nbsp;<span>2.5</span></a> are required (e.g.&nbsp;the flow of toothpaste or mayonnaise), but these are beyond the scope of this course. Non-Newtonian fluids can create weird and wonderful flows, see for example the following videos.</p>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/OQDZeRWzV1s" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/Sl0BHueSjvA" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+<p>Substituting <a href="#eq-viscstress0" class="quarto-xref">Equation&nbsp;<span>2.5</span></a> into Cauchy’s equation <a href="#eq-cauchy" class="quarto-xref">Equation&nbsp;<span>2.2</span></a>, we obtain: <span id="eq-nscomp"><span class="math display">
+\frac{D v_i}{Dt} =  - \frac 1 \rho \frac{\partial p}{\partial x_i} + \nu \frac{\partial^2 v_i}{\partial x_j^2} -g\delta_{i3}
+\qquad\text{or symbolically}\qquad
+\frac{D{\boldsymbol{v}}}{Dt} =  - \frac 1 \rho \nabla p + \nu \nabla^2 {\boldsymbol{v}}-g{\boldsymbol{e}}_z,
+\tag{2.6}</span></span> where <span class="math inline">\nu = \mu /\rho</span> is the (assumed constant here) kinematic viscosity coefficient (units m<span class="math inline">^{2}</span> s<span class="math inline">^{-1}</span>, as it is a diffusion coefficient for momentum transfer).</p>
+</section>
+</section>
+<section id="summary-the-governing-equations" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="summary-the-governing-equations"><span class="header-section-number">2.3</span> Summary: The Governing Equations</h2>
+<p>Our main focus will be on incompressible flow with density constant. In this case, our fundamental governing equation are:</p>
+<div class="callout callout-style-default callout-important no-icon callout-titled" title="The Incompressible Navier--Stokes Equations">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The Incompressible Navier–Stokes Equations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span id="eq-incNS"><span class="math display">
+\nabla\cdot{\boldsymbol{v}}=0,\qquad \frac{D{\boldsymbol{v}}}{Dt} =  - \frac 1 \rho \nabla p + \nu \nabla^2 {\boldsymbol{v}}-g{\boldsymbol{e}}_z.
+\tag{2.7}</span></span></p>
+</div>
+</div>
+<p>In this case, <a href="#eq-incNS" class="quarto-xref">Equation&nbsp;<span>2.7</span></a> forms a closed system, independent of the thermodynamic properties of the fluid. In the general case of <span class="math inline">d=3</span>, we have 4 equations for 4 unknowns at each point in space and time, the pressure field <span class="math inline">p</span> and the velocity field, <span class="math inline">{\boldsymbol{v}}</span>. Recall the first equation comes from conservation of mass, while the second is a form of Newton’s Second Law.</p>
+</section>
+<section id="sec-flowparameters" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="sec-flowparameters"><span class="header-section-number">2.4</span> Controlling Flow Parameters</h2>
+<p>In many cases, certain terms in the Navier–Stokes equations associated with particular physical effects are negligible. This means our system of equations can be simplified, sometimes vastly. It is only with these simplifications that we are able to make progress using mathematical analysis, giving great insight into numerous flow configurations, without turning to brute-force computational approaches.</p>
+<p>Below we will compare the magnitude of different terms in the Navier–Stokes equations to find the Reynolds number, which is an examples of a <em>dimensionless number</em>. The size of the Reynolds number will give an indication of whether the flow can be regarded as viscous or inviscid. The key point here is that this parameter is dimensionless, so that it is meaningful to talk about its magnitude in absolute terms. When a quantity is dimensional, say a length, it makes no sense to say whether it is large or small, as it depends on what we are comparing it to (e.g.&nbsp;a pen is large when compared to the atomic scale, but small compared to that of the universe). In other words, it is only when we make this length dimensionless by considering it relative to a characteristic length of the system, that we are able to establish whether that quantity is large or small. The same holds for the terms in our equations, it only makes sense to say whether a term is large relative to another. Here, we have only touched on the extremely useful area of dimensional analysis.</p>
+<section id="sec-Reynolds" class="level3">
+<h3 class="anchored" data-anchor-id="sec-Reynolds">Reynolds number</h3>
+<p>Consider a flow whose velocity field varies over a characteristic length <span class="math inline">L</span> with a typical velocity magnitude (i.e.&nbsp;speed) <span class="math inline">U</span>. For example, for the air flow around an aeroplane, a typical scale for <span class="math inline">L</span> could be the wing span and a typical velocity magnitude would be the speed at which the plane flies <span class="math inline">U</span>, but often it’s not so obvious to establish which <span class="math inline">L</span> and <span class="math inline">U</span> to pick. For what values of <span class="math inline">L</span>, <span class="math inline">U</span> and kinematic viscosity coefficient <span class="math inline">\nu</span> can one neglect viscous forces? For what values of these parameters can one ignore the inertial forces associated with fluid particle acceleration?</p>
+<p>In steady flow, the typical value of the fluid particle acceleration is <span class="math inline">|({\boldsymbol{v}}\cdot \nabla) {\boldsymbol{v}}| \sim \frac{U^2}{L},</span> whereas the typical value of the viscous term is <span class="math inline">|\nu \nabla^2  {\boldsymbol{v}}| \sim \frac{\nu U}{L^2}.</span> Note these terms have the same units (or dimensions) since they appear as different terms in the Navier–Stokes equation. The ratio of these two typical values is the Reynolds number, i.e. <span class="math display">
+\mathrm{Re}=\frac{U^2/L}{\nu U/L} = \frac {UL}{\nu}.
+</span></p>
+<p>Therefore, it appears one can neglect the influence of viscosity if <span class="math inline">\mathrm{Re}\gg 1</span> (inviscid flow), whereas the fluid particle acceleration term can be ignored if <span class="math inline">\mathrm{Re}\ll 1</span> (Stokes flow or ‘creeping flow’). The latter is associated with laminar flow, and is critical for small-scale flows (small <span class="math inline">L</span>) such as those occurring in microfluidics (e.g.&nbsp;look up ‘lab-on-a-chip’ devices), whilst the former can create laminar or turbulent flows and are commonly observed all around us (e.g.&nbsp;weather). If <span class="math inline">\mathrm{Re}\sim 1</span>, then both effects are approximately in balance, and it is much harder to simplify the equations as a result.</p>
+<p>In fact, things are more complex: even if <span class="math inline">\mathrm{Re}\gg 1</span> when estimated based on the size <span class="math inline">L</span> of the flow, the local length-scale in some parts of the flow may get much smaller and, therefore, the local <span class="math inline">\mathrm{Re}</span> may get strongly reduced, so that the flow is no longer inviscid. This situation is typical for thin layers close to the solid boundaries—the so-called <em>boundary layers</em> and in wakes behind moving bodies; see <a href="#fig-flowpastcylinder" class="quarto-xref">Figure&nbsp;<span>2.4</span></a>.</p>
+<div id="fig-flowpastcylinder" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-flowpastcylinder-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/circular_cylinder.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-flowpastcylinder-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.4: Flow past cylinder at <span class="math inline">\mathrm{Re}=3900 \gg 1</span>. Upstream of the cylinder (on the left) the flow is laminar, large-scale and almost inviscid except for a thin boundary layer close to the cylinder. Downstream (to the right), the flow contains small scales and its viscosity is important.
+</figcaption>
+</figure>
+</div>
+<p>This number is named after Osborne Reynolds (1842-1912) who realised that this combination of dimensional parameters controls the transition from a laminar to turbulent flow in a pipe. The apparatus used to conduct these experiments, conducted in Manchester, is shown in <a href="#fig-reynolds" class="quarto-xref">Figure&nbsp;<span>2.5</span></a>.</p>
+<div id="fig-reynolds" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-reynolds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row quarto-layout-valign-bottom">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/reynolds.jpg" class="img-fluid figure-img"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/transition.png" class="img-fluid figure-img"></p>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-reynolds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.5: Reynolds’ experiments on flow through a pipe showing that as you increase <span class="math inline">\mathrm{Re}</span> (e.g.&nbsp;by increasing the flow rate and hence <span class="math inline">U</span>) you transition from a laminar state to a turbulent one in which dye injected into the fluid at the entrance is mixed with the surrounding fluid.
+</figcaption>
+</figure>
+</div>
+<section id="stokes-flow" class="level4">
+<h4 class="anchored" data-anchor-id="stokes-flow">Stokes Flow</h4>
+<p>When the Reynolds number is small, <span class="math inline">\mathrm{Re}\ll1</span>, viscous (frictional) forces dominate inertial effects captured by the acceleration term on the left-hand side of the Navier–Stokes equations. Neglecting the acceleration terms, we obtain the model <span id="eq-incSto"><span class="math display">
+0 = - \frac 1{\rho} \nabla p + \nu\nabla^2{\boldsymbol{v}}- g{\boldsymbol{e}}_z,\qquad \nabla\cdot{\boldsymbol{v}}=0.
+\tag{2.8}</span></span> This is commonly referred to as ‘Stokes flow’, ‘Creeping Flow’ or ‘Viscous-Dominated flow’ and is often encountered in small-scale flows (where <span class="math inline">L</span> is small, for example on the order of micrometres). The study, and mathematical analysis, of such flows is a topic in its own right which we will have little opportunity to look into. A quick read of E.M.Purcell’s <a href="https://science.curie.fr/wp-content/uploads/2016/04/Purcell_life_at_low_reynolds_number_1977.pdf">‘Life at Low Reynolds Number’</a>, concerned with how small organisms are able to swim, will give an insight into this counter-intuitive world, as does the following video.</p>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/51-6QCJTAjU" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+</section>
+</section>
+<section id="similarity" class="level3">
+<h3 class="anchored" data-anchor-id="similarity">Similarity</h3>
+<p>Knowing the parameters that govern a flow allows us to unlock powerful methods of similarity. For example, if we consider incompressible flow and assume that gravitational effects are negligible, then the sole dimensionless parameter formed from the Navier–Stokes equations is the Reynolds number. If we then consider two different flows which are geometrically similar and have the same boundary conditions, then at the same Reynolds numbers the fluid flows will be identical.</p>
+<p>It is this phenomenon which allows small-scale models to be built and tested before constructing full scale models; this is common in shipbuilding: if the flows are dynamically and geometrically similar, then the flows will be too. For example, if the model is reduced in size by a factor of 10 (<span class="math inline">L\rightarrow 0.1L</span>), then one could increase the characteristic speed by a factor of 10 (<span class="math inline">U\rightarrow 10U</span>) to ensure <span class="math inline">\mathrm{Re}</span> remains unchanged. Another alternative is to alter the viscosity by changing the fluid used in an experiment; here one would need to reduce the viscosity by a factor of 10, which may be harder to do!</p>
+</section>
+</section>
+<section id="boundary-and-initial-conditions" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="boundary-and-initial-conditions"><span class="header-section-number">2.5</span> Boundary and initial conditions</h2>
+<p>The Navier–Stokes equations (and variants) are partial differential equations (PDEs). As is usual for PDEs, in order to find a unique solution one has to specify appropriate boundary and initial conditions.</p>
+<section id="initial-conditions" class="level3">
+<h3 class="anchored" data-anchor-id="initial-conditions">Initial conditions</h3>
+<p>The set of relevant fields must be specified at <span class="math inline">t=0</span> at each point <span class="math inline">{\boldsymbol{x}}</span> in the domain occupied by the fluid, <span class="math inline">{\boldsymbol{x}}\in V \subset {\mathbb{R}}^d</span>. For incompressible fluids one only has to specify the initial velocity field <span class="math inline">{\boldsymbol{v}}_0</span> (as there are no time derivatives on <span class="math inline">\rho</span> in this case) <span class="math display">
+{\boldsymbol{v}}({\boldsymbol{x}},t=0) = {\boldsymbol{v}}_0.
+</span> Obviously, such an initial velocity field must satisfy relevant boundary conditions (discussed below) and should be divergence-free.</p>
+</section>
+<section id="boundary-conditions-at-walls" class="level3">
+<h3 class="anchored" data-anchor-id="boundary-conditions-at-walls">Boundary conditions at walls</h3>
+<p>The number of boundary conditions required depends on the bulk equations and their form is determined by the properties of the boundaries (i.e. the physics at the boundary). The two choices discussed below are illustrated in <a href="#fig-BCs" class="quarto-xref">Figure&nbsp;<span>2.6</span></a>.</p>
+<div id="fig-BCs" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-BCs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="tikz/BCs-a.svg" class="img-fluid figure-img" style="width:8cm"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="tikz/BCs-b.svg" class="img-fluid figure-img" style="width:8cm"></p>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-BCs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.6: An illustration of the no slip boundary condition (left) and the free slip boundary conditions (right). In the no slip case, all components of velocity at the boundary must match, so the velocities are identical. In the free slip case, only the normal components of velocity must match, as the fluid can ‘slip’ along the boundary.
+</figcaption>
+</figure>
+</div>
+<section id="viscous-fluids-no-slip" class="level4">
+<h4 class="anchored" data-anchor-id="viscous-fluids-no-slip">Viscous Fluids: No slip</h4>
+<p>At solid impenetrable boundaries, it has been found empirically that in many cases the fluid velocity at the boundary <span class="math inline">\partial {  V}</span> of the retaining volume <span class="math inline">{  V}</span> adjusts itself to the boundary’s velocity <span class="math inline">{\boldsymbol{v}}_b</span>: this is the famous <em>no-slip boundary condition</em>: <span id="eq-noslipBC"><span class="math display">
+{\boldsymbol{v}}({\boldsymbol{x}},t) = {\boldsymbol{v}}_b ({\boldsymbol{x}},t), \quad {\boldsymbol{x}}\in \partial {  V}.
+\tag{2.9}</span></span></p>
+</section>
+<section id="inviscid-fluids-free-slip" class="level4">
+<h4 class="anchored" data-anchor-id="inviscid-fluids-free-slip">Inviscid Fluids: Free slip</h4>
+<p>For inviscid fluids, where one only has first derivatives of fluid velocity (no <span class="math inline">\nabla^2{\boldsymbol{v}}</span> term), one can only enforce inpenetrability of the boundary, i.e.&nbsp;that the normal to the boundary velocity component has to match to the one of the boundary, whereas the parallel velocity component remains arbitrary, since the fluid can slip freely along the boundary in the absence of internal friction. This is the so-called <em>free-slip boundary conditions</em>: <span id="eq-freeslipBC"><span class="math display">
+{\boldsymbol{v}}^\perp ({\boldsymbol{x}},t) = {\boldsymbol{v}}^\perp_{b} ({\boldsymbol{x}},t),
+\quad {\boldsymbol{x}}\in \partial {  V}.
+\tag{2.10}</span></span></p>
+<p>These conditions often do not ensure that the flow solution is unique: as we will see later, there are typically infinitely many solutions to the Euler equations satisfying the free-slip boundary conditions, and one has to seek an additional prescription on how to select the physically relevant solution out of the infinite set. This uncertainty and non-uniqueness is a “tragic” consequence of the drastic idealisation of assuming the fluid to be inviscid. In reality, no matter how high the Reynolds number is, there is always a thin layer of fluid close to the boundary where viscosity is important and must be taken into account: this is the so-call <em>boundary layer</em>, which we will not have time to consider.</p>
+</section>
+</section>
+</section>
+<section id="modelling-frameworks" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="modelling-frameworks"><span class="header-section-number">2.6</span> Modelling Frameworks</h2>
+<p>The range of phenomena which the Navier–Stokes equations combined with no-slip at solid surfaces can describe is truly remarkable. However, there are also many cases in which they breakdown - for example, in the flow of non-Newtonian fluids or as one approaches small scales where additional physics comes into play (e.g.&nbsp;thermal motion).</p>
+<p>We may wonder how to model flows in which <span class="math inline">\ell/L</span> is not small, by going to a more well resolved theory than continuum mechanics. Unlike in continuum mechanics, where the Navier–Stokes equations can be (remarkably) used for liquid and gases, for small scale flows, where <span class="math inline">L\sim \ell</span>, different options exist. Notably, for gas flows there is also the possibility that <span class="math inline">\ell</span> becomes much larger, as is the case for re-entrant space craft where the atmosphere is significantly more rarefied.</p>
+<p>One option is molecular dynamics, where individual molecules are evolved via Newton’s laws of motion under the action of a potential, that is typically short range repulsive (so molecules don’t overlap) and long-range attractive (creating cohesion in the fluid). Such techniques can offer us great insight when flows are on molecular scales (e.g.&nbsp;nm), but to do so we must have accurate potentials to describe the motion. Typically, in the fluid dynamics community relatively simple potentials are used (e.g.&nbsp;Lennard Jones, or some water models) and the focus is usually not on the chemical nature of the fluid, but rather its flow properties (viscosity, density, etc). The following video shows the coalescence of water nanodrops.</p>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/iFPzHdSkIwc" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+<p>For the case of gases, one can also use molecular dynamics, but due to its often dilute nature one can develop statistical approaches that rely on the fact that binary collisions between molecules are their most likely form of interaction (i.e.&nbsp;there is no attractive force considered). The result is the Boltzmann equation (in the field of rarefied gas flows or kinetic theory) which provides a partial differential equation for the particle distribution function <span class="math inline">f=f({\boldsymbol{x}},{\boldsymbol{c}},t)</span> which gives the probability of a molecule having velocity <span class="math inline">{\boldsymbol{c}}</span> at position <span class="math inline">{\boldsymbol{x}}</span> and time <span class="math inline">t</span>. Notably, the Boltzmann equation sits in a seven-dimensional space (3 spatial, 3 velocity, 1 time), in contrast to continuum mechanics where is 4-dimensional (3 spatial, 1 time), meaning that computational solutions become far more costly. The usual solution method is so-called direct simulation Monte-Carlo (DSMC) although other approaches are also used.</p>
+<div id="fig-molecular" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-molecular-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row quarto-layout-valign-center">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/md_drops.png" class="img-fluid figure-img"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/dsmc.png" class="img-fluid figure-img"></p>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-molecular-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.7: Left: water nanodrops (courtesy of Sree Hari Perumanath, Edinburgh) observed in molecular dynamics simulations.. Right: a DSMC simulation of rarefied gas flow around a re-entrant shuttle.
+</figcaption>
+</figure>
+</div>
+<p>There is a huge rich variety of other modelling frameworks including density functional theory (acting below molecular dynamics), coarse grained molecular models (e.g.&nbsp;dissipative particle dynamics), extensions of the Boltzmann equation (e.g.&nbsp;the Enskog equation for less dilute gases), fluctuating hydrodynamics (that puts thermal fluctuations into continuum mechanics) and models that themselves can be considered averages of the Navier–Stokes equations (e.g.&nbsp;Brinkmann or Darcy’s equation of flow through porous media).</p>
+<p>A significant strand of fluids research at Warwick is concerned with models that go ‘beyond’ the Navier–Stokes (–Fourier) paradigm and yet remain broadly within the same PDE framework. An instructive example comes from the kinetic theory of gases where the Navier–Stokes equations can be derived from the Boltzmann equation. However, what one can see clearly in this derivation, e.g.&nbsp;using Grad’s method of moments to derive macroscopic equations from the Boltzmann equation, is that the Navier–Stokes equations are just the start of the story. At higher orders one can have slip between a gas and a solid and more complex constitutive laws appear (leading to larger systems of equations) - more of the story is covered in PX921 <em>Micro &amp; Nano Flows across Scales</em>. Notably, however, as one may expect, many of the conservation laws remain unchanged.</p>
+</section>
+<section id="sec-flu-compressible" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="sec-flu-compressible"><span class="header-section-number">2.7</span> Compressible Fluids*</h2>
+<p>This section is extension material on compressible fluids.</p>
+<section id="conservation-of-mass-1" class="level3">
+<h3 class="anchored" data-anchor-id="conservation-of-mass-1">Conservation of mass</h3>
+<p>Here we will consider conservation of mass for a compressible fluid in which density is no longer assumed constant.</p>
+<p>Consider an infinitesimal volume fixed in space (i.e.&nbsp;it does not follow the fluid), which for simplicity is chosen to be a cube, with sides of length <span class="math inline">d</span> aligned with a Cartesian axes (see <a href="#fig-mass" class="quarto-xref">Figure&nbsp;<span>2.1</span></a>), so that its bottom corner is at <span class="math inline">{\boldsymbol{x}}_0 = (x_0, y_0, z_0)</span>.</p>
+<p>The law of conservation of mass tells us that the rate of increase of fluid mass (volume <span class="math inline">d^3</span> times rate of change of density <span class="math inline">\partial_t \rho</span>) inside this cube is equal to the total mass flux in through its six sides: <span class="math display">
+\begin{aligned}
+d^3 \frac{\partial\rho}{\partial t}
+&amp;= d^2 \Big[-\rho(x_0+d,y,z) u(x_0+d,y,z) + \rho(x_0,y,z) u(x_0,y,z) \\
+&amp;\qquad\qquad- \rho(x,y_0+d,z) v (x,y_0+d,z) + \rho(x,y_0,z) v(x,y_0,z)\\
+&amp;\qquad\qquad- \rho(x,y,z_0+d) w(x,y,z_0+d) + \rho(x,y,z_0) w(x,y,z_0)\Big]
+\end{aligned}
+</span></p>
+<p>Dividing both sides by <span class="math inline">d^3</span>, in the limit of small <span class="math inline">d</span> we get the desired equation: <span id="eq-contEqcomp"><span class="math display">
+\frac{\partial\rho}{\partial t} + \frac{\partial (\rho u)}{\partial x} +\frac{\partial (\rho v)}{\partial y}+\frac{\partial (\rho w)}{\partial z} =  \frac{\partial\rho}{\partial t} + \nabla \cdot  (\rho  {\boldsymbol{v}}) =0.
+\tag{2.11}</span></span> Now that the equation is in vector form, we can apply it to any coordinate system (despite being derived in Cartesian).</p>
+</section>
+<section id="newtons-second-law" class="level3">
+<h3 class="anchored" data-anchor-id="newtons-second-law">Newton’s Second Law</h3>
+<p>The derivation of Cauchy’s equation <a href="#eq-cauchy" class="quarto-xref">Equation&nbsp;<span>2.2</span></a> remains valid for compressible flow, but the consitutive relation for the Cauchy stress tensor will change. In such cases, the most general isotropic form of an isotropic constitutive relation determined as a linear function of the rate of strain tensor <span class="math inline">e_{ij}</span> is <span id="eq-viscstress1"><span class="math display">
+S_{ij} = 2 \mu \underbrace{\bigg(e_{ij} - \frac 1 3  \delta_{ij} \, e_{kk}
+\bigg)}_{\text{Rate of shear strain}}\quad + \quad
+\xi\hspace{-6mm}\underbrace{\vphantom{\bigg(}\,  \,  e_{kk}\delta_{ij},\,}_{\text{Rate of volumetric strain}}
+\tag{2.12}</span></span> where <span class="math inline">\mu</span> is the <em>shear viscosity coefficient</em>, <span class="math inline">\xi</span> is the <em>bulk viscosity coefficient</em>, and <span class="math inline">e_{kk} = e_{11}+e_{22}+e_{33}= \nabla \cdot {\boldsymbol{v}}</span> is the trace of tensor <span class="math inline">e_{ij}</span>.</p>
+</section>
+<section id="other-considerations" class="level3">
+<h3 class="anchored" data-anchor-id="other-considerations">Other considerations</h3>
+<p>In general, for compressible flows we will also require an energy balance relation and an equation of state specifying the properties of the medium. However, there is a simpler class of flows where we can assume <span class="math inline">p=p(\rho)</span> to close the system, known as barotropic flows, where for the simplest case of <em>isentropic gas</em> we have <span id="eq-isentropic"><span class="math display">
+p \propto {\rho^\gamma}
+\tag{2.13}</span></span> where <span class="math inline">\gamma</span> is a constant whose value depends on the properties of the gas.</p>
+<p>For many cases, especially for liquids, we will see that the velocity is approximately divergence-free, so that conservation of mass is simply <span id="eq-incom"><span class="math display">
+\nabla\cdot{\boldsymbol{v}}=0.
+\tag{2.14}</span></span> In this case <span class="math display">
+\frac{1}{\rho}\frac{D \rho}{Dt} =0.
+</span></p>
+</section>
+<section id="initial-and-boundary-conditions" class="level3">
+<h3 class="anchored" data-anchor-id="initial-and-boundary-conditions">Initial and boundary conditions</h3>
+<p>In compressible fluids, one has to additionally specify the initial density and entropy, or chose another couple of thermodynamic fields which would be most relevant to the specific problem (temperature, pressure, etc.).</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./1-1-macro-fluids.html" class="pagination-link" aria-label="Macroscopic Modelling of Fluids">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Macroscopic Modelling of Fluids</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./1-3-canonical.html" class="pagination-link" aria-label="Canonical Flows">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Canonical Flows</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

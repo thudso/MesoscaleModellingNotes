@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>4&nbsp; Free Surface Flows – PX912 Continuum and Mesoscale Modelling</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./1-5-thin-films.html" rel="next">
+<link href="./1-3-canonical.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d166b450ba5a8e9f7a0ab969bf6592c1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-b7c2d8834e08b04a63bb76a724ffbcac.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-c1966a8c70583a3816b1e3a216c1caf1.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./1-0-fluids.html">Fluids</a></li><li class="breadcrumb-item"><a href="./1-4-free-surfaces.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Free Surface Flows</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">PX912 Continuum and Mesoscale Modelling</a> 
+        <div class="sidebar-tools-main">
+    <a href="./PX912-Continuum-and-Mesoscale-Modelling.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./0-preface.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Module overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./1-0-fluids.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fluids</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-1-macro-fluids.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Macroscopic Modelling of Fluids</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-2-equations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Governing Equations of Fluid Dynamics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-3-canonical.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Canonical Flows</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-4-free-surfaces.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Free Surface Flows</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-5-thin-films.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Lubrication and Thin Film Dynamics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#boundary-conditions-at-a-free-surface" id="toc-boundary-conditions-at-a-free-surface" class="nav-link active" data-scroll-target="#boundary-conditions-at-a-free-surface"><span class="header-section-number">4.1</span> Boundary conditions at a free surface</a>
+  <ul class="collapse">
+  <li><a href="#kinematic-boundary-condition" id="toc-kinematic-boundary-condition" class="nav-link" data-scroll-target="#kinematic-boundary-condition">Kinematic Boundary Condition</a></li>
+  <li><a href="#dynamic-boundary-condition" id="toc-dynamic-boundary-condition" class="nav-link" data-scroll-target="#dynamic-boundary-condition">Dynamic Boundary Condition</a></li>
+  </ul></li>
+  <li><a href="#bubbles" id="toc-bubbles" class="nav-link" data-scroll-target="#bubbles"><span class="header-section-number">4.2</span> Bubbles</a>
+  <ul class="collapse">
+  <li><a href="#the-bond-number" id="toc-the-bond-number" class="nav-link" data-scroll-target="#the-bond-number">The Bond number</a></li>
+  <li><a href="#the-capillary-number" id="toc-the-capillary-number" class="nav-link" data-scroll-target="#the-capillary-number">The capillary number</a></li>
+  <li><a href="#young-laplace-equation" id="toc-young-laplace-equation" class="nav-link" data-scroll-target="#young-laplace-equation">Young-Laplace Equation</a></li>
+  </ul></li>
+  <li><a href="#contact-lines" id="toc-contact-lines" class="nav-link" data-scroll-target="#contact-lines"><span class="header-section-number">4.3</span> Contact Lines</a>
+  <ul class="collapse">
+  <li><a href="#example-shape-of-a-liquid-drop-on-a-solid" id="toc-example-shape-of-a-liquid-drop-on-a-solid" class="nav-link" data-scroll-target="#example-shape-of-a-liquid-drop-on-a-solid">Example: shape of a liquid drop on a solid</a></li>
+  </ul></li>
+  <li><a href="#sec-flu-proj2" id="toc-sec-flu-proj2" class="nav-link" data-scroll-target="#sec-flu-proj2"><span class="header-section-number">4.4</span> Fluids Coursework Projection Option 2</a>
+  <ul class="collapse">
+  <li><a href="#project-aims" id="toc-project-aims" class="nav-link" data-scroll-target="#project-aims">Project aims</a></li>
+  <li><a href="#the-young-laplace-equation-in-cylindrical-polar-coordinates" id="toc-the-young-laplace-equation-in-cylindrical-polar-coordinates" class="nav-link" data-scroll-target="#the-young-laplace-equation-in-cylindrical-polar-coordinates">The Young-Laplace equation in cylindrical polar coordinates</a></li>
+  <li><a href="#project-ideas" id="toc-project-ideas" class="nav-link" data-scroll-target="#project-ideas">Project Ideas</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./1-0-fluids.html">Fluids</a></li><li class="breadcrumb-item"><a href="./1-4-free-surfaces.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Free Surface Flows</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-flu-freesurfaces" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Free Surface Flows</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="hidden">
+
+</div>
+<p>Free surfaces exist in a variety of contexts where two phases that are immiscible (i.e.&nbsp;they don’t mix) meet at an interface. Examples include the solidification front of ice in a water drop, or the surface of a pond where water meets air. We will be interested in the latter case, where two immiscible fluids come into contact with each other. Later on, for simplicity, we will focus on the relatively simple situation where one of these fluids is a liquid and the other is a passive gas.</p>
+<p>A significant focus in this chapter will be the introduction of boundary conditions that can be applied at the liquid-gas interface. In this case, there is a so-called ‘free boundary’ between the liquid and a fluid above, as occurs on the surface of the sea, on the surface of a gas bubble in a fizzy drink, or on the surface of a raindrop. We need to formulate boundary conditions for these cases which reflect the fact that the surface’s shape must be obtained as a part of the solution (i.e.&nbsp;it is ‘free’), rather than imposed as has previously been the case, e.g.&nbsp;at a solid surface.</p>
+<section id="boundary-conditions-at-a-free-surface" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="boundary-conditions-at-a-free-surface"><span class="header-section-number">4.1</span> Boundary conditions at a free surface</h2>
+<p>In the most general case of a free surface between 2 viscous fluids, there are 4 boundary conditions required for 4 unknowns (3 velocity components, and 1 variable representing the free surface shape). These are provided by the kinematic and dynamic boundary conditions.</p>
+<p>To set up our problem, we will consider a free surface given in implicit form as <span class="math inline">f({\boldsymbol{x}},t)=0</span> with <span class="math inline">f&lt;0</span> corresponding to fluid 1 and <span class="math inline">f&gt;0</span> corresponding to fluid 2, see <a href="#fig-freesurface" class="quarto-xref">Figure&nbsp;<span>4.1</span></a>. Variables corresponding to fluid 1 will be denoted with a superscript <span class="math inline">-</span> whilst those in fluid 2 will be given a <span class="math inline">+</span>. In this case, the free surface’s unit normal (pointing from fluid 1 into fluid 2) is <span class="math inline">{\boldsymbol{n}}= \frac{\nabla f}{|\nabla f|}</span>.</p>
+<div id="fig-freesurface" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-freesurface-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="tikz/FreeSurface.svg" style="height:5cm" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-freesurface-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.1: The general setup for free surface flows, where the free surface dividing the two fluids is defined implicitly to be <span class="math inline">f({\boldsymbol{x}},t) = 0</span>.
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-caution no-icon callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For two-dimensional flow, one natural representation for the free surface is to set <span class="math inline">y = h(x,t)</span> where <span class="math inline">h</span> is the height of the surface, which needs to be obtained as part of the solution. Fluid 1 sits below the graph of <span class="math inline">h</span>, i.e.&nbsp;in the region <span class="math inline">y&lt;h(x,t)</span>, and Fluid 2 sits above. In this case, we can define <span class="math display">f(x,y,t) = y-h(x,t)</span> so that <span class="math inline">f&lt;0</span> in fluid 1. At the free surface we have <span class="math inline">f=0</span> and unit normal vector <span class="math display">
+{\boldsymbol{n}}= \frac{1}{\sqrt{1+(\partial_x h)^2}}(-\partial_x h,1)
+</span> which points out of fluid 1.</p>
+</div>
+</div>
+<section id="kinematic-boundary-condition" class="level3">
+<h3 class="anchored" data-anchor-id="kinematic-boundary-condition">Kinematic Boundary Condition</h3>
+<p>The free surface must move with the velocity of the fluid just adjacent to it, so that fluid particles which begin on the free surface remain there. In other words, the surface ‘follows the fluid’. This means that we have conservation of <span class="math inline">f</span> along the fluid paths of the surface particles, i.e. <span class="math display">
+\frac{Df}{Dt} = \frac{\partial f}{\partial t} +({\boldsymbol{v}}\cdot \nabla)f =0.
+</span> As <span class="math inline">\nabla f = |\nabla f|\,{\boldsymbol{n}}</span>, we can substitute and rearrange, giving <span class="math display">
+\frac{1}{|\nabla f|}\frac{\partial f}{\partial t} +{\boldsymbol{v}}\cdot {\boldsymbol{n}}=0.
+</span> For steady problems where <span class="math inline">\frac{\partial f}{\partial t} =0</span>, we therefore find that <span class="math inline">{\boldsymbol{v}}\cdot {\boldsymbol{n}}=0</span>. This means the surface is <em>impermeable</em>, i.e.&nbsp;the fluid cannot cross it, just as we would expect.</p>
+<div class="callout callout-style-default callout-caution no-icon callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For <span class="math inline">f(x,y,t) = y-h(x,t)</span>, we have <span class="math inline">\nabla f = (-\partial_x h,1)</span>, and we find that the kinematic boundary condition becomes <span class="math display">
+-\partial_t h + \left(u\frac{\partial}{\partial x} + v\frac{\partial}{\partial y}\right)\big(y-h(x,t)\big) =0.
+</span> Differentiating out and rearranging, this can be written <span id="eq-kinematic-bc"><span class="math display">
+\partial_t h + u \partial_x h = v.
+\tag{4.1}</span></span></p>
+</div>
+</div>
+</section>
+<section id="dynamic-boundary-condition" class="level3">
+<h3 class="anchored" data-anchor-id="dynamic-boundary-condition">Dynamic Boundary Condition</h3>
+<p>To obtain a dynamic boundary condition, we apply Newton’s second law to the surface separating the two fluids. As the surface has no inherent mass, the forces acting on the surface from either side must balance. As we know from our discussion in <a href="1-2-equations.html" class="quarto-xref"><span>Chapter 2</span></a>, the forces acting on the surface are expressible as stresses acting.</p>
+<p>Of particular interest to us will be the influence of surface tension, which is a property of the surface which appears due to the asymmetry of intermolecular forces acting in the interfacial region (typically of nanometric width). As one goes to smaller length scales, surface forces (<span class="math inline">\sim L^2</span>) begin to dominate volume forces (<span class="math inline">\sim L^3</span>). In particular, the surface tension force typically begins to dominate gravity when the length scale goes below the millimetre scale.</p>
+<p>Surface tension acts like an elastic membrane sitting on the interface, forcing it to attempt to minimise its area. Crudely, this is because it is energetically favourable for molecules to be in the bulk of the liquid, rather than at its surface. Surface tension is responsible for a whole host of effects ranging from the suspension of small objects (e.g. water striders) through to the breakup of liquid jets (e.g.&nbsp;from a tap in a kitchen), which occurs when the liquid can reduce its surface area by forming a series of spheres (drops) rather than one cylinder (the jet), see <a href="#fig-waterstrider" class="quarto-xref">Figure&nbsp;<span>4.2</span></a>. Problems in which surface tension is a significant factor are known as capillary flows.</p>
+<div id="fig-waterstrider" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-waterstrider-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row quarto-layout-valign-center">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/waterstrider.jpg" class="img-fluid figure-img" style="height:5cm; width:auto; display:block; margin:0 auto;"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/capillaryrise.jpg" class="img-fluid figure-img" style="height:5cm; width:auto; display:block; margin:0 auto;"></p>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-waterstrider-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.2: The tension of a liquid’s surface allows water striders to ‘walk on water’ and causes liquids to rise up narrow gaps, through capillary action (here there is a liquid-solid surface tension also).
+</figcaption>
+</figure>
+</div>
+<p>We will assume that the surface tension force <span class="math inline">\sigma</span> per unit length of line is constant along the surface, and is directed tangentially along the surface. Parametrising the surface by coordinates <span class="math inline">(x,y)</span> so that the surface is <span class="math inline">z = h(x,y)</span>, the tangent vectors in the coordinate directions are <span class="math inline">{\boldsymbol{t}}_i</span> for <span class="math inline">i=1,2</span>, where <span class="math display">
+{\boldsymbol{t}}_1 = \frac{1}{\sqrt{1+\big(\frac{\partial h}{\partial x}\big)^2}}\left(1,0,\frac{\partial h}{\partial x}\right)\qquad\text{and}\qquad{\boldsymbol{t}}_2 = \frac{1}{\sqrt{1+\big(\frac{\partial h}{\partial y}\big)^2}}\left(0,1,\frac{\partial h}{\partial y}\right).
+</span> Consider an approximately rectangular section of surface with side length <span class="math inline">\delta</span> centred at the point <span class="math inline">(x_0,y_0,h(x_0,y_0))</span>, as illustrated in <a href="#fig-surfacetension" class="quarto-xref">Figure&nbsp;<span>4.3</span></a>. The net force acting on the top surface is approximately <span class="math inline">\delta^2{\boldsymbol{S}}^+{\boldsymbol{n}}</span>, and likewise on the bottom surface is <span class="math inline">\delta^2{\boldsymbol{S}}^-(-{\boldsymbol{n}})</span>. On the edges of the rectangle, surface tension pulls outwards, so that the net forces on the right edge are <span class="math display">
+\sigma \delta{\boldsymbol{t}}_1(x_0+\tfrac12\delta,y_0),
+</span> with similar expressions for the other edges. Since these forces must balance, summing these contributions up we obtain: <span class="math display">
+\delta^2({\boldsymbol{S}}^+-{\boldsymbol{S}}^-){\boldsymbol{n}}+\sigma\delta\Big({\boldsymbol{t}}_1(x_0+\tfrac12\delta,y_0)
+-{\boldsymbol{t}}_1(x_0-\tfrac12\delta,y_0)+{\boldsymbol{t}}_2(x_0,y_0+\tfrac12\delta)-{\boldsymbol{t}}_2(x_0,y_0-\tfrac12\delta)\Big)={\boldsymbol{0}}.
+</span> Taylor expanding the terms in brackets about <span class="math inline">(x_0,y_0)</span>, dividing by <span class="math inline">\delta^2</span> and send <span class="math inline">\delta\to0</span>, we get <span class="math display">
+\left({\boldsymbol{S}}^{+} - {\boldsymbol{S}}^{-}\right){\boldsymbol{n}}=- \sigma\left(\frac{\partial {\boldsymbol{t}}_1}{\partial x} + \frac{\partial {\boldsymbol{t}}_2}{\partial y}\right) \equiv \sigma\kappa {\boldsymbol{n}}
+</span> on the surface. Here, we have defined the curvature of the interface <span class="math inline">\kappa</span> using the geometric identity <span class="math display">
+\kappa{\boldsymbol{n}}= -\left(\frac{\partial {\boldsymbol{t}}_1}{\partial x} + \frac{\partial {\boldsymbol{t}}_2}{\partial y}\right),
+</span> where <span class="math inline">{\boldsymbol{n}}</span> is the unit normal to the surface.</p>
+<p>We can now take components in different directions. In directions tangent to the surface, we find that <span class="math display">
+{\boldsymbol{t}}\cdot\Big(({\boldsymbol{S}}^+-{\boldsymbol{S}}^-){\boldsymbol{n}}\Big) = 0\qquad\text{so}\qquad
+{\boldsymbol{t}}\cdot({\boldsymbol{S}}^+{\boldsymbol{n}}) = {\boldsymbol{t}}\cdot({\boldsymbol{S}}^-{\boldsymbol{n}}),
+</span> so the tangential stresses on the interface are continuous across it. On the other hand, the normal stress has a jump caused by the surface tension force with magnitude <span class="math inline">\sigma\kappa</span>. This jump remains for an inviscid fluid. In this case we recall that the stress tensor takes the form <span class="math inline">S_{ij} = p\delta_{ij}</span>, and so <span class="math inline">{\boldsymbol{n}}\cdot({\boldsymbol{S}}{\boldsymbol{n}}) = pn_i\delta_{ij}n_j = p</span>. Working things through, this leads to the single dynamic boundary condition <span class="math display">
+p^{-} - p^{+} = \sigma\kappa
+</span> on the surface. This is known as the <em>Young-Laplace equation</em> and states that the pressure jump across the interface is caused by the surface tension force. The same equation also applies for the viscous case in a static situation.</p>
+<div id="fig-surfacetension" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-surfacetension-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="tikz/SurfaceTension.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-surfacetension-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.3: Forces acting at the interface. The stress from the two fluids act on the faces of the volume, which have area <span class="math inline">\frac{\delta}{2}</span> and the surface tension, which acts on acts on a line, tugs on the four ends of length <span class="math inline">\delta</span> (the height of the control volume is considered negligible). The interface is parameterised by coordinates <span class="math inline">(x,y)</span> and the control volume’s centre is at <span class="math inline">(x_0, y_0, h(x_0,y_0))</span>.
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="bubbles" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="bubbles"><span class="header-section-number">4.2</span> Bubbles</h2>
+<p>Consider a gas bubble in a liquid, see <a href="#fig-bubble" class="quarto-xref">Figure&nbsp;<span>4.4</span></a>. If the bubble is spherical with radius <span class="math inline">R</span>, then in spherical polar coordinates <span class="math inline">(r,\theta,\phi)</span> centred in the middle of the bubble, the normal at the interface is <span class="math inline">{\boldsymbol{n}}= (-1,0,0)</span> (we define the liquid as the <span class="math inline">-</span> phase, so that the normal points into the gas, the <span class="math inline">+</span> phase). In this case, it can be shown that the curvature of the spherical surface is <span class="math inline">\kappa = -\frac{2}{R}.</span> Using our argument above, the pressure just inside the gas bubble <span class="math inline">p^{+}</span> is related to that in the liquid just outside <span class="math inline">p^{-}</span> by the relationship <span class="math display">
+p^{-} - p^{+} = - \frac{2\sigma}{R}\qquad\hbox{i.e.}\qquad p^{+}  = p^{-} + \frac{2\sigma}{R}.
+</span> This means the pressure in the gas is increased by <span class="math inline">2\sigma/R</span>. This makes intuitive sense: if the surface tension acts to pull inwards on the bubble like an elastic membrane, the pressure will rise in the bubble as it gets squeezed. Smaller bubbles have a larger pressure inside and this is why smaller bubbles are louder when they burst at a liquid’s surface – you can test this in the real world, as champagne is louder than beer!</p>
+<div id="fig-bubble" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bubble-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/champagne.jpg" class="img-fluid figure-img" style="height:6cm; width:auto; display:block; margin:0 auto;"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="tikz/bubble.svg" class="img-fluid figure-img" style="height:6cm; width:auto; display:block; margin:0 auto;"></p>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bubble-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.4: Surface tension forces increasing the pressure within a spherical gas bubble of radius <span class="math inline">R</span>.
+</figcaption>
+</figure>
+</div>
+<section id="the-bond-number" class="level3">
+<h3 class="anchored" data-anchor-id="the-bond-number">The Bond number</h3>
+<p>We have seen that the pressure generated by surface tension is of the order of <span class="math inline">\sigma/L</span>, where <span class="math inline">L</span> is a characteristic length scale. This length scale is the approximate radius of curvature of our interface. Therefore, capillary forces (due to surface tension) will be important when <span class="math inline">\sigma/L</span> is comparable to the pressure generated by gravitational forces, i.e.&nbsp;the hydrostatic pressure <span class="math inline">\rho g L</span>. To compare the influence of these effects, we consider the dimensionless Bond number, defined to be <span class="math display">
+\mathrm{Bo}= \frac{\rho g L}{\sigma/L} = \frac{\rho g L^2}{\sigma}.
+</span> When <span class="math inline">\mathrm{Bo}=1</span>, these effects are in balance, and we can rearrange to show that this occurs when <span class="math display">
+L_{\sigma} = \sqrt{\frac{\sigma}{\rho g}}.
+</span> The special length scale <span class="math inline">L_{\sigma}</span> is known as the capillary length. For water in air, where the surface tension is <span class="math inline">\sigma = 0.07</span>&nbsp;N/m, we have <span class="math inline">L_{\sigma}=3</span>&nbsp;mm. Therefore, for large scale flows, such as sea waves, surface tension has no meaningful effect, but for small scale flows, such as those encountered in micro and nanofluidics, the importance of surface tension far outweighs that of gravity.</p>
+</section>
+<section id="the-capillary-number" class="level3">
+<h3 class="anchored" data-anchor-id="the-capillary-number">The capillary number</h3>
+<p>In many cases, we are interested in knowing the shape of a liquid drop or bubble whose flow has negligible force in comparison to the surface tension forces. In the latter case, for low Reynolds number flows, where viscous forces dominate inertial ones, looking at the dynamic boundary condition we can see that the viscous force has magnitude <span class="math inline">\mu U/L</span> whilst the surface tension force is <span class="math inline">\sigma/L</span>. The ratio of these forces gives the capillary number: <span class="math display">
+\mathrm{Ca}= \frac{\mu U}{\sigma}.
+</span> When <span class="math inline">\mathrm{Ca}\ll 1</span>, the flow within the drop has a negligible effect on the free surface, so that the shape can be calculated independently of the flow (this is a huge simplification!).</p>
+</section>
+<section id="young-laplace-equation" class="level3">
+<h3 class="anchored" data-anchor-id="young-laplace-equation">Young-Laplace Equation</h3>
+<p>When <span class="math inline">\mathrm{Ca}\ll 1</span> in the viscous case, we can neglect viscous effects and again obtain the Young-Laplace equation: <span class="math display">
+p^{-} - p^{+} = \sigma\kappa.
+</span> To make some progress we can simplify matters further. Let us consider a steady two-dimensional flow in Cartesian coordinates <span class="math inline">(x,y)</span> with gravity now pointing in the negative <span class="math inline">y</span>-direction, as shown in <a href="#fig-surface-parametrisation" class="quarto-xref">Figure&nbsp;<span>4.5</span></a>.</p>
+<div id="fig-surface-parametrisation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-surface-parametrisation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="tikz/SurfaceParametrisation.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-surface-parametrisation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.5: Parametrisation of the free surface.
+</figcaption>
+</figure>
+</div>
+<p>Furthermore, let us consider cases in which we can parameterise the free surface in terms of a height function <span class="math inline">y=h(x)</span>, so that <span class="math inline">f(x,y)=y-h(x)</span>. Then some tedious calculations allow us to show that <span class="math display">
+{\boldsymbol{n}}= \frac{(-h',1)}{\big(1+(h')^2\big)^{1/2}}\qquad\hbox{and}\qquad\kappa= -\frac{h''}{\big(1+(h')^2\big)^{3/2}};
+</span> here, primes denotes derivatives with respect to <span class="math inline">x</span>.</p>
+<p>If we consider liquid–gas systems in which the pressure in the liquid is hydrostatic, so <span class="math inline">p^- = p^-_0-\rho g y</span> (where <span class="math inline">p^-_0</span> is some constant pressure at <span class="math inline">y=0</span>) and the gas is dynamically passive so that it experiences negligible variations in hydrostatic pressure due to its lower density, hence <span class="math inline">p^{+}=p^{+}_0</span> is constant, then we find <span class="math display">
+- P - \rho g y= \sigma\kappa
+</span> on the free surface, where <span class="math inline">P= p^+_0 - p^-_0</span> is the pressure drop across the interface.</p>
+<p>Putting everything together and substituting <span class="math inline">y=h(x)</span>, the Young-Laplace equation becomes: <span class="math display">
+- P - \rho g h =  -\frac{\sigma h''}{\big(1+(h')^2\big)^{3/2}} \qquad\hbox{at}\qquad y=h(x,t).
+</span> One can see immediately that this is a nonlinear, second–order PDE for <span class="math inline">h</span> and hence we must specify a boundary condition for <span class="math inline">h</span> (or its derivative) at each end of the free surface. On top of this one either needs to specify the pressure drop <span class="math inline">P</span> or, more often, the volume of the liquid which can then be used to find <span class="math inline">P</span>.</p>
+</section>
+</section>
+<section id="contact-lines" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="contact-lines"><span class="header-section-number">4.3</span> Contact Lines</h2>
+<p>As we have seen, free surfaces are located where two phases meet each other (e.g.&nbsp;water-air) but these surfaces often come into contact with a third surface (e.g.&nbsp;a solid wall). The three surfaces join along a ‘three phase’ contact line. Common examples of contact lines are liquid–liquid–gas, e.g.&nbsp;an oil drop resting on a water-air interface, and liquid–solid–gas, e.g.&nbsp;a raindrop on a windscreen. Our focus will be on the latter case.</p>
+<p>We will be modelling only the liquid and will assume that the solid is rigid, so that is does not deform. A current ‘hot topic’ is contact lines that are formed at soft solids, but this is beyond our scope — <a href="https://www.annualreviews.org/doi/abs/10.1146/annurev-fluid-010719-060147">see here</a> for a recent review article. As our free surface equations are themselves differential equations, with a <span class="math inline">\kappa</span> term that becomes <span class="math inline">\propto h''</span> in the parameterisation above, typically we need a boundary condition at either end of the free surface where it meets the solid (<a href="#fig-surface-parametrisation" class="quarto-xref">Figure&nbsp;<span>4.5</span></a>). The two most common choices are:</p>
+<ul>
+<li><p><em>A pinned contact line</em>, where the position of the contact line is prescribed at a fixed coordinate. For example, one may insist that a contact line is at <span class="math inline">x=R</span>, in which case if the solid is at <span class="math inline">y=0</span> in our 2D Cartesian example then the boundary condition would simply be <span class="math inline">h(R)=0</span> which ensures the free surface meets the solid at <span class="math inline">x=R</span>.</p></li>
+<li><p><em>A prescribed contact angle</em> - in this case the position of the contact line is found as part of the solution, and instead we impose the angle <span class="math inline">\theta</span> at which the free surface meets the solid, so in our 2D Cartesian example we would have <span class="math inline">\frac{\partial h}{\partial x}=\pm \tan\theta</span> at <span class="math inline">x=\mp R</span> (note <span class="math inline">R</span> is now an unknown) with the <span class="math inline">\pm</span> depending on which side of the drop we are considering.</p></li>
+</ul>
+<p>Physically, both of these cases are possible and reasonable, and a typical drop spreading event may include both behaviours. If we were to consider a perfectly smooth homogeneous solid surface, we would expect a drop landing on it to spread with its prescribed contact angle (a significant oversimplification!) until it reaches an equilibrium state. The prescribed contact angle will depend on the liquid-solid-gas combination in question: if the solid is ‘wettable’ (i.e.&nbsp;hydrophilic for water) this angle will be close to zero, so the drop will spread out a lot; this is the case for water on glass. If the angle is high (close to <span class="math inline">180^\circ</span>) then the solid is non-wettable (aka hydrophobic) and the drop beads up (e.g.&nbsp;water on a lotus leaf), see <a href="#fig-wettability" class="quarto-xref">Figure&nbsp;<span>4.6</span></a>.</p>
+<div id="fig-wettability" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-wettability-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/glass.jpg" class="img-fluid figure-img" style="height:5cm; width:auto; display:block; margin:0 auto;"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/lotus.jpg" class="img-fluid figure-img" style="height:5cm; width:auto; display:block; margin:0 auto;"></p>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wettability-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.6: Raindrops (i.e.&nbsp;water drops) on a wettable substrate glass (left) and non-wettable lotus leaf (right). Notice the drops on the glass have not returned to their static shapes (spherical caps) due to the contact line becoming pinned and preventing any more motion.
+</figcaption>
+</figure>
+</div>
+<p>The problem is that most ‘real’ solids are not chemically heterogeneous or smooth and the result is that the contact line becomes pinned on these features before it can reach its equilibrium state. This is the reason we usually don’t see spherical cap shapes (the false equilibrium state) when we look at raindrops on typical solids (<a href="#fig-wettability" class="quarto-xref">Figure&nbsp;<span>4.6</span></a>, left). In what follows, we will consider these cases separately, but one should keep in mind that in reality both behaviours often occur in the same event.</p>
+<section id="example-shape-of-a-liquid-drop-on-a-solid" class="level3">
+<h3 class="anchored" data-anchor-id="example-shape-of-a-liquid-drop-on-a-solid">Example: shape of a liquid drop on a solid</h3>
+<p>Consider a liquid drop sat on a solid surface. There are a number of different configurations we could think of, but the simplest is to consider a ‘2D drop’ with contact lines ‘pinned’ at <span class="math inline">x=\pm R</span> so that <span class="math inline">h(x=\pm R)=0</span>, see <a href="#fig-drop-xt" class="quarto-xref">Figure&nbsp;<span>4.7</span></a> (one of the Project tasks is to extend this to a cylindrical coordinate system geometry, which is the more practically relevant case). To further simplify matters, we can prescribe <span class="math inline">P</span> and find the shape (and hence the volume).</p>
+<div id="fig-drop-xt" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-drop-xt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="tikz/Droplet.svg" style="height:5cm" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-drop-xt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.7: A two-dimensional drop with contact lines at <span class="math inline">x=\pm R</span> and contact angle <span class="math inline">\theta</span>.
+</figcaption>
+</figure>
+</div>
+<p>In this case, our problem formulation is the Young-Laplace equation <span class="math display">
+- P \mp \rho g h =  -\frac{\sigma \frac{d^2 h}{dx^2}}{(1+\left(\frac{dh}{dx}\right)^2)^{3/2}}
+</span> combined with boundary conditions <span class="math inline">h(x=\pm R)=0</span>. Our aim is to find the function <span class="math inline">h</span>. Note that we include <span class="math inline">\mp g</span> as <span class="math inline">-g</span> corresponds to a drop on top of a surface perpendicular to the gravitaitonal field and <span class="math inline">+g</span> corresponds to a drop hanging beneath a surface (see <a href="#fig-shapes" class="quarto-xref">Figure&nbsp;<span>4.8</span></a>).</p>
+<p>Therefore, to find the drop shape in this case, one solves the Young-Laplace equation, with <span class="math inline">P</span> prescribed alongside boundary conditions <span class="math inline">h(x=\pm R)=0</span>. This is the starting point for <strong>Project 2</strong>.</p>
+<p>If we want a physical example, we may consider <span class="math inline">\rho=1000</span>kg m<span class="math inline">^{-3}</span>, <span class="math inline">g=9.8</span> m s<span class="math inline">^{-2}</span> and <span class="math inline">\sigma=0.07</span>N m<span class="math inline">^{-1}</span> which are values for water. Then a typical drop size (e.g.&nbsp;a raindrop) may be in the range <span class="math inline">R=1-20</span>mm<span class="math inline">=1-20\times10^{-3}</span>m. Recalling that <span class="math inline">\mathrm{Bo}=\frac{\rho g R^2}{\sigma}</span> (where we have used <span class="math inline">R</span> as a characteristic length scale) will enable us to establish what is dominant out of gravity and capillarity. For <span class="math inline">\mathrm{Bo}\gg1</span> we will see pancake shapes, whereas for <span class="math inline">\mathrm{Bo}\ll1</span> we will see spherical caps. For the range considered above, we will encounter both large and small <span class="math inline">\mathrm{Bo}</span> which is why we can observe both pancakes and spherical caps when it rains (see <a href="#fig-shapes" class="quarto-xref">Figure&nbsp;<span>4.8</span></a>).</p>
+<div id="fig-shapes" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-shapes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/drop_shapes_vs_size.jpg" class="img-fluid figure-img" style="height:5cm; width:auto; display:block; margin:0 auto;"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/water_on_ceiling.jpg" class="img-fluid figure-img" style="height:5cm; width:auto; display:block; margin:0 auto;"></p>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shapes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.8: First image: influence of drop size on ‘sphericity’, with larger drops being more pancake like (<a href="https://www.maxpixel.net/Raindrop-Structure-Water-Drip-Lotus-Effect-1452666">image source</a> ). Second image: hanging drops, showing the influence of considering <span class="math inline">g\to-g</span> (<a href="https://pixabay.com/photos/drop-of-water-drip-wet-water-3831867">image source</a>).
+</figcaption>
+</figure>
+</div>
+<p>A useful starting point is to see if we can find any analytic solutions in special cases. Two immediately come to mind and both involve neglecting the gravitational field, which we know is valid when <span class="math inline">\mathrm{Bo}\ll 1</span>. These solutions will provide both tests for our computational codes (which will solve the full problem) as well as initial guesses for iterative solution methods.</p>
+<section id="solution-for-small-heights-with-g0" class="level4">
+<h4 class="anchored" data-anchor-id="solution-for-small-heights-with-g0">Solution for small heights with <span class="math inline">g=0</span></h4>
+<p>The simplest case to consider is when the free surface remains relatively close to the solid so that <span class="math inline">h'\ll 1</span>. In this case we can linearise our equations (basically ignoring all products of small terms like <span class="math inline">h</span>, <span class="math inline">h'</span>, <span class="math inline">h''</span>) to obtain <span class="math display">
+P=  \sigma \frac{d^2 h}{dx^2}
+</span> with solution a parabola <span class="math display">
+h_{lin}=-\frac{P}{2\sigma}\left(R^2-x^2\right).
+</span> Notably, we see, as expected, that for meaningful solutions we need <span class="math inline">P&lt;0</span> as <span class="math inline">P</span> represents the pressure in the gas minus the pressure in the liquid, which we expect to be higher for a drop, due to surface tension.</p>
+</section>
+<section id="general-solution-for-g0" class="level4">
+<h4 class="anchored" data-anchor-id="general-solution-for-g0">General Solution for <span class="math inline">g=0</span></h4>
+<p>Consider now the solution to the nonlinear ODE: <span class="math display">
+P= \frac{\sigma \frac{d^2 h}{dx^2}}{(1+\left(\frac{dh}{dx}\right)^2)^{3/2}}.
+</span> which is given by a circle (no surprise, as this minimises the length of the free surface for a given volume): <span class="math display">
+x^2 + \left(h+\sqrt{\sigma^2/P^2-R^2}\right)^2 = \frac{\sigma^2}{P^2}.
+</span></p>
+</section>
+<section id="general-solution-for-gneq0" class="level4">
+<h4 class="anchored" data-anchor-id="general-solution-for-gneq0">General Solution for <span class="math inline">g\neq0</span></h4>
+<p>These must be obtained computationally, and are the subject of the Week 4 Workshop. Notably, the solutions for <span class="math inline">g=0</span> will provide a benchmark for our code.</p>
+</section>
+</section>
+</section>
+<section id="sec-flu-proj2" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="sec-flu-proj2"><span class="header-section-number">4.4</span> Fluids Coursework Projection Option 2</h2>
+<p>This project is entitled <strong>Shapes of Liquid Drops</strong>, and is the second of the two project options you will have in this section of the module. The other was described in <a href="1-3-canonical.html#sec-flu-proj1" class="quarto-xref"><span>Section 3.3</span></a>.</p>
+<section id="project-aims" class="level3">
+<h3 class="anchored" data-anchor-id="project-aims">Project aims</h3>
+<p>You should write an approximately 10 page report that demonstrates:</p>
+<ul>
+<li><p>Engagement with the literature on capillarity;</p></li>
+<li><p>Computational results for the shapes of drops in different contexts; and</p></li>
+<li><p>Validation of code against your own analytic results as well as experimental and/or theoretical results from the published literature.</p></li>
+</ul>
+<div id="fig-thoroddsen" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-thoroddsen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/thoroddsen.png" class="img-fluid figure-img" style="height:5cm; width:auto; display:block; margin:0 auto;"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/thoroddsen2.png" class="img-fluid figure-img" style="height:5cm; width:auto; display:block; margin:0 auto;"></p>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-thoroddsen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.9: Images from Thoroddsen et al’s article (see Reading List) showing drops on top of and underneath solid posts experimentally (first panel), and computed using the Young-Laplace equation (second panel).
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="the-young-laplace-equation-in-cylindrical-polar-coordinates" class="level3">
+<h3 class="anchored" data-anchor-id="the-young-laplace-equation-in-cylindrical-polar-coordinates">The Young-Laplace equation in cylindrical polar coordinates</h3>
+<p>A more realistic drop is obtained if we consider an axisymmetric (nothing depends on <span class="math inline">\theta</span>) drop in a cylindrical polar coordinate system <span class="math inline">(r,\theta,z)</span>, so that the equivalent height function is given by <span class="math inline">z=h(r)</span>, where <span class="math inline">h</span> is the height of the free surface and <span class="math inline">r</span> is the radial coordinate. In this case we need to know the curvature of our free surface, which is given by (feel free to work this out / check): <span class="math display">
+\kappa = -\frac{\frac{d^2 h}{dr^2}}{\left(1+ \left(\frac{dh}{dr}\right)^2\right)^{3/2}} - \frac{\frac{dh}{dr}}{r\left(1+ \left(\frac{dh}{dr}\right)^2\right)^{1/2}}
+</span></p>
+</section>
+<section id="project-ideas" class="level3">
+<h3 class="anchored" data-anchor-id="project-ideas">Project Ideas</h3>
+<p>The suggestions below are intended to give you ideas of what can be done, but you should feel free to follow your own path if you wish.</p>
+<p>A starting point for this project is to compute the static shape of a 2D drop in a gravitational field whose contact line is pinned, as considered within the Week 4 Workshop, where we recall the suggested tasks below.</p>
+<ul>
+<li><p>Solve the linearised Young-Laplace equation and ensure you get the analytic solution in this case.</p></li>
+<li><p>Extend the code to solve the nonlinear problem via iteration and compare for <span class="math inline">g=0</span> to (i) the linearised solution for small heights and (ii) the nonlinear solution in all cases.</p></li>
+<li><p>Vary <span class="math inline">P</span> to obtain different drop shapes (for different material parameters, if you like).</p></li>
+<li><p>Consider if there is a solution for all values of <span class="math inline">P</span>. If not, what can go wrong and why?</p></li>
+<li><p>Determine the dimensionless parameter appears from the Young-Laplace equation. How do drop shapes vary as you change this parameter?</p></li>
+</ul>
+<p>Also, recall some of the more challenging suggestions for extending the 2D code:</p>
+<ul>
+<li><p>Can you extend the code to consider prescribing the drop’s volume <span class="math inline">V</span> (or more precisely its area in 2D) and then finding <span class="math inline">P</span> as part of the solution? Hint: you will have to introduce an extra unknown into the problem, namely <span class="math inline">P</span>, and an additional equation, which is that the drop volume is <span class="math inline">V</span> and will involve an integral over all nodes.</p></li>
+<li><p>Consider the case of a gas bubble on a solid surface surrounded by an exterior liquid. How do the drop shapes change?</p></li>
+<li><p>Think about implementing the Newton method, which has superior convergence qualities over Picard iteration (error decreases quadratically, rather than linearly). You may have seen this method for the solution of a single equation for a single variable, i.e. <span class="math inline">E_1(h_1)=0</span>, where we update the values of <span class="math inline">h_1</span> using <span class="math display">
+h_1^{k+1} = h_1^{k} - \left(\frac{dE_1(h_1^{k})}{dh_1}\right)^{-1}E_1(h_1^{k})
+</span> and see that the left hand side is the new solution, where the right hand side is evaluated purely at already-existing values. To extend this to a system of equations where we want <span class="math inline">E_i(h_1,h_2,...,h_n)=0</span> at every node, we must use <span class="math display">
+h_i^{k+1} = h_i^{k} - J_{ij}^{-1} E_j(h_i^{k})  \qquad J_{ij} = \frac{dE_i(h_i^{k})}{dh_j}
+</span> and <span class="math inline">J_{ij}^{-1}</span> is the inverse of <span class="math inline">J_{ij}</span>. In other words, to find the amount we need to update our solution by <span class="math inline">\triangle h_i = h_i^{k+1}-h_i^{k}</span> we must solve the linear equations <span class="math display">
+J_{ij}\triangle h_i = - E_j (h_i^{k})
+</span></p></li>
+</ul>
+<p>Potential extensions are now described — feel free to follow whatever interests you.</p>
+<section id="moving-contact-lines" class="level4">
+<h4 class="anchored" data-anchor-id="moving-contact-lines">Moving contact lines</h4>
+<ul>
+<li>Consider a free (unpinned) contact line, so that <span class="math inline">R</span> is now an unknown of the problem and a condition is applied on the angle <span class="math inline">\theta</span> at which the free surface meets the solid (see <a href="#fig-drop-xt" class="quarto-xref">Figure&nbsp;<span>4.7</span></a>) which can be varied (<span class="math inline">h'(x=\pm R)=\mp \tan\theta</span>). This ‘contact angle’ can vary from <span class="math inline">\theta=0</span>, where the drop will completely wet the solid with a thin liquid film, through to <span class="math inline">\theta \approx 180^\circ</span> where there is almost no contact between the drop and solid (these are ‘superhydrophobic surfaces’). Again, you can consider both prescribing <span class="math inline">P</span> and finding <span class="math inline">V</span> or vice versa.</li>
+</ul>
+</section>
+<section id="axisymmetric-real-drops" class="level4">
+<h4 class="anchored" data-anchor-id="axisymmetric-real-drops">Axisymmetric (real) drops</h4>
+<ul>
+<li><p>Consider 3D axisymmetric drops so that comparisons can be made to experimental data for drops (or bubbles). In this case, the domain will be from <span class="math inline">0\le r\le R</span>, where <span class="math inline">R</span> is the radial position of the contact line, and at the axis of symmetry (<span class="math inline">r=0</span>) one has a condition that the free surface is smooth <span class="math inline">\frac{dh}{dr}=0</span>. Numerically, a crude way to impose this is to enforce that the height of the free surface at the first node <span class="math inline">h_1</span> is equal to that at the second node <span class="math inline">h_1=h_2</span>.</p></li>
+<li><p>Attempt to derive an analytic solution in this case for <span class="math inline">g=0</span>. Noting that the profile is a spherical cap may help.</p></li>
+<li><p>Try to compare your drop shapes to those found in the experimental literature (you may find you need to use a fixed contact angle rather than a fixed drop size). You could look into Bonn et al 2009 for ideas/images (see Reading List) or find your own pictures of static drops.</p></li>
+</ul>
+</section>
+<section id="fat-drops" class="level4">
+<h4 class="anchored" data-anchor-id="fat-drops">Fat drops</h4>
+<ul>
+<li><p>Parametrise the free surface so that shapes are not restricted to single valued functions of <span class="math inline">h=h(x)</span> - i.e.&nbsp;one can consider ‘fat drops’ like those in <a href="#fig-thoroddsen" class="quarto-xref">Figure&nbsp;<span>4.9</span></a>. To do so, one option is to switch to the parameterisation <span class="math inline">x=f(y)</span>, where the <span class="math inline">f</span> is now the unknown function (perhaps everywhere, or maybe only in regions where this parameterisation suits better). To utilise this approach one need to know the curvature in this representation, which will be easy to obtain in Cartesian coordinates and in cylindrical polar coordinates where <span class="math inline">r=f(z)</span> will be given by <span class="math display">
+\kappa = \frac{-\frac{d^2 f}{d z^2}}{\left(1+(\frac{df}{dz})^2\right)^{3/2}} + \frac{1}{f\left(1+(\frac{df}{dz})^2\right)^{1/2}}.
+</span> One needs to be careful near <span class="math inline">r=0</span> with this setup.</p>
+<p>An alternative popular approach is to use the arclength coordinate <span class="math inline">s</span> to find the free surface coordinates as <span class="math inline">(r(s),z(s))</span>. A common way to achieve this was first described by Adams and Bashforth (see Reading List) and can be found more recently in Thoroddsen et al 2005 and Extrand &amp; Moon 2010 as well as no doubt countless other papers. Note that to use this approach one will need to discretise <span class="math inline">s</span> rather than <span class="math inline">x</span> and that the ‘shooting method’ described in papers is similar to treating <span class="math inline">s</span> as time and using an explicit stepping method. Note also that here you will have more than one equation at each nodes, but the principles we have developed can still be applied to this new setting (i.e.&nbsp;3 equations at each node means we will have a <span class="math inline">3n\times 3n</span> system of equations).</p></li>
+<li><p>Extract data from Figure~3 in Thoroddsen et al 2005 (e.g.&nbsp;using <a href="https://datathief.org/">DataThief</a>) and compare to your results. Or try similar approaches with results in Berry et al 2015 (see Reading List), where the Young-Laplace equation is used to determine the surface tension of hanging liquid drops. Similarly you may look into Extrand &amp; Moon 2010 (again in the Reading List).</p></li>
+<li><p>Or compare to gas bubble shapes obtained in Simmons et al 2015 in the Reading List below.</p></li>
+</ul>
+</section>
+<section id="going-further" class="level4">
+<h4 class="anchored" data-anchor-id="going-further">Going further</h4>
+<p>For those feeling very ambitious:</p>
+<ul>
+<li><p>Consider the influence of additional physical effects on drop shapes, for example electric fields (look into the published literature for examples).</p></li>
+<li><p>Extend your code to consider quasi-static flows, where the free surface is still computed by the Young-Laplace equation but either (i) for a pinned contact line the volume of the drop changes in time, as in Simmons et al 2015 below, or (ii) there is a relation between the contact angle and the speed of the contact line <span class="math inline">U_c=dR/dt</span> such as <span class="math inline">dR/dt = (\theta^3(t) - \theta_e^3)</span>. Consider the approach of a drop from some initial shape with angle <span class="math inline">\theta_0=\theta(t=0)</span> towards its equilibrium shape with angle <span class="math inline">\theta_e</span> (at which point <span class="math inline">dR/dt=0</span>).</p></li>
+<li><p>Download and have a play with <a href="http://facstaff.susqu.edu/brakke/evolver/evolver.html">Surface Evolver</a>, which is a code known to accurately compute equilibrium free surface shapes (note: I have never used it, so you are on your own!). Consider using previous solutions from your own codes as a benchmark and then consider more interesting cases - for example, fully-3D non-axisymmetric cases (e.g.&nbsp;a drop on an inclined plane with a pinned contact line, as you’d see on a car window when it rains).</p></li>
+</ul>
+</section>
+<section id="reading-list" class="level4">
+<h4 class="anchored" data-anchor-id="reading-list">Reading List</h4>
+<p>Articles below are just a starting point for your investigations and should not be considered exhaustive:</p>
+<ul>
+<li><p>Pomeau, Y. and Villermaux, E., 2006. Two hundred years of capillarity research. Physics Today, 59(3), p.39.<br>
+History of flows with surface tension considering a range of phenomena. Read for an overview of the topic.</p></li>
+<li><p>Bashforth, B., 1883. An attempt to test the theories of capillary action by comparing the theoretical and measured forms of drops of fluid. (with supplement by Adamsg, J.C.).<br>
+Early attempt to compute the shapes of static drops on or underneath solid surfaces. Quadrature is used to solve the differential equation and this was incredibly laborious in the pre-computer age! The article can be <a href="https://ia800203.us.archive.org/25/items/cu31924012328385/cu31924012328385.pdf">found here</a>.</p></li>
+<li><p>Thoroddsen, S.T., Takehara, K. and Etoh, T.G., 2005. The coalescence speed of a pendent and a sessile drop. Journal of Fluid Mechanics, 527, pp.85-114.<br>
+A paper on the coalescence of liquid drops. Most relevantly, Section 3.1 contains a method for calculating the static shapes of drops using the Young-Laplace equation and Figure~3 shows computed shapes compared to experimental data.</p></li>
+<li><p>Bonn, D., Eggers, J., Indekeu, J., Meunier, J. and Rolley, E., 2009. Wetting and spreading. Reviews of modern physics, 81(2), p.739.</p></li>
+<li><p>Berry, J.D., Neeson, M.J., Dagastine, R.R., Chan, D.Y. and Tabor, R.F., 2015. Measurement of surface and interfacial tension using pendant drop tensiometry. Journal of colloid and interface science, 454, pp.226-237.<br>
+Method for calculating the surface tension by analysing the shape of a drop and comparing it to the Young-Laplace equation’s solutions.</p></li>
+<li><p>Simmons, J.A., Sprittles, J.E. and Shikhmurzaev, Y.D., 2015. The formation of a bubble from a submerged orifice. European Journal of Mechanics-B/Fluids, 53, pp.24-36.<br>
+Growth of a gas bubble from a submerged orifice. Here, Section 5.2.1 considers how well the Young-Laplace equation can be used to describe the dynamics (see equation 15 and figure~7), when they are in a quasi-static regime.</p></li>
+<li><p>Extrand, C.W. and Moon, S.I., 2010. Contact Angles of Liquid Drops on Super Hydrophobic Surfaces: Understanding the Role of Flattening of Drops by Gravity. Langmuir, 26, pp.17090-17099.<br>
+Article considering how well static drops on superhydrophobic surfaces (those with <span class="math inline">\theta \to 180^\circ</span>) can be described by the Young-Laplace equation. Includes further explanation of method of Adams and Bashforth.</p></li>
+</ul>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./1-3-canonical.html" class="pagination-link" aria-label="Canonical Flows">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Canonical Flows</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./1-5-thin-films.html" class="pagination-link" aria-label="Lubrication and Thin Film Dynamics">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Lubrication and Thin Film Dynamics</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

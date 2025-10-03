@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>1&nbsp; Macroscopic Modelling of Fluids – PX912 Continuum and Mesoscale Modelling</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./1-2-equations.html" rel="next">
+<link href="./1-0-fluids.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d166b450ba5a8e9f7a0ab969bf6592c1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-b7c2d8834e08b04a63bb76a724ffbcac.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-c1966a8c70583a3816b1e3a216c1caf1.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./1-0-fluids.html">Fluids</a></li><li class="breadcrumb-item"><a href="./1-1-macro-fluids.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Macroscopic Modelling of Fluids</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">PX912 Continuum and Mesoscale Modelling</a> 
+        <div class="sidebar-tools-main">
+    <a href="./PX912-Continuum-and-Mesoscale-Modelling.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./0-preface.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Module overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./1-0-fluids.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fluids</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-1-macro-fluids.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Macroscopic Modelling of Fluids</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-2-equations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Governing Equations of Fluid Dynamics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-3-canonical.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Canonical Flows</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-4-free-surfaces.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Free Surface Flows</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-5-thin-films.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Lubrication and Thin Film Dynamics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#mathematical-background" id="toc-mathematical-background" class="nav-link active" data-scroll-target="#mathematical-background"><span class="header-section-number">1.1</span> Mathematical Background</a>
+  <ul class="collapse">
+  <li><a href="#vectors-and-tensors" id="toc-vectors-and-tensors" class="nav-link" data-scroll-target="#vectors-and-tensors">Vectors and Tensors</a></li>
+  <li><a href="#vector-calculus" id="toc-vector-calculus" class="nav-link" data-scroll-target="#vector-calculus">Vector Calculus</a></li>
+  <li><a href="#index-notation" id="toc-index-notation" class="nav-link" data-scroll-target="#index-notation">Index Notation</a></li>
+  </ul></li>
+  <li><a href="#what-is-macroscopic-fluid-dynamics" id="toc-what-is-macroscopic-fluid-dynamics" class="nav-link" data-scroll-target="#what-is-macroscopic-fluid-dynamics"><span class="header-section-number">1.2</span> What is Macroscopic Fluid Dynamics?</a></li>
+  <li><a href="#incompressible-fluids" id="toc-incompressible-fluids" class="nav-link" data-scroll-target="#incompressible-fluids"><span class="header-section-number">1.3</span> Incompressible Fluids</a></li>
+  <li><a href="#lagrangian-and-eulerian-descriptions" id="toc-lagrangian-and-eulerian-descriptions" class="nav-link" data-scroll-target="#lagrangian-and-eulerian-descriptions"><span class="header-section-number">1.4</span> Lagrangian and Eulerian Descriptions</a></li>
+  <li><a href="#flow-visualisation" id="toc-flow-visualisation" class="nav-link" data-scroll-target="#flow-visualisation"><span class="header-section-number">1.5</span> Flow Visualisation</a>
+  <ul class="collapse">
+  <li><a href="#particle-paths" id="toc-particle-paths" class="nav-link" data-scroll-target="#particle-paths">Particle Paths</a></li>
+  <li><a href="#streamlines" id="toc-streamlines" class="nav-link" data-scroll-target="#streamlines">Streamlines</a></li>
+  <li><a href="#experimental-visualisation" id="toc-experimental-visualisation" class="nav-link" data-scroll-target="#experimental-visualisation">Experimental Visualisation</a></li>
+  </ul></li>
+  <li><a href="#the-material-derivative" id="toc-the-material-derivative" class="nav-link" data-scroll-target="#the-material-derivative"><span class="header-section-number">1.6</span> The Material Derivative</a>
+  <ul class="collapse">
+  <li><a href="#acceleration" id="toc-acceleration" class="nav-link" data-scroll-target="#acceleration">Acceleration</a></li>
+  </ul></li>
+  <li><a href="#sec-kinematics" id="toc-sec-kinematics" class="nav-link" data-scroll-target="#sec-kinematics"><span class="header-section-number">1.7</span> Kinematics</a></li>
+  <li><a href="#sec-vorticity-and-ros" id="toc-sec-vorticity-and-ros" class="nav-link" data-scroll-target="#sec-vorticity-and-ros"><span class="header-section-number">1.8</span> Vorticity and the Rate of Strain Tensor*</a>
+  <ul class="collapse">
+  <li><a href="#decomposition" id="toc-decomposition" class="nav-link" data-scroll-target="#decomposition">Decomposition</a></li>
+  <li><a href="#vorticity" id="toc-vorticity" class="nav-link" data-scroll-target="#vorticity">Vorticity</a></li>
+  <li><a href="#rate-of-strain-tensor" id="toc-rate-of-strain-tensor" class="nav-link" data-scroll-target="#rate-of-strain-tensor">Rate of Strain Tensor</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./1-0-fluids.html">Fluids</a></li><li class="breadcrumb-item"><a href="./1-1-macro-fluids.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Macroscopic Modelling of Fluids</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-flu-macroscopic" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Macroscopic Modelling of Fluids</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="hidden">
+
+</div>
+<p>The intention of this chapter is to build up the mathematical tools and concepts we will require in order to derive the Navier-Stokes equations in the next chapter, which are the governing equations of macroscopic fluid flow.</p>
+<section id="mathematical-background" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="mathematical-background"><span class="header-section-number">1.1</span> Mathematical Background</h2>
+<p>It is useful to have some exposure to the main operators that appear routinely in fluid mechanics, so we will do a brief recap of some standard notation used in these notes.</p>
+<section id="vectors-and-tensors" class="level3">
+<h3 class="anchored" data-anchor-id="vectors-and-tensors">Vectors and Tensors</h3>
+<p>Vectors and tensors will be written by their components <em>relative to a set of basis vectors</em> <span class="math inline">{\boldsymbol{e}}_1,{\boldsymbol{e}}_2,{\boldsymbol{e}}_3</span>. For example, the position vector <span class="math inline">{\boldsymbol{x}}=x_1{\boldsymbol{e}}_1 + x_2{\boldsymbol{e}}_2+x_3{\boldsymbol{e}}_3=(x_1,x_2,x_3)</span> will be written as <span class="math inline">{\boldsymbol{x}}=x_i</span>, where ‘<span class="math inline">i</span>’ is the <em>free index</em> which will take values <span class="math inline">i=1,2,3</span> and we repeat that the <span class="math inline">x_i</span> are components relative to a set of specified basis vectors. We will only use subscripts for indices.</p>
+<p>The velocity field in Cartesian coordinates will be <span class="math inline">{\boldsymbol{v}}= (u,v,w)</span> where <span class="math inline">u</span> is the <span class="math inline">x</span>-component of velocity, <span class="math inline">v</span> is the <span class="math inline">y</span>-component and <span class="math inline">w</span> is its <span class="math inline">z</span>-component.</p>
+<p>For the derivations we make, we will only consider Cartesian coordinates so that <span class="math inline">{\boldsymbol{x}}=x_i=(x,y,z),</span> although later on we will also consider problems most naturally formulated in cylindrical or spherical coordinates. The specification <span class="math inline">{\boldsymbol{v}}= {\boldsymbol{v}}({\boldsymbol{x}},t)</span> would be written as <span class="math inline">v_i =  v_i(x_j,t)</span>.</p>
+</section>
+<section id="vector-calculus" class="level3">
+<h3 class="anchored" data-anchor-id="vector-calculus">Vector Calculus</h3>
+<p>The following are important differential operators which we can apply to various important fields.</p>
+<p>The gradient operator <span class="math inline">\nabla=\left(\frac{\partial }{\partial x},\frac{\partial }{\partial y},\frac{\partial }{\partial z}\right)</span>, which generalises the usual derivative, acting on a scalar function <span class="math inline">f({\boldsymbol{x}},t)</span> gives <span class="math display">
+\nabla f= \left(\frac{\partial f}{\partial x},\frac{\partial f}{\partial y},\frac{\partial f}{\partial z}\right)
+</span> and so is a vector composed of partial derivatives of <span class="math inline">f</span> in the three Cartesian directions which identifies the direction of greatest increase of the function <span class="math inline">f</span> at a particular point.</p>
+<p>The divergence operator <span class="math inline">\nabla\cdot</span> acts on vectors (tensors) to produce a scalar (low order tensor) that quantifies the flux from such a vector (tensor) field. When acting on a vector in Cartesian coordinates <span class="math inline">{\boldsymbol{v}}({\boldsymbol{x}},t)=(u,v,w)</span> one has <span class="math display">
+\nabla\cdot {\boldsymbol{v}}= \frac{\partial u}{\partial x}+\frac{\partial v}{\partial y}+\frac{\partial w}{\partial z},
+</span> which we will later see ensures that the flow is incompressible.</p>
+<p>In fluid mechanics one is often interested in the local (rate of) rotation of the fluid, which is measured by the vorticity.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <em>vorticity</em> vector <span class="math inline">{\boldsymbol{\omega}}</span> at a point in a fluid is defined as the curl, <span class="math inline">\nabla\times</span>, of the velocity field <span class="math display">
+{\boldsymbol{\omega}}=\nabla\times{\boldsymbol{v}}= \left(\frac{\partial w}{\partial y}-\frac{\partial v}{\partial z},\frac{\partial u}{\partial z}-\frac{\partial w}{\partial x},\frac{\partial v}{\partial x}-\frac{\partial u}{\partial y}  \right).
+</span></p>
+</div>
+</div>
+<p>Note that in Cartesian coordinates one can think of (i) the divergence as being the dot product of the gradient operator with a vector and (ii) the curl being the cross product of the gradient operator with a vector.</p>
+</section>
+<section id="index-notation" class="level3">
+<h3 class="anchored" data-anchor-id="index-notation">Index Notation</h3>
+<p>Sometimes it will be convenient to use index notation (described/recapped below). When using index notation, the summation convention and some additional shorthand provide a succinct way to write PDEs.</p>
+<p>For matrices and tensors the same procedure will be used. For example, the components of the stress tensor are <span class="math inline">T_{ij}</span> where <span class="math inline">i</span> and <span class="math inline">j</span> are free indices, meaning that in general this tensor has <span class="math inline">3\times3=9</span> components.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <em>Kronecker delta</em> is the symbol <span class="math display">
+\delta_{ij} = \begin{cases}
+0&amp; \text{for }i\neq j\\
+1&amp; \text{for }i=j.
+\end{cases}
+</span></p>
+</div>
+</div>
+<p>One use it will have is to confine the gravitational acceleration <span class="math inline">g\, \delta_{i3}</span> to a single direction (usually aligned with the <span class="math inline">z</span>-axis).</p>
+<p>Index notation can also be used to represent different operators, e.g. the gradient applied to the density <span class="math inline">\rho</span> gives <span class="math display">
+\nabla \rho = \left(\frac{\partial \rho}{\partial x},\frac{\partial \rho}{\partial y},\frac{\partial \rho}{\partial z}\right) = \frac{\partial \rho}{\partial x_i}
+</span> where we recall that <span class="math inline">i=1,2,3</span> is implied in this notation.</p>
+<p>Where <em>repeated indices</em> are used, automatic summation over these is implied. This is the <em>summation convention</em>. For example, the dot product <span class="math display">
+{\boldsymbol{a}}\cdot{\boldsymbol{b}}=a_1b_1+a_2b_2+a_3b_3=\xcancel{\sum_{j=1}^{3}} a_j b_j = a_j b_j
+</span> is written in index notation succinctly as <span class="math inline">a_j b_j</span>, with summation over <span class="math inline">j</span> implied. The choice of repeated index is arbitrary, as this is a dummy variable which does not appear in the final result (e.g. <span class="math inline">a_k b_k</span> would be equally valid for the dot product).</p>
+<p>Repeated indices can also be used for differential operators. Examples in Cartesian coordinates are:</p>
+<ul>
+<li><p>The divergence <span class="math inline">\nabla\cdot</span> applied to a vector <span class="math inline">{\boldsymbol{v}}</span> is <span class="math display">
+\nabla\cdot{\boldsymbol{v}}= \frac{\partial u}{\partial x}+\frac{\partial v}{\partial y}+\frac{\partial w}{\partial z}
+=\xcancel{\sum_{j=1}^{3}}\frac{\partial v_j}{\partial x_j}= \frac{\partial v_j}{\partial x_j}
+</span></p></li>
+<li><p>The Laplacian <span class="math inline">\nabla^2</span> applied to a function <span class="math inline">f</span> can be written as <span class="math display">
+\nabla^2 f
+= \frac{\partial^2 f}{\partial x^2}+\frac{\partial^2 f}{\partial y^2}+\frac{\partial^2 f}{\partial z^2}
+= \xcancel{\sum_{j=1}^{3}}\frac{\partial}{\partial x_j}\frac{\partial f}{\partial x_j}
+= \frac{\partial^2 f}{\partial x_j^2}
+</span> where the repeated index is in the denominator <span class="math inline">\partial x_j^2</span>.</p></li>
+<li><p>The curl of a vector <span class="math inline">{\boldsymbol{v}}</span> is <span class="math display">
+\omega_i = \nabla\times{\boldsymbol{v}}= \epsilon_{ijk}\frac{\partial v_k}{\partial x_j},
+</span> where <span class="math inline">{\boldsymbol{\omega}}=\omega_i</span> is the <em>vorticity</em> as defined above, and <span class="math inline">\epsilon_{ijk}</span> is the Levi-Civita symbol, defined below.</p></li>
+</ul>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <em>Levi-Civita symbol</em> is defined as follows: <span class="math display">
+\epsilon_{ijk} =
+\begin{cases}
+  0&amp; \text{if}~~i=j, j=k~~\text{or} ~~i=k\\\
+  1&amp; \text{for}~~(i,j,k)=(1,2,3), (2,3,1) ~~\text{or} ~~(3,1,2)\\
+  -1&amp; \text{for}~~(i,j,k)=(1,3,2), (2,1,3)~~ \text{or} ~~(3,2,1)\\
+\end{cases}
+</span></p>
+</div>
+</div>
+<p>When applied to the term <span class="math inline">{\boldsymbol{d}}= \nabla^2{\boldsymbol{v}}</span> (the label <span class="math inline">{\boldsymbol{d}}</span> is arbitrary) in the Navier-Stokes equations we have <span class="math display">
+{\boldsymbol{d}}= d_i = \frac{\partial^2 v_i}{\partial x_j^2}
+</span> with one free index <span class="math inline">i</span>.</p>
+<div class="callout callout-style-default callout-caution no-icon callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>How would you write the <span class="math inline">y</span>-component of <span class="math inline">v_j\, \frac{\partial v_i}{\partial x_j}</span>?</p>
+<p>As an aside: using vector calculus this can be written as <span class="math inline">\left({\boldsymbol{v}}\cdot\nabla\right){\boldsymbol{v}}</span>.</p>
+</div>
+</div>
+<p>Always check that each term in an equation formed using index notation has to contain the same free indices (e.g. <span class="math inline">a_{ij} = b_{ijk}e_k + f_{ij}</span> is fine, but <span class="math inline">a_{ij} = b_{ijk}e_j + f_{ik}</span> would not be!).</p>
+</section>
+</section>
+<section id="what-is-macroscopic-fluid-dynamics" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="what-is-macroscopic-fluid-dynamics"><span class="header-section-number">1.2</span> What is Macroscopic Fluid Dynamics?</h2>
+<p>With a bit of maths background out the way, we can next ask exactly we mean by a fluid. Fluids, unlike solids, can ‘flow’ by changing their shape. They include not only liquids (water, oil, etc) but also gaseous media (air, plasma, etc.).</p>
+<p>Fluid flow occurs across huge variations in scale: from the very small (e.g.&nbsp;microdrops from a 3D printer) to the huge (tornados) and from the incredibly slow (motion of glaciers) to the very fast (aeronautics). Examples of flows at these different scales are found in <a href="#fig-examples" class="quarto-xref">Figure&nbsp;<span>1.1</span></a>.</p>
+<div id="fig-examples" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-examples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<p><img src="resized/inkdrop.png" style="height:5cm" class="figure-img"> <img src="resized/glacier.png" style="height:5cm" class="figure-img"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<p><img src="resized/tornado.png" style="height:5cm" class="figure-img"> <img src="resized/aeroplane.png" style="height:5cm" class="figure-img"></p>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-examples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.1: Flow at different scales: small (inkjet microdrops) to large (tornado); slow (glacial flow) to fast (aeronautics).
+</figcaption>
+</figure>
+</div>
+<p>Moreover, fluid flow phenomena can be seen (and heard!) all around us; some more examples are shown in <a href="#fig-everyday" class="quarto-xref">Figure&nbsp;<span>1.2</span></a>.</p>
+<div id="fig-everyday" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-everyday-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<p><img src="resized/water_waves.png" style="height:5cm" class="figure-img"> <img src="resized/soundwaves.png" style="height:5cm" class="figure-img"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<p><img src="resized/flight.png" style="height:5cm" class="figure-img"> <img src="resized/weather.png" style="height:5cm" class="figure-img"></p>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-everyday-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.2: Everyday fluid phenomena - water waves, sound, flight and weather.
+</figcaption>
+</figure>
+</div>
+<p>While we have good intuition about how water behaves at human scales, fluid motion at extreme scales can often appear counter-intuitive. Nevertheless, it is remarkable that the same set of equations, the Navier-Stokes equations, can be used to describe the flow of both gases and liquids in huge number of the aforementioned situations. The study of fluids using these equations is often referred to as ‘fluid mechanics’, ‘fluid dynamics’ or ‘hydrodynamics’ and it assumes that the fluid can be idealised as a continuous medium, i.e.&nbsp;it uses continuum mechanics.</p>
+<p>The continuum approach is accurate when the length scale <span class="math inline">\ell</span> characterising molecular motion is much smaller than the dimensions of the flow <span class="math inline">L</span>, so that <span class="math inline">\ell/L \ll 1</span> (the continuum limit takes <span class="math inline">\ell/L \rightarrow 0</span>). Note that <span class="math inline">\ell/L</span> is a ‘dimensionless number/parameter’, which compares the size of two dimensional quantities - we will encounter more of these later. For gases, if <span class="math inline">\ell</span> is taken to be the mean free path (i.e.&nbsp;the average distance between molecular collisions) then <span class="math inline">\ell/L</span> is called the Knudsen number.</p>
+</section>
+<section id="incompressible-fluids" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="incompressible-fluids"><span class="header-section-number">1.3</span> Incompressible Fluids</h2>
+<p>Our focus will be on using continuum mechanics to describe the state of a fluid flow at coordinate <span class="math inline">{\boldsymbol{x}}\in {\mathbb{R}}^d</span> of <span class="math inline">d</span>-dimensional space, <span class="math inline">d=1,2</span> or <span class="math inline">3</span> at time <span class="math inline">t</span>. In general one has <span class="math inline">d=3</span>, but upon simplifications one can have <span class="math inline">d=2</span> and even <span class="math inline">d=1</span> (e.g. for flow in a channel).</p>
+<ul>
+<li><p>The state of an incompressible fluid flow with constant density can be characterised by its velocity <span class="math inline">{\boldsymbol{v}}= {\boldsymbol{v}}({\boldsymbol{x}},t)</span> and pressure <span class="math inline">p =p({\boldsymbol{x}},t)</span>. In more complex cases, other relevant fields enter the description (e.g.&nbsp;density, temperature, electromagnetism, chemical composition, etc).</p></li>
+<li><p>Our main task is to find these fields (especially the velocity field <span class="math inline">{\boldsymbol{v}}</span> as this tells us where ‘stuff’ is going) and thus be able to predict the flow behaviour in space and time.</p></li>
+<li><p>The incompressible Navier-Stokes equations we will derive are based on conservation of mass and momentum.</p></li>
+<li><p>The derivation is complicated because a fluid flows, so that conservation laws must be applied to a material that moves and deforms in time.</p></li>
+<li><p>The complexity of the Navier-Stokes equations makes solving them an extremely difficult task. One can either (a) use mathematical modelling to simplify the problem and/or (b) use computational approaches (the field of Computational Fluid Dynamics - CFD).</p></li>
+<li><p>In this course we will see that in simplified cases analytic solutions can be obtained and that these have a crucial role in validating CFD. The CFD can then be applied to more complex flows where analytic solutions do not exist.</p></li>
+</ul>
+</section>
+<section id="lagrangian-and-eulerian-descriptions" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="lagrangian-and-eulerian-descriptions"><span class="header-section-number">1.4</span> Lagrangian and Eulerian Descriptions</h2>
+<p>The equations of fluid dynamics will be formulated in Eulerian coordinates; but, it will also be important to appreciate Lagrangian coordinates which ‘follow the fluid’. The following video discusses this concept.</p>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/mdN8OOkx2ko" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+<div id="fig-lagrangian" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-lagrangian-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="resized/coordinates.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lagrangian-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.3: The motion of a material fluid element <span class="math inline">M</span> whose properties (e.g. velocity) can be described by Eulerian coordinates <span class="math inline">(x,y,z)</span> or Lagrangian ones <span class="math inline">(X,Y,Z)</span>. The Lagrangian coordinates remain frozen inside <span class="math inline">M</span> as it evolves and deforms in time (from <span class="math inline">t_0</span> to <span class="math inline">t_1</span>), i.e. they follow material points as advected by the fluid velocity.
+</figcaption>
+</figure>
+</div>
+<ul>
+<li><p>In classical mechanics, we know the motion of a material point if we can specify its Eulerian coordinates <span class="math inline">x_i</span> as a function <span class="math inline">f_i</span> of time <span class="math display">
+x_i = f_i(t).
+</span> To extend this to a fluid modelled as a continuous medium we need to identify and follow the (infinitely many) material points which form the continuum.</p></li>
+<li><p>Material points in a fluid will be referred to as <em>fluid elements</em> or <em>fluid particles</em>, i.e.&nbsp;infinitesimal volumes of fluid which are advected with the fluid’s velocity <span class="math inline">{\boldsymbol{v}}</span> and hence are always composed of the same material.</p></li>
+<li><p>One way to uniquely identify each fluid element <span class="math inline">x_i</span> is by its Eulerian coordinates <span class="math inline">x_j(t=t_0) = X_j=(X_1,X_2,X_3)</span> at a reference (or initial) time <span class="math inline">t_0</span> and then allow these coordinates to move and deform with the fluid throughout its motion. The <span class="math inline">X_j</span> are then Lagrangian coordinates (see <a href="#fig-lagrangian" class="quarto-xref">Figure&nbsp;<span>1.3</span></a>) and the position of a fluid element <span class="math inline">x_i(t)</span> at a time <span class="math inline">t</span> is given by <span class="math display">
+x_i = f_i(X_j,t).
+</span></p></li>
+<li><p>Whilst in the Eulerian description one sits at a fixed position and watches the flow pass (like standing at the bank of a river), in the Lagrangian description we ‘follow the fluid’ (as in a boat flowing with the river or on a weather balloon).</p></li>
+<li><p>It is possible to formulate the equations of fluid mechanics in Lagrangian coordinates (so that <span class="math inline">v_i = v_i(X_j,t)</span>) but this is quite un-natural for fluid flow as it is impossible to identify a sensible reference configuration (not such an issue in solid mechanics).</p></li>
+<li><p>The notion of ‘following the fluid’ will be an important one, as the laws of nature (e.g.&nbsp;Newton’s second law) are formulated for material substances (i.e.&nbsp;fluid elements), rather than to arbitrary points in space (which are composed of different fluid elements at every instant). This consideration will lead us to the notion of the material derivative, which allows us to express the rate of change inside a material element (i.e.&nbsp;a Lagrangian derivative) in terms of Eulerian coordinates.</p></li>
+</ul>
+</section>
+<section id="flow-visualisation" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="flow-visualisation"><span class="header-section-number">1.5</span> Flow Visualisation</h2>
+<p>In order to gain some intuition about exactly what a fluid is doing, we need ways to visualise flows, both experimentally and theoretically. The following video discusses approaches to flow visualisation.</p>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/nuQyKGuXJOs" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+<p>The most common way to visualise a flow, theoretically (once we have <span class="math inline">{\boldsymbol{v}}</span>) or experimentally, is to consider the paths which particles take inside it. Alternatively, we may be interested in the velocity field at an instant in time (the streamlines). Only for a steady flow (<span class="math inline">\partial_t {\boldsymbol{v}}={\boldsymbol{0}}</span>) do these curves coincide.</p>
+<section id="particle-paths" class="level3">
+<h3 class="anchored" data-anchor-id="particle-paths">Particle Paths</h3>
+<p>The paths of fluid elements (‘<em>particle paths</em>’) <span class="math inline">x_i^{p}(t)</span> are defined by <span id="eq-paths"><span class="math display">
+\left.\frac{\partial x_i^{p}(t)}{\partial t}\right|_{\text{fixed $X_k$}} = v_i
+\tag{1.1}</span></span> with <em>initial positions fixed</em> <span class="math inline">x_i^{p}(t=0)=X_i</span>. Upon integration, eliminating <span class="math inline">t</span> gives the particle paths.</p>
+<p>This also provides a way to switch from the Eulerian description to the Lagrangian one, with the three constants of integration <span class="math inline">(X,Y,Z)</span> specifying the Lagrangian coordinates of a particular trajectory (i.e.&nbsp;a specific fluid element).</p>
+</section>
+<section id="streamlines" class="level3">
+<h3 class="anchored" data-anchor-id="streamlines">Streamlines</h3>
+<p>In general, the particle paths differ from the <em>streamlines</em> defined by curves which are tangential to the velocity at every point at a <em>fixed time</em>. Mathematically, if we parameterise these curves by an independent parameter <span class="math inline">s</span> then our streamlines <span class="math inline">(x,y,z)=(x(s),y(s),z(s))</span> are obtained by solving <span class="math display">
+\left.\frac{\partial x_i(s)}{\partial s}\right|_{\text{fixed $t$}} = v_i.
+</span></p>
+</section>
+<section id="experimental-visualisation" class="level3">
+<h3 class="anchored" data-anchor-id="experimental-visualisation">Experimental Visualisation</h3>
+<p>To visualise a flow field one usually places illuminated passive tracers (e.g.&nbsp;dye, bubbles or beads that don’t alter the flow) into the flow (<a href="#fig-expstreamlines" class="quarto-xref">Figure&nbsp;<span>1.4</span></a>). Then, to obtain particle paths one simply tracks the position of these tracers as a function of time, whilst to obtain the streamlines one could take a short exposure photo so that the illuminated tracers show short streak lines (whose length will be proportional to the fluid speed). In a steady flow, this streamline pattern will be fixed for all times and a fluid particle starting on a streamline will remain on it, whereas for unsteady flow the particle paths and streamlines will not coincide.</p>
+<div id="fig-expstreamlines" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-expstreamlines-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/cylinderimage.jpg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-expstreamlines-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.4: Steady laminar flow (from left to right) around a solid cylinder with streamlines/particle paths showing the trajectories of fluid elements
+</figcaption>
+</figure>
+</div>
+<p>Notably, even in a steady flow, as fluid particles travel along the streamlines their velocity will change, i.e.&nbsp;they will accelerate and decelerate. To formalise this rate of change caused by the evolution of fluid particles, we have to introduce the material derivative.</p>
+</section>
+</section>
+<section id="the-material-derivative" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="the-material-derivative"><span class="header-section-number">1.6</span> The Material Derivative</h2>
+<p>The <em>material derivative</em> <span class="math inline">D_t=\frac{D}{D t}</span> gives the rate of change of a quantity which ‘follows the fluid’ (i.e.&nbsp;moves under the fluid’s velocity field) as opposed to <span class="math inline">\partial_t</span> which gives the rate of change of a quantity at a point fixed with respect to Eulerian coordinates. In other words, it gives the time derivative moving along a fluid particle trajectory described by <a href="#eq-paths" class="quarto-xref">Equation&nbsp;<span>1.1</span></a>.</p>
+<p>When applied to a quantity (scalar or vector) <span class="math inline">f(x_i^p(t),t)</span>, written in Eulerian coordinates, a simple application of the chain rule gives: <span class="math display">
+\frac{Df}{Dt}
+= \frac{d}{dt} f(x_i^p(t),t)
+= \frac{\partial f}{\partial t} + \frac{\partial f}{\partial x_i} \frac{\partial x_i^{p}(t)}{\partial t}
+= \left( \frac{\partial }{\partial t} + v_i \frac{\partial }{\partial x_i}\right) f
+</span> so that symbolically the material derivative operator is <span class="math display">
+\frac{D}{Dt}  \equiv \left(\frac{\partial}{\partial t} + {\boldsymbol{v}}\cdot \nabla \right)
+</span></p>
+<ul>
+<li><p>The first term is the local rate of change at a fixed Eulerian position <span class="math inline">{\boldsymbol{x}}</span> due to temporal changes.</p></li>
+<li><p>The second is the ‘convective rate of change’ caused by the velocity <span class="math inline">{\boldsymbol{v}}</span> driving fluid elements through spatial gradients in the quantity of interest.</p></li>
+</ul>
+<div class="callout callout-style-default callout-caution no-icon callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If there is a concentration of pollutant <span class="math inline">c=c(x)</span> in a river that flows steadily with constant speed <span class="math inline">{\boldsymbol{v}}=(v_0,0,0)</span>, how does the concentration change in a fluid element that ‘follows the fluid’?</p>
+<p><img src="images/river.jpg" class="img-fluid" style="width:100.0%"></p>
+<p>A complementary video can be found <a href="https://www.youtube.com/watch?v=BLVY69SYVBQ">here</a>.</p>
+</div>
+</div>
+<ul>
+<li><p>The material derivative will be important when it comes to a consideration of the acceleration <span class="math inline">a_i</span> of a fluid element.</p></li>
+<li><p>If <span class="math inline">D_t f  = 0</span>, then clearly the quantity <span class="math inline">f</span> is a constant <em>in a particular fluid element</em>. However, this constant can take different values in different fluid elements - all we know is that <span class="math inline">f</span> retains the value it started with.</p></li>
+</ul>
+<section id="acceleration" class="level3">
+<h3 class="anchored" data-anchor-id="acceleration">Acceleration</h3>
+<p>It is the material derivative which gives us the rate of change of velocity, i.e.&nbsp;the acceleration <span class="math inline">{\boldsymbol{a}}=a_i</span>, of the fluid element <span class="math display">
+a_i = \frac{Dv_i}{Dt}  = \frac{\partial v_i}{\partial t} + v_j \frac{\partial v_i}{\partial x_j} \qquad \text{or} \qquad  {\boldsymbol{a}}= \frac{D{\boldsymbol{v}}}{Dt} = \frac{\partial{\boldsymbol{v}}}{\partial t} + ({\boldsymbol{v}}\cdot \nabla) {\boldsymbol{v}}.
+</span> Notably, even when the flow is <em>steady</em>, so that <span class="math inline">\partial_t {\boldsymbol{v}}=0</span>, the acceleration still has a component <span class="math inline">({\boldsymbol{v}}\cdot \nabla) {\boldsymbol{v}}</span> due to the spatial variation of the velocity field—this is the convective acceleration.</p>
+<div class="callout callout-style-default callout-caution no-icon callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If we take a one-dimensional steady flow <span class="math inline">{\boldsymbol{v}}= (u(x),0,0)</span>, then what is the acceleration of fluid particles?</p>
+<p><img src="images/acceleration.jpg" class="img-fluid" style="width:100.0%"></p>
+</div>
+</div>
+<p>In the Examples Sheet you will consider a <em>steady</em> flow in uniform rotation with angular velocity <span class="math inline">\Omega</span> with velocity given by <span class="math inline">(u,v,w)=(-\Omega y, \Omega x,0)</span>. As we know, fluid particles must be accelerating inwardly (centrifugal force) and you will see it is the convective acceleration that accounts for this term.</p>
+</section>
+</section>
+<section id="sec-kinematics" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="sec-kinematics"><span class="header-section-number">1.7</span> Kinematics</h2>
+<p>The study of the deformation of continuous media (including solid and fluid dynamics) is a course in its own right, so we will only consider the concepts we will require to formulate the equations of fluid mechanics, with additional details contained in <a href="#sec-vorticity-and-ros" class="quarto-xref"><span>Section 1.8</span></a> and the video on Deformation of Continuous Media, <a href="https://www.youtube.com/watch?v=pqWwHxn6LNo">here</a>. In particular, we will attempt to understand how flow deforms fluid elements; as it is this (rate of) deformation that will generate the internal stress (and hence forces) required by our momentum balance equations (Newton II). This is in contrast to elasticity, where in the simplest case it is displacement that generates stress (via Hooke’s law).</p>
+<p>The velocity can be decomposed into fundamental components which specify the kinematics of the flow (the geometry of the motion), i.e.&nbsp;how small fluid elements are deformed by the flow. To do so, consider the flow at an infinitesimal distance <span class="math inline">\delta x_j</span> from a reference point <span class="math inline">x_j</span>, see <a href="#fig-deform" class="quarto-xref">Figure&nbsp;<span>1.5</span></a>.</p>
+<div id="fig-deform" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-deform-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/deform.jpg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-deform-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.5: Flow kinematics - how the flow velocity varies in the vicinity of (a distance <span class="math inline">\delta {\boldsymbol{x}}</span> from) a point <span class="math inline">{\boldsymbol{x}}</span>.
+</figcaption>
+</figure>
+</div>
+<p>The Taylor expansion of <span class="math inline">v_i(x_j+\delta x_j)</span>, keeping only the terms up to the first power in <span class="math inline">\delta x_j</span> inclusive, gives <span id="eq-decomposition1"><span class="math display">
+\begin{aligned}
+v_i(x_j+\delta x_j,t)
+&amp;= v_i(x_j,t) + \frac{\partial  v_i}{\partial x_j}~\delta x_j \\
+&amp;=  \underbrace{\underbrace{\vphantom{\frac{\omega_j}{2}}v_i(x_j)}_{\text{Translation}} \; +\;  \underbrace{ \epsilon_{ijk}\frac{\omega_j}{2} \delta x_k}_{\text{Rotation}}}_{\text{Rigid Body Motions}} \quad +\!\!\!\! \underbrace{\quad\vphantom{\underbrace{\frac{\omega_j}{2}}_{\text{Rotation}}}e_{ij} ~\delta x_j\quad}_{\text{Shearing and Extension}}
+\end{aligned}
+\tag{1.2}</span></span> where we have decomposed <span class="math inline">\partial_{x_j}  v_i</span> into a rotational part and a shearing/extensional part; see <a href="#sec-vorticity-and-ros" class="quarto-xref"><span>Section 1.8</span></a> for further details. Writing the deformation this way allows us to identify the <em>vorticity</em> <span class="math inline">{\boldsymbol{\omega}}</span> as half of the local rate of rotation in the fluid; in Cartesian coordinates, the vorticity can be computed by working out the determinant <span class="math display">
+{\boldsymbol{\omega}}
+= \begin{vmatrix}
+    {\boldsymbol{e}}_x &amp;  {\boldsymbol{e}}_y &amp; {\boldsymbol{e}}_z\\
+    \frac{\partial}{\partial x} &amp; \frac{\partial}{\partial y} &amp; \frac{\partial}{\partial z} \\
+    u &amp; v &amp; w
+  \end{vmatrix}
+= \left(\frac{\partial w}{\partial y} - \frac{\partial v}{\partial z},\, \frac{\partial u}{\partial z} - \frac{\partial w}{\partial x},\, \frac{\partial v}{\partial x} - \frac{\partial u}{\partial y}\right).
+</span> The symmetric (<span class="math inline">e_{ij}=e_{ji}</span>) <em>rate of strain tensor</em> is a measure of the relative flow of adjacent fluid elements <span class="math display">
+e_{ij} = \frac{1}{2} \left( \frac{\partial  v_i}{\partial x_j}+  \frac{\partial  v_j}{\partial x_i}\right).
+</span> <a href="#sec-vorticity-and-ros" class="quarto-xref"><span>Section 1.8</span></a> discusses why this is indeed the rate of strain tensor, as does the following video.</p>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/O4J4M2K3Tq0" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+<p>In particular, we find that the first two terms in <a href="#eq-decomposition1" class="quarto-xref">Equation&nbsp;<span>1.2</span></a> are associated with rigid body motion, it is the third term <span class="math inline">v_i^S = e_{ij}\delta x_j</span> which represents the straining motions which distinguish the flow through the relative motion of adjacent fluid elements. The rate of strain tensor <span class="math inline">e_{ij}</span> can be further decomposed into:</p>
+<ol type="a">
+<li>diagonal elements, which are associated with stretching and compressive motion, and</li>
+<li>off-diagonal elements, give the shear rate of strain, describing how much adjacent fluid elements slide past one another.</li>
+</ol>
+<div id="fig-deformation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-deformation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/deformationtypes.jpg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-deformation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.6: Different modes of deformation to a fluid element (in 2D).
+</figcaption>
+</figure>
+</div>
+<p>So we have seen that it is the vorticity and rate of strain that give us all of the information we require to understand how fluid elements are locally deformed, with the former telling us about the rotation of the flow and the latter about the relative motion of fluid elements (which generates viscous stress).</p>
+<p>An important class of flows we will encounter are those without vorticity <span class="math inline">{\boldsymbol{\omega}}={\boldsymbol{0}}</span>, and they are said to be <em>irrotational</em>. In such flows, each fluid element has no angular velocity. For example, we will see that fluid elements in the viscous boundary layer near a solid are rotational, so that these elements rotate end over end as they move parallel to the boundary, whereas elements outside this layer are irrotational (<a href="#fig-rotational" class="quarto-xref">Figure&nbsp;<span>1.7</span></a>).</p>
+<div id="fig-rotational" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rotational-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/boundarylayer.jpg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rotational-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.7: The difference between rotational (in the boundary layer) and irrotational flow (outside the layer). The crosses represent markers placed into the flow, which would rotate inside the boundary layer and not outside.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-vorticity-and-ros" class="level2" data-number="1.8">
+<h2 data-number="1.8" class="anchored" data-anchor-id="sec-vorticity-and-ros"><span class="header-section-number">1.8</span> Vorticity and the Rate of Strain Tensor*</h2>
+<p>This section complements <a href="#sec-kinematics" class="quarto-xref"><span>Section 1.7</span></a>, showing why <span class="math inline">{\boldsymbol{e}}</span> and <span class="math inline">{\boldsymbol{\omega}}</span> are indeed associated with rate of strain and vorticity.</p>
+<section id="decomposition" class="level3">
+<h3 class="anchored" data-anchor-id="decomposition">Decomposition</h3>
+<p>Recalling the Taylor expansion of <span class="math inline">v_i(x_j+\delta x_j)</span> made in <a href="#eq-decomposition1" class="quarto-xref">Equation&nbsp;<span>1.2</span></a>, we name the terms <span id="eq-decomposition2"><span class="math display">
+\begin{aligned}
+v_i(x_j+\delta x_j,t)
+&amp;= v_i(x_j,t) + \frac{\partial  v_i}{\partial x_j}~\delta x_j \\
+&amp;=  \underbrace{\underbrace{v_i(x_j)}_{\text{Translation}} \; +\;  \underbrace{r_{ij}~\delta x_j}_{\text{Rotation}}}_{\text{Rigid Body Motions}} \quad +\!\!\!\! \underbrace{\vphantom{\underbrace{\delta x_j}_{\text{Rotation}}}\;e_{ij} ~\delta x_j\;}_{\text{Shearing and Extension}}
+\end{aligned}
+\tag{1.3}</span></span> where we have decomposed <span class="math inline">\frac{\partial v_i}{\partial x_j}</span> into an anti-symmetric (meaning that <span class="math inline">r_{ij} = -r_{ji}</span>) <em>rate of rotation tensor</em> <span class="math display">
+r_{ij}=\frac{1}{2}\left( \frac{\partial  v_i}{\partial x_j} -  \frac{\partial  v_j}{\partial x_i}\right)
+</span> and the symmetric (meaning that <span class="math inline">e_{ij}=e_{ji}</span>) <em>rate of strain tensor</em> <span class="math display">
+e_{ij} = \frac{1}{2} \left( \frac{\partial  v_i}{\partial x_j}+  \frac{\partial  v_j}{\partial x_i}\right).
+</span></p>
+<p>Each of the terms in <a href="#eq-decomposition2" class="quarto-xref">Equation&nbsp;<span>1.3</span></a> contributes a term to the overall velocity: <span id="eq-decomposition3"><span class="math display">
+v_i(x_j+\delta x_j,t) = v_i^T + v_i^R + v_i^S,
+\tag{1.4}</span></span> where <span class="math display">
+v_i^T = v_i(x_j),\quad  v_i^R = r_{ij}~\delta x_j,\quad \text{and}\quad v_i^S = e_{ij} ~\delta x_j,
+</span> and each of the terms can now be analysed.</p>
+</section>
+<section id="vorticity" class="level3">
+<h3 class="anchored" data-anchor-id="vorticity">Vorticity</h3>
+<p>Due to the antisymmetry of <span class="math inline">r_{ij}</span>, there are only 3 independent components. All of the diagonal elements are zero; for example <span class="math inline">r_{11}=-r_{11}</span> means that <span class="math inline">r_{11}=0</span>. In this case, we can rewrite the term <span class="math inline">v_i^R = r_{ij}~\delta x_j</span> in <a href="#eq-decomposition3" class="quarto-xref">Equation&nbsp;<span>1.4</span></a> as a cross product <span class="math inline">v_i^R = \epsilon_{ijk}\Omega_j \delta x_k</span> or <span class="math inline">{\boldsymbol{v}}^R = {\boldsymbol{\Omega}}\times\delta{\boldsymbol{x}}</span> (see <a href="#fig-rotation" class="quarto-xref">Figure&nbsp;<span>1.8</span></a>), where <span class="math inline">\Omega_j = (r_{32},r_{13},r_{21})</span> is the <em>rate of rotation vector</em> (you are encouraged to check this for yourself). Thus we see that this term is associated with rigid body rotation about the reference point with rotational rate <span class="math inline">{\boldsymbol{\Omega}}</span>. The direction of <span class="math inline">{\boldsymbol{\Omega}}</span> determines the axis of rotation, and the magnitude determines the speed of rotation.</p>
+<div id="fig-rotation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rotation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/rotation.jpg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rotation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.8: Sketch illustrating the rigid body rotation <span class="math inline">{\boldsymbol{v}}^R = {\boldsymbol{\Omega}}\times\delta{\boldsymbol{x}}</span> induced a distance <span class="math inline">\delta{\boldsymbol{x}}</span> away from a point <span class="math inline">{\boldsymbol{x}}</span> by the rotation rate <span class="math inline">{\boldsymbol{\Omega}}</span>. Here, <span class="math inline">{\boldsymbol{\Omega}}</span> points out of the paper.
+</figcaption>
+</figure>
+</div>
+<p>Notably, the rate of rotation vector <span class="math inline">{\boldsymbol{\Omega}}</span> is equal to half the <em>vorticity</em> vector <span id="eq-vorticity"><span class="math display">
+{\boldsymbol{\omega}}= \nabla\times{\boldsymbol{v}}
+= 2{\boldsymbol{\Omega}}, \qquad\text{so that}\qquad {\boldsymbol{v}}^R
+= \frac 1 2 {\boldsymbol{\omega}}\times\delta{\boldsymbol{x}}
+\tag{1.5}</span></span> which is an important fluid mechanical quantity we will repeatedly encounter. Now we can recognise it as a measure of the local rate of rotation in the fluid.</p>
+</section>
+<section id="rate-of-strain-tensor" class="level3">
+<h3 class="anchored" data-anchor-id="rate-of-strain-tensor">Rate of Strain Tensor</h3>
+<p>Consider how the components of <span class="math inline">e_{ij}</span> deform an infinitesimal rectangular fluid element of size <span class="math inline">\delta x\times\delta y</span> (<a href="#fig-straincomponents" class="quarto-xref">Figure&nbsp;<span>1.9</span></a>) in a two-dimensional flow <span class="math inline">{\boldsymbol{v}}=(u(x,y,t),v(x,y,t),0)</span>. For simplicity, we will remove translation of the fluid element by considering flow relative to the point <span class="math inline">A</span>, so that a Taylor expansion gives the flow components at adjacent points to <span class="math inline">A</span> shown in <a href="#fig-straincomponents" class="quarto-xref">Figure&nbsp;<span>1.9</span></a>.</p>
+<div id="fig-straincomponents" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-straincomponents-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/deformation0.jpg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-straincomponents-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.9: The velocity components relative to a point A in a material element M at time <span class="math inline">t</span>.
+</figcaption>
+</figure>
+</div>
+<section id="extensional-strain-rate" class="level4">
+<h4 class="anchored" data-anchor-id="extensional-strain-rate">Extensional Strain Rate</h4>
+<p>From <a href="#fig-strained" class="quarto-xref">Figure&nbsp;<span>1.10</span></a> we can see that <em>extensional rate of strain</em> acts to increase the lengths of the sides. For example, taking the line <span class="math inline">AB</span>, in a time <span class="math inline">\delta t</span> the point B moves so that the new length of <span class="math inline">AB</span> at time <span class="math inline">t+\delta t</span> is <span id="eq-strain"><span class="math display">
+\delta x(t+\delta t) = \delta x(t) +  \underbrace{\frac{\partial u}{\partial x}\delta x(t)}_{\text{speed}}\,\underbrace{\vphantom{\frac{\partial u}{\partial x}}\delta t}_{\text{time}}.
+\tag{1.6}</span></span> Therefore, the (infinitesimal) strain (extension/original length) <span class="math display">
+\delta S_x
+= \frac{\delta x(t+\delta t) - \delta x(t)}{\delta x(t)}
+= \frac{\partial u}{\partial x}\delta t \quad\text{so the rate of strain is} \quad\frac{\partial S_x}{\partial t}
+=\frac{\partial u}{\partial x}= e_{11},
+</span> as hoped/expected.</p>
+<div id="fig-strained" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-strained-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/extensional.jpg" class="img-fluid figure-img"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="images/shearstrain.jpg" class="img-fluid figure-img"></p>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-strained-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.10: Left: deformation due to extensional strain on the material element at a time <span class="math inline">t+\delta t</span>. Right: influence of shear strain on the material element at a time <span class="math inline">t+\delta t</span>.
+</figcaption>
+</figure>
+</div>
+<p>It can be shown that the extensional components change the volume <span class="math inline">V</span> of the fluid element as <span id="eq-volume"><span class="math display">
+\frac{1}{V}\frac{D V}{Dt} = e_{kk}, \qquad\text{or symbolically,}\qquad \frac{1}{V}\frac{D V}{Dt} = \nabla\cdot{\boldsymbol{v}}
+\tag{1.7}</span></span> so that for an incompressible fluid, where the volume of the fluid element does not change in time (<span class="math inline">D_t V=0</span>), we have <span class="math inline">e_{kk}=e_{11}+e_{22}+e_{33}=0</span>. In other words, extension of a fluid element in one direction must lead to contraction in one of the other directions.</p>
+</section>
+<section id="shear-strain-rate" class="level4">
+<h4 class="anchored" data-anchor-id="shear-strain-rate">Shear Strain Rate</h4>
+<p>The <em>shear</em> rate of strain acts to drive the element from its rectangular shape. This can be quantified by measuring the angle between the sides. It can be shown that the angle <span class="math inline">\theta</span> at <span class="math inline">CAB</span> in <a href="#fig-straincomponents" class="quarto-xref">Figure&nbsp;<span>1.9</span></a> evolves according to <span class="math display">
+-\frac{\partial \theta}{\partial t} = 2e_{12}.
+</span> You can check this as an example, if you like!</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./1-0-fluids.html" class="pagination-link" aria-label="Fluids">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Fluids</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./1-2-equations.html" class="pagination-link" aria-label="The Governing Equations of Fluid Dynamics">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Governing Equations of Fluid Dynamics</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
