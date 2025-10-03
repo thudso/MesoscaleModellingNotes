@@ -1,0 +1,624 @@
+# The Finite Element Method
+
+Analytical solutions for mechanics problems tend to exist only in
+relatively simple problems, with simple constitutive relations. To get
+more accurate models of real-world situations, we need to resort to
+numerical methods, just as we must do with fluid modelling.
+
+A highly successful methodology for solving the equations of solid
+mechanics is known as the *Finite Element Method (FEM)*. In this
+chapter, we will begin introducing this framework for dealing with
+partial differential equations. A core part of the idea of FEM is to
+relax the requirement that the functions involved need to be
+differentiable, and work with a *weak form* of the equations. This is
+unlikely to be intuitive to you at first, but hopefully you will see the
+utility as we go on!
+
+The general steps to derive a finite element approximation of the
+solution of a PDE are as follows:
+
+- Write down the full PDE problem with boundary conditions. This is
+  known as the *strong form* of the problem.
+
+- Multiply by a *test function* and use integration by parts to derive
+  an integral formulation of the problem. This is the *weak form* of the
+  problem.
+
+- Introduce a *discrete basis* of functions to express approximate both
+  weak solutions to the problem and test functions.
+
+- Derive a system of *discrete equations* for the coefficients of the
+  basis which can then be solved numerically.
+
+In practice, the steps to do this are typically handled by dedicated
+software, but here we will focus on building understanding of the
+methodology by working through the derivation ourselves. This will
+clarify much of the terminology around finite elements, and allow us to
+discuss some subtleties.
+
+## A first problem: a thin column
+
+::: {#fig-thinrod}
+![](tikz/ThinRod.svg){height=5cm}
+
+A thin column loaded from above, subject to a gravitational body force.
+:::
+
+In order to give a concrete illustration of how this method works, we
+will consider a simple test problem in 1D. This is simple enough that we
+can work out the solution analytically as a way to validate a numerical
+implementation.
+
+Consider a thin column which we think of as undergoing only small
+displacements in the $X_1$ and $X_2$ directions, as illustrated in
+@fig-thinrod. If the cross-section of the column is much
+smaller than the overall length, and displacements in the $X_1$ and
+$X_2$ directions are small, we expect to be able to look for solutions
+that take the form ${\boldsymbol u}= (0,0,u_3(X_3))$. Substituting this
+into the elasticity equations (and do some asymptotic analysis that we
+skip over here), we find that $u_3$ should satisfy the problem
+$$
+\frac{\partial}{\partial X_3}\left(E\frac{\partial u_3}{\partial X_3}\right)=\rho g,
+$$
+where $E$ is the Young's modulus of the material, $\rho$ is its density
+and $g$ is the acceleration due to gravity.
+
+To model the set up further, we must prescribe boundary conditions. We
+will assume the column sits on a rigid base at $X_3=0$, so $u_3(0) = 0$,
+and that the top end of the rod is subject to a normal compressive
+stress ${\boldsymbol S}{\boldsymbol e}_3 = -\sigma{\boldsymbol e}_3$
+with $\sigma\geq 0$. Dropping the subscripts for short, our problem is
+$$
+\frac{d}{d X}\left(E\frac{d u}{d X}\right)=\rho g,\quad u(0) = 0\quad\text{and}\quad E\frac{du}{dX}(L) = -\sigma.
+$$ {#eq-colstrongform}
+This is the full *strong form* of the problem; a conventional solution requires $u$ to have 2 derivatives, and
+satisfying the boundary conditions at the ends.
+
+In this case, we can find the solution directly. Solving analytically by
+integrating twice and applying the boundary conditions, we find the
+solution is
+$$
+u(X)=\frac{\rho g}{2E}X^2- \frac{\rho gL}{E}X-\frac{\sigma}{E}X.
+$$
+We can use our solution to make some meaningful predictions: the new length
+of the rod under these conditions is given by the original length plus
+the displacement of the endpoint, i.e.
+$$
+\text{New length} = L+u(L) = L \left(1-\frac{\rho gL}{2E}-\frac{\sigma}{E}\right).
+$$
+We see that the denser the column and the greater the load applied, the
+shorter the column gets, which makes intuitive sense. We can also use
+our solution to find the stress acting at the base, which is
+$$
+\text{Stress acting on base} = E\frac{du}{dX}(0) = -\rho g L-\sigma.
+$$
+The first of these terms reflects the weight of the column (mass density
+times gravitational field strength times volume), while the latter is
+the load acting on the top of the column being transmitted to the base.
+
+## The weak form
+
+To proceed in our journey towards a finite element approximate solution
+of the mechanical problem, we next generate a *weak form* for
+@eq-weakform. The general procedure for this is to:
+
+- Multiply the equation by a *test function* defined on the problem
+  domain;
+
+- Integrate the result over the domain; and then
+
+- Use integration by parts to move one or more derivatives from the
+  function we are solving for onto the test function.
+
+In the problem we are considering, we denote the test function $w$ (also
+called a *weight function* in the Engineering literature). Integrating
+over the domain gives
+$$
+\int_0^L\frac{d}{dX}\left(E\frac{du}{dX}\right)w\,dX=\int_0^L\rho gw \,dX.
+$$
+If we integrate by parts in the first term, on the left-hand side we
+obtain
+$$
+\int_0^L\frac{d}{dX}\left(E\frac{du}{dX}\right)w\,dX = \left[E\frac{du}{dX}w\right]_{X=0}^{X=L}-\int_0^LE\frac{du}{dX}\frac{dw}{dX}\,dX
+$$
+Substituting in the boundary condition at $X=L$, and assuming that
+$w(0)=0$, our integral form can be rearranged to give
+$$
+\int_0^LE\frac{du}{dX}\frac{dw}{dX}\,dX+\sigma w(L)+\int_0^L\rho gw \,dX=0.
+$$ {#eq-weakform}
+We now argue as follows: if $u$ were a solution of the strong form
+@eq-colstrongform, then the equality we have derived must
+hold for any choice of test function $w$. We can see the test function
+as a sort of 'measurement' of how well the equation is satisfied; if
+there was a region where the equation wasn't satisfied, we could find
+$w$ to make the left-hand side of @eq-weakform would give a non-zero result.
+
+This leads us to define the concept of a *weak solution* for our
+problem. A *weak solution* is a function $u$ which satisfies the
+integral equality @eq-weakform for any test function $w$ satisfying $w(0)=0$.
+The reason that we call this a weak solution is that we only need $u$ to
+have one derivative to make sense of the integral on the left-hand side,
+whereas the strong form requires us to make sense of two derivatives. In
+fact, we assume even less: $u$ only needs to have a derivative
+*piecewise*, so can have a finite number of points where it jumps. The
+way we have derived the weak form ensures that any solution to the
+strong form must satisfy the weak form, but the reverse need not
+necessarily be true.
+
+You may be wondering at this stage why we required that the test
+function satisfies $w(0)=0$. It turns out that this is always the right
+choice when we prescribe the values of the solution itself at the
+boundary, i.e. any Dirichlet boundary condition, but to really see why
+requires more context that we can currently give.
+
+## Discretisation
+
+So far, it doesn't seem that we've gained anything; we've replaced the
+strong form with the seemingly harder to handle weak form. However, what
+we have gained is the ability to handle solutions that don't have 2
+derivatives. This gives us much more flexibility to discretise our
+solution (and to do mathematical analysis, but that's a story for
+elsewhere!).
+
+We now need to decide how to approximate solutions to our problem, and
+we'll see that we need to approximate test functions too. There are many
+possible choices available to do this, including polynomials,
+trigonometric functions, and many more. All can be used to construct
+approximate solutions in the way we do so below, however the term
+'finite elements' typically refers to the case where we approximate
+solutions piecewise polynomial functions.
+
+Let's consider writing an approximate solution (which we call $u^h$) as
+a linear combination of functions, so
+$$
+u^h(X) = \sum_{i=1}^M d_i N_i(X).
+$$
+The functions $N_i(X)$ are going
+to be (piecewise) polynomials called *shape functions*. The coefficients
+$d_i$ are unknown constants we call the *degrees of freedom (DoFs)*. We
+can use matrix notation to express this relationship:
+$$
+u^h(X) = {\boldsymbol N}(X){\boldsymbol d}\quad\text{where}\quad
+  {\boldsymbol N}(X)=
+  \left(
+    \begin{array}{ccc}
+      N_1(X) & \cdots & N_M(X)
+    \end{array}
+  \right)
+  \quad\text{and}\quad
+  {\boldsymbol d}=\left(
+    \begin{array}{c}
+      d_1 \\ \vdots \\ d_M
+    \end{array}
+  \right).
+$$
+We can find the derivative of $u^h$ by evaluating
+$$
+\frac{du^h}{dX}(X) = {\boldsymbol B}(X){\boldsymbol d},\quad\text{where}\quad
+{\boldsymbol B}(X):=\frac{d{\boldsymbol N}}{dX}(X)=
+\left(
+    \begin{array}{ccc}
+        \frac{dN_1}{dX} & \cdots & \frac{dN_M}{dX}
+    \end{array}
+\right).
+$$
+This formula is valid as the vector of coefficients ${\boldsymbol d}$ doesn't depend on $X$.
+
+If test functions $w$ are approximated in the same ways as $u$ (this is
+known as a *Galerkin approximation*), then we define
+$$
+w^h(X) = 
+{\boldsymbol N}(X){\boldsymbol w}
+\quad\text{where}\quad
+{\boldsymbol w}=
+\left(
+    \begin{array}{c}
+          w_1 \\ \vdots \\ w_M
+    \end{array}
+\right).
+$$
+Going back to the weak form
+@eq-weakform, let's replace $u$ and $w$ by the
+approximations $u^h$ and $w^h$, giving
+$$
+\int_0^LE\underbrace{\frac{d{\boldsymbol N}}{dX}{\boldsymbol d}}_{\displaystyle\frac{du^h}{dX}}\underbrace{\frac{d{\boldsymbol N}}{dX}{\boldsymbol w}}_{\displaystyle\frac{dw^h}{dX}}\,dX+\sigma \underbrace{\vphantom{\frac{d{\boldsymbol N}}{dX}{\boldsymbol d}}{\boldsymbol N}(L){\boldsymbol w}}_{\displaystyle w^h(L)}+\int_0^L\rho g\underbrace{\vphantom{\frac{d{\boldsymbol N}}{dX}{\boldsymbol d}}{\boldsymbol N}{\boldsymbol w}}_{\displaystyle w^h} \,dX=0.
+$$
+Since ${\boldsymbol N}{\boldsymbol w}$ and
+${\boldsymbol B}{\boldsymbol w}$ are scalars, we have
+${\boldsymbol N}{\boldsymbol w}= {\boldsymbol w}^T{\boldsymbol N}^T$ and
+${\boldsymbol B}{\boldsymbol w}= {\boldsymbol w}^T{\boldsymbol B}^T$. We
+can use the latter result to write the integral on the right hand side
+as:
+$$
+\int_0^LE{\boldsymbol B}{\boldsymbol d}{\boldsymbol B}{\boldsymbol w}\,dX = {\boldsymbol w}^T\left(\int_0^LE{\boldsymbol B}^T{\boldsymbol B}\,dX\right){\boldsymbol d}.
+$$
+The bracketed term on the right is a matrix, called the *stiffness
+matrix*, often denoted ${\boldsymbol K}$. It has entries:
+$$
+K_{ij} = \int_0^LE\frac{dN_i}{dX}\frac{dN_j}{dX}\,dX.
+$$
+Note that
+${\boldsymbol K}$ is symmetric, so ${\boldsymbol K}= {\boldsymbol K}^T$.
+Introducing the column vector
+$$
+{\boldsymbol f}:= \sigma {\boldsymbol N}(L)^T + \int_0^L \rho g {\boldsymbol N}^T\,dX,
+$$
+we can write the approximate weak form as
+$$
+{\boldsymbol w}^T{\boldsymbol K}{\boldsymbol d}+ {\boldsymbol w}^T{\boldsymbol f}={\boldsymbol w}^T({\boldsymbol K}{\boldsymbol d}+{\boldsymbol f})=0.
+$$ {#eq-coldiscreteform}
+If we want the approximate weak form to hold for all approximate
+solutions, then
+@eq-coldiscreteform has to hold for all vectors
+${\boldsymbol w}$, and that means that ${\boldsymbol d}$ is the vector
+which solves the equation
+${\boldsymbol K}{\boldsymbol d}+{\boldsymbol f}=\boldsymbol{0}$, which
+we can solve (if we know ${\boldsymbol K}$ and ${\boldsymbol f}$!) using
+a linear solve.
+
+Note that just as for the finite difference methods we thought about in
+the Fluids part of the module, we end up needing to solve a linear
+system of equations where ${\boldsymbol f}$ encodes both the forces
+acting in the domain and aspects of the boundary conditions!
+
+### Choosing shape functions
+
+The abstract work we did above didn't need us to make any particular
+choice of shape function, but now we need to make a choice to put the
+methodology into practice. The usual choice for FEM in particular is to
+split the domain into *elements* which are subvolumes of the domain. For
+example, we could split the domain $[0,L]$ into 3 equal pieces, the
+intervals $(0,\frac13L)$, $(\frac13L,\frac23L)$, and $(\frac23L,L)$, as
+shown in @fig-basisoverlap. Then, we choose a polynomial *order* on
+each interval. If we choose *first-order* or *piecewise linear*
+elements, then we have that each shape function is
+$$
+N_i(x) = a_0+a_1x,
+$$
+where the constants $a_0$ and $a_1$ will depend
+on which element we are on. To specify the shape functions further, we
+make two requirements. The first is that at the end-points of the
+elements, $X_k = \frac{k}{3}L$, the shape functions are *continuous*.
+The second is that they have the *interpolation* or Kronecker delta
+property, which is the requirement that
+$$
+N_i(X_k)
+= \delta_{ik}
+=
+\begin{cases}
+    1 & i=k\\
+    0 & i\neq k.
+\end{cases}
+$$
+
+::: {#fig-basisoverlap}
+![](tikz/BasisOverlap.svg){height=5cm}
+
+The spatial grid with the 3 piecewise linear shape
+functions. Note the overlapping regions where adjacent basis functions
+are non-zero.
+:::
+
+These choices lead us to define 4 shape functions (for convenience, we
+define $h = L/3$):
+$$
+\begin{aligned}
+    N_0(X) &= 
+    \begin{cases}
+        1-\frac{X}{h} & 0\leq X\leq h\\
+        0 & \text{otherwise},
+    \end{cases}
+    &
+    N_1(X) &=
+    \begin{cases}
+        \frac{X}{h} & 0 \leq X\leq h\\
+        2-\frac{X}{h} & h \leq X\leq 2h\\
+        0 & \text{otherwise},
+    \end{cases}\\
+    N_2(X) &= 
+    \begin{cases}
+        \frac{X}{h}-1 & h \leq X\leq 2h\\
+        3-\frac{X}{h} & 2h \leq X\leq 3h\\
+        0 & \text{otherwise},
+    \end{cases}&
+    N_3(X) &=
+    \begin{cases}
+        \frac{X}{h}-2 & 2h \leq X \leq 3h\\
+        0 & \text{otherwise}.
+    \end{cases}
+\end{aligned}
+$$
+In this case, the derivatives are:
+$$
+\begin{aligned}
+    \frac{dN_0}{dX}(X) &= 
+    \begin{cases}
+        -\frac{1}{h} & 0\leq X\leq h\\
+        0 & \text{otherwise},
+    \end{cases}
+    &\frac{dN_1}{dX}(X) &=
+    \begin{cases}
+        \frac{1}{h} & 0 \leq X\leq h\\
+        -\frac{1}{h} & h \leq X\leq 2h\\
+        0 & \text{otherwise},
+    \end{cases}\\
+    \frac{dN_2}{dX}(X) &=
+    \begin{cases}
+        \frac{1}{h} & h \leq X\leq 2h\\
+        -\frac{1}{h} & 2h \leq X\leq 3h\\
+        0 & \text{otherwise},
+    \end{cases}&
+    \frac{dN_3}{dX}(X) &= \begin{cases}
+        \frac{1}{h} & 2h \leq X \leq 3h\\
+        0 & \text{otherwise}.
+    \end{cases}
+\end{aligned}
+$$
+
+Before proceeding, we note that there is one shape function we won't
+need. Recall that we want $w(0)=0$ and $u(0)=0$. In order to enforce
+this conditions, we can simply discard any entries involving $N_0$
+(setting $d_0=0$), as this is the only shape function that is non-zero
+at the end.
+
+To assemble the stiffness matrix, ${\boldsymbol K}$, we now need to
+compute
+$$
+K_{ij} = \int_0^L E\frac{dN_i}{dX}\frac{dN_j}{dX}\,dX.
+$$
+Let's do an example for the case where $i=j=2$, so we compute entry $K_{22}$.
+In this case, we need to compute
+$$
+\begin{aligned}
+    K_{22} = \int_0^L E\left(\frac{dN_2}{dX}\right)^2\,dX
+    &= \int_h^{2h}E\frac{1}{h^2}\,dX+\int_{2h}^{3h} E\left(-\frac{1}{h}\right)^2\,dX\\
+    &=\frac{E}{h}+\frac{E}{h} = \frac{2E}{h}.
+\end{aligned}
+$$
+On the first line, we note that the integral over the
+interval $(0,h)$ is zero, so we discard it. In general, we only need to
+compute the integrals on the elements where the regions where the shape
+functions have non-zero derivative (the fancy maths word for this is the
+*support* of the shape function).
+
+By carefully splitting up the domain and working through the cases, you
+can check that
+$$
+{\boldsymbol K}=
+\frac{E}{h}\left(
+\begin{array}{rrr}
+    2 & -1 & 0 \\
+    -1 &  2 & -1 \\
+    0 & -1  & 1
+\end{array}
+\right).
+$$
+The $K_{22}$ entry is the central one in the matrix
+($K_{ij}$ is the entry in the $i$th row and $j$th column). To find the
+vector ${\boldsymbol f}$, we need to evaluate the shape functions and
+calculate more integrals. In this case,
+$$
+\sigma {\boldsymbol N}^T(L) = \sigma
+  \left(
+    \begin{array}{c}
+      0 \\ 0 \\ 1
+    \end{array}
+  \right),\qquad\text{and}\qquad \rho g\int_0^L{\boldsymbol N}^TdX = \rho g h
+  \left(
+    \begin{array}{c}
+      1 \\ 1 \\ \frac12
+    \end{array}
+  \right).
+$$
+Putting everything together and rearranging, we find we must solve
+$$
+\frac{E}{h}\left(
+    \begin{array}{rrr}
+      2 & -1 & 0 \\
+     -1 &  2 & -1 \\
+      0 & -1  & 1
+    \end{array}
+  \right)\left(
+    \begin{array}{c}
+      d_1 \\ d_2 \\ d_3
+    \end{array}
+  \right)
+  =-\left(
+    \begin{array}{c}
+      \rho g h \\ \rho g h \\ \frac12\rho g h + \sigma
+    \end{array}
+  \right).
+$$ {#eq-coldiscrete3element}
+If we solve and append the
+$d_0=0$ degree of freedom which we discarded, we see we get very close
+agreement with the analytic solution; see @fig-colcomparison.
+
+::: {#fig-colcomparison}
+![](images/ColumnComparison.png){width=8cm}
+
+Comparison of the analytic solution (dashed) and the finite element
+solution (solid) for the column problem with 3 elements. The values of
+the approximate solution at the nodes are shown with plus signs.
+Parameters for stainless steel were used, with an applied load of
+$\sigma=50$kPa. Given how stiff steel is, the displacement is very
+small, fractions of a
+micrometre!
+:::
+
+## Improving our approximation
+
+Our derivation here is obviously not limited to dividing the domain into
+$3$ elements: in 1D, if we choose to divide the domain into $M$
+elements, we get $M+1$ piecewise linear shape functions. If we make the
+elements smaller, we expect to get a better approximation to the true
+solution: indeed, this is something we will discuss later on in the
+module. We will see that when things are working correctly, the error in
+our solution is controlled by $h$, the size of the largest element used.
+An important thing to note is that in general, the elements do not all
+have to be the same size; indeed, this will be an important
+consideration in the chapters to come! Even in the case we have
+considered here, we could freely split the domain into other sets of
+three parts; for example we could set $X_1=\tfrac12$ and $X_2=\tfrac34$,
+which would result in different shape functions.
+
+Instead of dividing the domain into more elements, another option to get
+better agreement with the solution is to increase the polynomial order
+of the shape functions, for example by setting
+$$
+N_i(X) = a_0+a_1X+a_2X^2
+$$
+on each element. In this case, continuity
+and the Kronecker delta property for the endpoints of the elements are
+not enough on their own to define the shape functions uniquely. Instead,
+we need to add extra *nodes* to each element. The usual choice for
+quadratic functions is to add an extra node in the middle of each
+element. A plot of the resulting shape functions is shown in
+@fig-quadraticshapefuncs; you will be asked to find the form
+of these (on a single element) in this week's workshop. You could go
+even further, using cubics, quartics or even higher order polynomials,
+but you would need to add more nodes.
+
+::: {#fig-quadraticshapefuncs}
+![](tikz/QuadraticShapeFunctions.svg){height=5cm}
+
+A plots of the quadratic shape functions on domain made up
+of two elements. One element covers the interval $(X_0,X_2)$,
+the other covers the interval $(X_2,X_4)$.
+Note that $X_1$ and $X_3$ are extra nodes
+added to the centre of the element.
+:::
+
+Note that the problem we end up with to solve,
+@eq-coldiscrete3element, looks very similar to the way we
+discretised a second-order problem with finite differences, even if the
+philosophy that we used to get to it is rather different. Indeed, you
+might ask what we have gained by doing all of the work here, and for
+this particular problem, we have gained very little! However, we will
+see in later chapters is that the finite element approach is more
+flexible, particularly when it comes to problems in higher dimensions.
+Moreover, the philosophy introduced here, while seeming cumbersome at
+the moment, can be very effectively generalised and automated in
+software.
+
+
+## Solids Coursework Project Option 1 {#sec-sol-proj1}
+
+This project is entitled **Finite Element Simulation of a Thin Elastic Structure**, and is one
+of two project options you will have in this section of the module. The second will be
+described in @sec-sol-proj2.
+
+### Project aims
+You should write an approximately 10 page report that demonstrates:
+
+- Engagement with the literature on thin structures, and consideration on
+  of how to model them in reduced fashion;
+
+- Computational results for thin loaded structures under a range of
+  loading conditions; and
+
+- Validation of code against your own analytic results as well as
+  experimental and/or theoretical results from the published literature.
+  
+### Thin structures
+
+It is common to want to model the elastic behaviour of thin structures.
+
+We can assume that the velocity takes the form
+$\mathbf{u} = u_z(r)\mathbf{e}_z$, so that, using the Navier--Stokes in
+cylindrical coordinates (see Appendix) and in the absence of gravity, we
+have:
+$$
+0 =  -\frac{1}{\rho}\frac{\partial p}{\partial z} +\nu\frac{1}{r}\frac{\partial}{\partial r}\left(r\frac{\partial u_z}{\partial r}\right)
+$$
+where we have applied the boundary condition of no slip $u(R)=0$ and
+smoothness at $r=0$, i.e. $\frac{\partial u_z}{\partial r}=0$ there.
+
+### Boundary conditions
+
+A generalisation of the no-slip condition is the Navier slip (known as
+Maxwell slip for gases) condition which states that the tangential
+velocity at a solid surface is linearly proportional to the shear stress
+imposed upon this boundary. The coefficient of proportionality is known
+as the 'slip length' $\ell$; when $\ell=0$ the no-slip boundary
+condition is recovered.
+
+For the case of a plane-parallel shear flow, in the geometry considered
+above, the Navier slip condition is
+$$
+\ell \frac{\partial u}{\partial y} = \pm u\qquad \text{at}\qquad y=\mp W
+$$
+and replaces the tangential part of the no-slip boundary condition. This
+mean we still have zero velocity normal to the boundary $v=0$, due to
+impermeability, but now $u\neq0$ in general, just as happens for a free
+slip condition. Note that the $\pm$ comes from the fact that the shear
+stress $\mathbf{n}\cdot{\boldsymbol S}\cdot\mathbf{t}$ depends on the
+normal vector to a boundary
+
+In cylindrical coordinates this condition takes the form
+$$
+\ell \frac{\partial u_z}{\partial r} = -u_z\qquad \text{at}\qquad r=R
+$$
+
+Generally, at large scales the no-slip boundary condition provides
+exceptionally accurate results (e.g. for aeronautics); however, as one
+goes to micro- and nano-scales, large deviations are observed, both
+experimentally and from molecular simulations, for the flow of both
+gases and liquids. This suggests the slip length is of the order of
+microns or below. The easiest system in which to measure these
+deviations is pipe flow, where one can measure the flux through a tube
+and compare to analytic solutions obtained with different boundary
+conditions. This has become a particularly hot-topic due to the
+possibility of using carbon nanotubes in a membrane to filtrate seawater
+into drinking water - see article by Reese 2011 (in the Reading List).\
+
+### Project Ideas
+
+The suggestions below are intended to give you ideas of what can be
+done, but you should feel free to follow your own path if you wish.
+
+A starting point for this project is to compute the solution to the reduced
+equation for a thin elastic rod, as considered in Solids Workshop 3.
+
+Two extensions that should be considered are to consider loading of the thin
+structure across its width, and to change the boundary conditions.
+
+#### Pipe Flow
+Suggested tasks:
+
+- Derive an analytic solution for 3D axisymmetric flow and use this to
+  calculate the volume flux.
+
+- Extend your 2D code to 3D axisymmetric flow and ensure agreement with
+  the analytic result. Note, care must be taken at $r=0$ as the
+  coordinate system creates $1/r$ terms there. A simple way to impose
+  $\frac{\partial u_z}{\partial r}=0$ there is to directly impose this
+  equation (instead of the bulk one) by setting $u_1=u_2$, which is
+  equivalent to a forward difference at this point. You can also explore
+  other possibilities if you like.
+
+- Repeat any steps for channel flow of interest to you.
+
+#### Slip
+Suggested tasks:
+
+- Incorporate a Navier-Slip condition for channel flow and see how this
+  modifies the solution (note: an analytic solution is still easily
+  attainable) and in particular he volume flux.
+
+- Do the same for pipe flow.
+
+#### Going further
+For those feeling ambitious, here are some further suggestions:
+
+- Implement the non-linear slip condition derived in Thompson & Troian's
+  1997 article (see Reading List), which is an extension of the
+  Navier-Slip condition. Derive an appropriate boundary condition for
+  pipe flow.
+
+- Use a higher order boundary condition derived for gases and see what
+  this changes. One example is equation (7) in Lockerby et al's 2004
+  article (see Reading List).
+
+- Consider the model proposed in Myers 2011, where the nanoscale effects
+  are attributed to changes in the viscosity near the wall, with no-slip
+  retained.

@@ -1,0 +1,59 @@
+project:
+  type: book
+  pre-render: ./build-tikz-figs.sh
+  output-dir: docs
+
+book:
+  title: "PX912 Continuum and Mesoscale Modelling"
+  author: "Thomas Hudson"
+  date: today
+  date-format: "D MMMM, YYYY"
+  chapters:
+    - index.qmd
+    - 0-preface.qmd
+    - part: 1-0-fluids.qmd
+      chapters:
+        - 1-1-macro-fluids.qmd
+        - 1-2-equations.qmd
+        - 1-3-canonical.qmd
+        - 1-4-free-surfaces.qmd
+        - 1-5-thin-films.qmd
+    # - part: 2-0-solids.qmd
+    #   chapters:
+    #     - 2-1-macro-solids.qmd
+    #     - 2-2-elasticity.qmd
+    #     - 2-3-FEM.qmd
+    #     - 2-4-2D-FEM.qmd
+    #     - 2-5-FEM-error.qmd
+    
+  downloads: pdf
+
+number-sections: true      # turn on section numbering
+number-depth: 2
+callout-icon: false
+
+format:
+  html:
+    toc: true
+    html-math-method: katex
+    css: styles.css
+    theme:
+      light: flatly
+      dark: darkly
+    fig-align: center
+  pdf:
+    documentclass: scrbook
+    papersize: a4
+    toc: true
+    toc-depth: 2
+    pdf-engine: xelatex
+    fontfamily: "domitian"
+    mainfont: "Palatino"
+    sansfont: "Palatino"
+    colorlinks: true
+    linkcolor: blue
+    toccolor: blue
+    fig-align: center
+    include-in-header:
+      - text: |
+          \usepackage{cancel}

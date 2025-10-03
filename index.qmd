@@ -1,0 +1,12 @@
+# Welcome {#welcome .unnumbered}
+
+This online book (also available as a pdf via the download link) contains a
+complete set of notes for PX912 Continuum and Mesoscale Modelling. This module
+forms part of the core training for the
+[HetSys Centre for Doctoral Training](https://warwick.ac.uk/fac/sci/hetsys/),
+and focuses on macroscopic modelling via continuum
+mechanics. This modelling approach is in contrast to core module PX911, which is concerned with
+microscopic techniques, where individual atoms are treated.
+PX912 is split into two 5-week parts, the first on fluid dynamics (in Term 1)
+and the second on solid mechanics (in Term 2), and these notes are organised in parallel
+with this structure.

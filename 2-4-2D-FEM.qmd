@@ -1,0 +1,246 @@
+# Elasticity theory for crystal defects
+
+There are various possible sources of error when using any computational
+model of a physical problem to make predictions. Examples include:
+
+- *Model error* due to the difference between the mathematical model and
+  the true physical problem;
+
+- *Numerical error* due to the approximations inherent in using a
+  numerical approximation to the mathematical model; and
+
+- *User error* due to choosing the wrong method or interpreting the
+  results incorrectly.
+
+In this chapter, we will focus on the numerical error that occurs in
+FEM, sometimes called the *FE disretisation error*. This form of error
+is introduced by approximating the solution of mathematical PDE model by
+a Finite Element approximation. Informally, what we do in FEM is replace
+the infinite number of DoFs needed to express the true solution to the
+PDE by a finite number of DoFs, and this gap leads to error. In
+practice, we can control this error by adding more DoFs, and a very nice
+feature of FEM is that we have various theoretical guarantees on the
+size of the error. In practice, the FE solution is influenced by lots of
+aspects: the number of elements used, the number of nodes per element,
+the nature of element shape functions, and the integration rules.
+
+## Measuring error
+
+Suppose $\mathbf{u}(X_1,X_2)$ is the solution of the 2D linear elastic
+problem we wish to approximate, and $\mathbf{u}^h(X_1,X_2)$ is a finite
+element approximate solution taking the form
+$$\mathbf{u}^h(\mathbf{X}) = \sum_{i=1}^M \mathbf{d}_iN_i(\mathbf{X}).$$
+To compare these two functions, we consider the *residual*, defined to
+be $$\mathbf{e} := \mathbf{u}^h-\mathbf{u}.$$ The residual encodes the
+spatial variation of the gap between the true solution and the
+approximate one. The *error* is then quantified using a norm of the
+residual.
+
+The most common norm used for assessing error in FEM is the $L^2$ norm,
+which in 2D is given by
+$$\|\mathbf{a}\|_{L^2} := \left(\int_D|\mathbf{a}|^2\,dA\right)^{\frac12}.$$
+The absolute value in the integrand indicate the Euclidean norm of the
+vector output in this case, so that $|\mathbf{a}|^2 = a_1^2+a_2^2$.
+
+The precise reason for choosing the $L^2$ norm comes from nice
+functional analytic properties that are beyond the scope of this module.
+Heuristically however, $L^2$ norms are often used since they capture
+energy-like quantities, and this is often of relevance for physical
+problems where linear PDEs are used.
+
+For our linear elastic problem, the $L^2$ *absolute error* in the
+displacements is the $L^2$ norm of the residual, i.e.
+$$\text{Absolute displacement error} = \|\mathbf{e}\|_{L^2} = \|\mathbf{u}-\mathbf{u}^h\|_{L^2} = \left(\int_D|\mathbf{u}-\mathbf{u}^h|^2\,dA\right)^{\frac12}.$$
+The $L^2$ *relative error* in the displacements is this number divided
+by the $L^2$ norm of the solution, i.e.
+$$\text{Relative displacement error} = \frac{\|\mathbf{e}\|_{L^2}}{\|\mathbf{u}\|_{L^2}} = \frac{\|\mathbf{u}-\mathbf{u}^h\|_{L^2}}{\|\mathbf{u}\|_{L^2}}.$$
+Similarly, we can define absolute and relative error in the strains and
+stresses. In these cases the appropriate residuals are
+$$\text{Strain residual} = \boldsymbol{\varepsilon}-\boldsymbol{\varepsilon}^h\qquad\text{and}\qquad
+  \text{Stress residual} = \boldsymbol{S}-\boldsymbol{S}^h = \mathbb{C}(\boldsymbol{\varepsilon}-\boldsymbol{\varepsilon}^h).$$
+In 2D linear elastic theories, the appropriate absolute errors are
+$$\begin{aligned}
+  \text{Absolute strain error} &= \|\boldsymbol{\varepsilon}-\boldsymbol{\varepsilon}^h\|_{L^2} = \left(\int_D (\varepsilon_{11}-\varepsilon^h_{11})^2+(\varepsilon_{22}-\varepsilon^h_{22})^2+2(\varepsilon_{12}-\varepsilon^h_{12})^2\,dA\right)^{\frac12}\\
+  \text{Absolute stress error} &= \|\boldsymbol{S}-\boldsymbol{S}^h\|_{L^2} = \left(\int_D (S_{11}-S^h_{11})^2+(S_{22}-S^h_{22})^2+2(S_{12}-S^h_{12})^2\,dA\right)^{\frac12},
+\end{aligned}$$ and relative errors are defined in analogy with the
+displacement, by dividing by the $L^2$ norm of the appropriate field
+taken from the exact solution.
+
+## Theoretical guarantees on error
+
+The mathematical theory of FEM provides various guarantees on the error
+committed in an FEM simulation. One important result states that the
+absolute error in the solution is controlled by how accurately the shape
+functions used are able to capture the exact solution. We can think of
+this geometrically in a function space as shown in the following
+picture:
+
+The space of functions expressible using the DoFs is a
+finite-dimensional subspace of all possible functions, indicated by the
+solid line in the picture. Our approximate solution $\mathbf{u}^h$ lies
+at some point in this space, but in general the true solution
+$\mathbf{u}$ lies outside it, as shown. The absolute error is simply the
+distance between $\mathbf{u}$ and $\mathbf{u}^h$, indicated by the
+dashed line. The other point $\mathcal{I}^h\mathbf{u}$ shown represents
+the *interpolant* of $\mathbf{u}$ in the subspace, i.e the point which
+is closest to the true solution. This won't generally be the same as the
+solution we have constructed, but they will be close, and in fact, in
+general, we can show that there is a constant $C>0$ depending on the
+problem geometry, PDE and boundary conditions (but not the finite
+element discretisation) such that
+$$\|\mathbf{u}-\mathbf{u}^h\|_{L^2}\leq C\|\mathbf{u}-\mathcal{I}^h\mathbf{u}\|_{L^2},$$
+and the same goes for the strains (and so the stresses too). This result
+is known as *Céa's lemma*. The norm quantity on the right is the length
+of the dotted line in the picture above, so this result says that the
+length of the dotted line is (up to a fixed factor) close to
+representing the absolute error.
+
+Obviously, for a general PDE problem we have no way of knowing the exact
+solution $\mathbf{u}$, but a very nice feature of this result is that we
+can try to bound the interpolation error
+$\|\mathbf{u}-\mathcal{I}^h\mathbf{u}\|_{L^2}$ for a general function
+$\mathbf{u}$. On a single element $E$ with linear shape functions, it
+turns out that we can get the estimates $$\begin{aligned}
+  |\mathbf{u}(\mathbf{X})-\mathcal{I}^h\mathbf{u}(\mathbf{X})|&\leq Ch^2\max_{E}|\nabla^2\mathbf{u}(\mathbf{X})|\\
+  |\nabla\mathbf{u}(\mathbf{X})-\nabla\mathcal{I}^h\mathbf{u}(\mathbf{X})|&\leq C'h\max_{E}|\nabla^2\mathbf{u}(\mathbf{X})|,
+\end{aligned}$$ where $h$ is the characteristic length-scale of the
+element, given by the maximal distance between points in $E$ (i.e. the
+diameter of the set). This means that if the exact solution is smooth
+enough, then squaring and integrating over the element $E$, we get
+$$\int_E |\mathbf{u}-\mathcal{I}^h\mathbf{u}|^2\,dA = C'' h^4\mathrm{area}(E),$$
+where $C''$ is a constant that depends on the maximum norm of the second
+derivative of the solution over the whole domain. If we redefine $h$ to
+be the size of the largest element we used, then summing up over
+elements and square-rooting, we find that
+$$\|\mathbf{u}-\mathbf{u}^h\|_{L^2}\leq C\|\mathbf{u}-\mathcal{I}^h\mathbf{u}\|_{L^2}= O(h^2).$$
+Similar arguments and applications of Céa's lemma show that the absolute
+error in the strains and stresses are bounded by
+$$\|\boldsymbol{\varepsilon}-\boldsymbol{\varepsilon}^h\|_{L^2}=O(h)\quad\text{and}\quad
+  \|\boldsymbol{S}-\boldsymbol{S}^h\|_{L^2}=O(h),$$ and if you think a
+little, you can see that the relative errors should also exhibit the
+same behaviour.
+
+This provides us with a clear strategy for reducing error: we simply
+need to *refine* our mesh, splitting the elements up so that they get
+smaller and smaller in order to reduce the error.
+
+## Error analysis for the column example
+
+To illustrate these results in practice, let's go back to our 1D column
+example. Recall that the strong form of the problem for $u=u_3$ was
+$$\frac{d}{dx}\left(E\frac{du}{dX}\right) = \rho g\quad\text{with}\quad u(0) = 0\quad\text{and}\quad E\frac{du}{dX}(L) = -\sigma.$$
+The exact solution is
+$$u = \frac{\rho g}{2E}X^2-\frac{\rho g L+\sigma}{E}X\quad\text{with strain}\quad
+  \varepsilon_{3} = \frac{du}{dX} = \frac{\rho g}{E}X-\frac{\rho g L+\sigma}{E}.$$
+If we use piecewise linear shape functions, we see that there is no way
+the exact solution ever lies in the approximation space. We can see this
+by plotting the residuals; see
+Figure [5.1](#fig:1Dresidual){reference-type="ref"
+reference="fig:1Dresidual"}. We find that the displacement residuals are
+smallest close to the nodes, while the strain residuals are most
+accurate in the centres of the elements. This is a pattern which also
+holds true in higher dimensions.
+
+<figure id="fig:1Dresidual">
+<p><img src="images/FEresidual.png" style="width:6in" alt="image" />
+<span id="fig:1Dresidual" data-label="fig:1Dresidual"></span></p>
+<figcaption>A plot of the residuals for the column problem with 3
+elements.</figcaption>
+</figure>
+
+![Absolute displacement and strain error plotted against element size
+$h$.](images/FErefinement.png){#fig:1Drefinement width="6in"}
+
+Next we confirm our error analysis by consider a series of finer and
+finer uniform meshes.
+Figure [5.2](#fig:1Drefinement){reference-type="ref"
+reference="fig:1Drefinement"} shows a log--log plot of the absolute
+errors vs the element length $h$, and confirms that the error indeed
+decreases as predicted by theory. These errors are computed by
+performing quadrature over each element as discussed in previous
+chapters. In general, we can perform a power law fit (for example using
+a regression method as discussed in PX914) to find the rate of error
+decrease of the form $$\|\mathbf{u}^h-\mathbf{u}\|_{L^2}= Ch^\alpha$$
+where $\alpha$ is the *rate* of convergence. For displacement errors and
+piecewise linear shape functions, we get $\alpha=2$, as discussed. For
+quadratic shape functions $\alpha=3$, and for polynomial shape functions
+of order $n$, the rate of convergence should be $n+1$.
+
+## Practical considerations
+
+Of course, under normal circumstances, we will not have access to an
+exact solution, and so computing the true absolute and relative error is
+not possible. Instead, a standard practice is to compare a sequence of
+approximations over progressively finer meshes to an approximate
+solution $\mathbf{u}^{\text{ref}}$ computed on a very fine mesh,
+allowing us to evaluate the decrease in error relative to this
+appoximation. Note that you should use a significantly finer mesh as a
+reference solution, or else you will find your absolute error will
+decrease faster than expected. More sophisticated methods like
+[Richardson
+extrapolation](https://en.wikipedia.org/wiki/Richardson_extrapolation)
+can also be used to extrapolate, which can be used to try to find the
+limit of the $L^2$ norms.
+
+When using a finely meshed reference solution, you should note that the
+integrals must be computed using quadrature over each element, and the
+easiest way to achieve this with minimal pain is to use meshes where the
+elements sit inside one another. If elements do not sit inside on
+another, then finding exactly which element a quadrature point sits
+inside is a challenge!
+
+## FE software
+
+If you want to use finite elements in practice, you shouldn't do what
+we're doing here, i.e. developing a code from scratch. You should
+instead use pre-existing packages that do a lot of the heavy lifting for
+you. A list of existing packages can be found
+[here](https://en.wikipedia.org/wiki/List_of_finite_element_software_packages),
+but some popular choices include:
+
+- Proprietary:
+
+  - ABAQUS
+
+  - COMSOL Multiphysics
+
+  - Ansys Mechanical
+
+  - MATLAB PDE toolbox
+
+- Open source:
+
+  - DUNE
+
+  - FEniCS
+
+  - FreeFEM
+
+  - MFEM
+
+  - MOOSE
+
+  - Gridap
+
+Proprietary packages are commonly used in engineering firms, where the
+additional support and consistency is important, but some commercial
+products are so focused on end-user experience that they do slightly
+sketchy things with complicated boundary conditions. On the other hand,
+open source packages are more configurable, but the learning curve is
+likely to be much steeper! In addition, many of the open source packages
+require separate meshing software to mesh complicated geometries, and
+some need visualisation software. Popular choices for each of these
+functionalities are `gmsh` and `ParaView` respectively.
+
+![A sequence of meshes being adaptively refined (taken from the [COMSOL
+documentation](https://www.comsol.com/multiphysics/mesh-refinement)).](images/adaptivemesh.jpg){#fig:adaptive
+width="\\linewidth"}
+
+These packages often include *adaptive meshing* features, which seek to
+refine the meshes only where needed within the domain; see
+Figure [5.3](#fig:adaptive){reference-type="ref"
+reference="fig:adaptive"}. Clearly, splitting all the elements up
+uniformly will reduce the error, but also leads to a very large increase
+in the number of DoFs which may make the code excessively memory
+intensive. This becomes unsustainable past a certain point, so adaptive
+meshing allows codes to balance accuracy vs computational cost.

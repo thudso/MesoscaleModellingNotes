@@ -1,0 +1,685 @@
+{{< include macros.qmd >}}
+
+# Lubrication and Thin Film Dynamics {#sec-flu-thin-films}
+
+In this chapter we consider situations in which the flow domain is long
+and thin, leading to so--called 'lubrication flows'. These are routinely
+observed in industry (e.g. via coatings applied to almost all products
+we own, such as mobile phones), nature (e.g. avalanches or ice sheet
+dynamics), agriculture (e.g. in crop spraying), DIY (when we apply
+paints to a wall) and biology (e.g. tear film on the eye or coatings
+within the body). Such flows can produce remarkably complex behaviour.
+
+From a mathematical modelling perspective, the geometry of the flow will
+allow us to make significant simplifications to the full system of
+Navier-Stokes equations, firstly for the case of a fluid trapped between
+two solid surfaces, and secondly for the case of a liquid film on a
+solid surface, where the free surface boundary conditions add even
+further complexity. This chapter will bring together many of the aspects
+from the earlier ones and also introduce further techniques of applied
+mathematics, namely non-dimensionalisation (done in full detail now!)
+and a brief look at asymptotic techniques.
+
+## The Lubrication Equation
+
+We begin by considerind the two-dimensional incompressible Navier-Stokes
+equations in Cartesian coordinates, with gravitational acceleration
+pointing in the negative $y$-direction:
+$$
+\begin{aligned}
+\frac{\partial u}{\partial x}+\frac{\partial v}{\partial y} &= 0, \\
+\rho\left(\frac{\partial u}{\partial t} + u\frac{\partial u}{\partial x} + v\frac{\partial u}{\partial y} \right)&= -\frac{\partial p}{\partial x} + \mu\left(\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}\right), \\
+\rho\left(\frac{\partial v}{\partial t} + u\frac{\partial v}{\partial x} + v\frac{\partial v}{\partial y}\right) &= -\frac{\partial p}{\partial y} + \mu\left(\frac{\partial^2 v}{\partial x^2} + \frac{\partial^2 v}{\partial y^2}\right) - \rho g.
+\end{aligned}
+$$
+
+### Non-Dimensionalisation
+
+Now, we consider characteristic scales for all the quantities involved
+in the equations above: velocity components $U$, pressure $P$, length
+$L$ and time $T=L/U$. It is possible that the characteristic time scale may be set by
+    something else, e.g. the frequency of an oscillating body, but here
+    we will consider the simplest case where it is related to the length
+    and velocity scales. Furthermore, let us consider different scales
+for lengths and velocities in the $x$-direction and $y$-direction which
+will be important for allowing us to simplify our equations based on the
+geometry of the flow domain. Because we are looking at thin films, we
+expect the domain to be long and thin, so we let the characteristic
+length in the $x$-direction be $L_x=L$ and the characteristic one in the
+$y$-direction be $L_y=\varepsilon L$, where $\varepsilon$ is a
+(dimensionless) number which gives the aspect ratio $L_x/L_y$ of our
+geometry. We will later exploit the fact that $\varepsilon\ll 1$ to
+simplify our problem. Similarly, we expect a scale separation in the
+velocities, and the corresponding choices are $U_x=U$ and
+$U_y=\varepsilon U$. See @fig-thin-film-geometry for an example.
+
+::: {#fig-thin-film-geometry}
+![](tikz/ThinFilm.svg)
+
+Characteristic geometry for a lubrication flow.
+:::
+
+We use these scales to represent all variables in terms of their
+characteristic size multiplied by a dimensionless variable. By
+definition, the dimensionless variables must have characteristic 'size'
+$\sim 1$. In doing so, we are able to establish the size of different
+terms and thus work out which are negligible. We consider
+$$
+x=L\tilde{x},\qquad y=\varepsilon L\tilde{y},\qquad  u=U\tilde{u},\qquad v=\varepsilon U\tilde{v},\qquad p=P\tilde{p}
+$$
+and substituting these into the Navier-Stokes equations gives
+$$
+\begin{aligned}
+\frac{U}{L}\frac{\partial \tilde{u}}{\partial \tilde{x}}+\frac{U}{L}\frac{\partial \tilde{v}}{\partial \tilde{y}} &= 0, \\
+\frac{\rho U^2}{L}\left(\frac{\partial\tilde{u}}{\partial \tilde{t}} + \tilde{u}\frac{\partial \tilde{u}}{\partial \tilde{x}} + \tilde{v}\frac{\partial \tilde{u}}{\partial \tilde{y}}\right) &= -\frac{P}{L}\frac{\partial \tilde{p}}{\partial \tilde{x}} + \frac{\mu U}{L^2}\left(\frac{\partial^2 \tilde{u}}{\partial \tilde{x}^2} + \frac{1}{\varepsilon^2} \frac{\partial^2 \tilde{u}}{\partial \tilde{y}^2}\right), \\
+\frac{\varepsilon \rho U^2}{L}\left(\frac{\partial \tilde{v}}{\partial \tilde{t}} + \tilde{u}\frac{\partial \tilde{v}}{\partial \tilde{x}} + \tilde{v}\frac{\partial \tilde{v}}{\partial \tilde{y}}\right) &= -\frac{P}{\varepsilon L}\frac{\partial \tilde{p}}{\partial \tilde{y}} + \frac{\varepsilon \mu U}{L^2}\left(\frac{\partial^2 \tilde{v}}{\partial \tilde{x}^2} + \frac{1}{\varepsilon}\frac{\partial^2 \tilde{v}}{\partial \tilde{y}^2}\right) - \rho g.
+\end{aligned}
+$$
+from which we can see that a good scale for the pressure
+would be $\frac{P}{L} =  \frac{\mu U}{\varepsilon^2 L^2}$ which would
+ensure that pressure term
+$\frac{P}{L}\frac{\partial \tilde{p}}{\partial \tilde{x}}$ is comparable
+with the (dominant as $\varepsilon \to 0$) viscous term
+$\frac{\mu U}{L^2 \varepsilon^2}\frac{\partial^2 \tilde{u}}{\partial \tilde{y}^2}$
+which we have already seen drives Poiseuille flow. Making this choice
+and rearranging gives
+$$
+\begin{aligned}
+\frac{\partial \tilde{u}}{\partial \tilde{x}}+\frac{\partial \tilde{v}}{\partial \tilde{y}} &= 0, \\
+\varepsilon^2 \mathrm{Re}\left(\frac{\partial\tilde{u}}{\partial \tilde{t}} + \tilde{u}\frac{\partial \tilde{u}}{\partial \tilde{x}} + \tilde{v}\frac{\partial \tilde{u}}{\partial \tilde{y}}\right) &= -\frac{\partial \tilde{p}}{\partial \tilde{x}} + \varepsilon^2\frac{\partial^2 \tilde{u}}{\partial \tilde{x}^2} +\frac{\partial^2 \tilde{u}}{\partial \tilde{y}^2}, \\
+\varepsilon^4 \mathrm{Re}\left(\frac{\partial \tilde{v}}{\partial \tilde{t}} + \tilde{u}\frac{\partial \tilde{v}}{\partial \tilde{x}} + \tilde{v}\frac{\partial \tilde{v}}{\partial \tilde{y}}\right) &= -\frac{\partial \tilde{p}}{\partial \tilde{y}} + \varepsilon^4\frac{\partial^2 \tilde{v}}{\partial \tilde{x}^2} + \varepsilon^2\frac{\partial^2 \tilde{v}}{\partial \tilde{y}^2} - \varepsilon^3 \mathrm{St},
+\end{aligned}
+$$
+where we have recognised the Reynolds number
+$\mathrm{Re}=\frac{\rho U L}{\mu}$ and we introduce a new dimensionless
+number, the Stokes number $\mathrm{St}=\frac{\rho gL^2}{\mu U}$. The
+latter number describes the ratio between gravitational and viscous
+forces.
+
+### Lubrication Approximation
+
+Setting $\varepsilon=1$ at this stage would give us the dimensionless
+Navier-Stokes equations for the case in which the characteristic
+dimensions are roughly the same in all directions. We could then decide
+whether or not the inertial terms are negligible or not by calculating
+$\mathrm{Re}$, as we did before. However, this time we want to use the
+fact that $\varepsilon \ll 1$ to simplify our equations. Assume further
+that $\varepsilon^2 \mathrm{Re}\ll 1$ and
+$\varepsilon^3 \mathrm{St}\ll1$. This does not meean that $\mathrm{Re}$
+or $\mathrm{St}$ are small themselves, just that they are not too big
+when compared to the aspect ratio of the domain. We then simply ignore
+all terms multiplied by $\varepsilon$ (and higher powers, which are
+even smaller) to obtain:
+$$
+\frac{\partial \tilde{u}}{\partial \tilde{x}}+\frac{\partial \tilde{v}}{\partial \tilde{y}}= 0,
+$$ {#eq-incom}
+$$
+0 = -\frac{\partial \tilde{p}}{\partial \tilde{x}} +\frac{\partial^2 \tilde{u}}{\partial \tilde{y}^2},
+$$ {#eq-xmom}
+$$
+0 = -\frac{\partial \tilde{p}}{\partial \tilde{y}},
+$$ {#eq-ymom}
+which is a huge simplification on the full system above.
+Strictly speaking, we could use regular asymptotics and take the
+    leading order terms, but for this situation the result would be the
+    same. Asymptotic expansions work by writing the dependent variables
+    as a power series (usually) in the small variable, e.g.
+    $\tilde{u}=\tilde{u}_0 + \varepsilon\tilde{u}_1+\varepsilon^2\tilde{u}_2+...$,
+    which allows one to keep track of the size of each term in the
+    equations. However, this is only necessary here if we take a second
+    term in the expansion, e.g. consider the equations for
+    $\tilde{u}_1$, which we will not be doing.
+Notice that all the inertial terms are gone (the time derivatives and
+convective terms on the left-hand side of second and third equations),
+as is the gravitational force. What remains is the equation of
+incompressibility, the pressure gradients and a viscous terms associated
+with gradients of $u$ with respect to $y$, as we also saw for
+plane-parallel shear flows (i.e. Couette and Poiseuille flow). The
+assumption $\varepsilon \ll 1$ is known as the lubrication
+approximation, for reasons that will become apparent.
+
+### Reynolds' Lubrication Equation
+
+Consider now a particular situation, in which a fluid is trapped between
+rigid solid boundaries: one at $\tilde{y}=0$, which moves parallel to
+itself with speed $\tilde{u}=\tilde{U}_b$, and the other one at
+$\tilde{y}=\tilde{h}(\tilde{x},\tilde{t})$ (i.e. the solid top is not
+necessarily flat and can move in time). Clearly it is natural to scale
+$h$ with $L_y$ so that $h = \varepsilon L \tilde{h}$. This is the
+typical setup for lubrication problems - e.g. for a slider bearing where
+solid parts 'slip' past each other due to a thin lubricating layer of
+liquid (see example below). In this case, our boundary conditions become
+no-slip
+$$
+\begin{aligned}
+\tilde{u}&=\tilde{U}_b,&\tilde{v}&=0 &\qquad&\text{at} &\tilde{y}&=0 \\
+\tilde{u}&=0,& \tilde{v}&=\frac{\partial \tilde{h}}{\partial \tilde{t}} &\qquad&\text{at} &\tilde{y}&=\tilde{h}(\tilde{x},\tilde{t})
+\end{aligned}
+$$
+where, for simplicity, we have assumed that the solid at $\tilde{y}=\tilde{h}$ only moves vertically.
+
+We start by integrating the incompressibility equation @eq-incom
+'across the channel', i.e. in the $y$-direction, to give
+$$
+0 = \int^{\tilde{h}(\tilde{x},\tilde{t})}_{0}  \left(\frac{\partial \tilde{u}}{\partial \tilde{x}}+\frac{\partial \tilde{v}}{\partial \tilde{y}}\right) d\tilde{y} = \frac{\partial}{\partial \tilde{x}}\left(\int^{\tilde{h}(\tilde{x},\tilde{t})}_0 \tilde{u} d\tilde{y}\right) - \left.\tilde{u}\frac{\partial \tilde{h}}{\partial \tilde{x}}\right|_{\tilde{y}=\tilde{h}(\tilde{x},\tilde{t})} + \left[\tilde{v}\right]^{\tilde{y}=\tilde{h}(\tilde{x},\tilde{t})}_{\tilde{y}=0}
+$$
+where to bring the derivative out of the integral we have used Leibniz's
+rule (see the corresponding [Wikipedia
+article](https://en.wikipedia.org/wiki/Leibniz_integral_rule)), where
+care must be taken when the limits of integration are themselves
+functions. Applying our boundary conditions for $\tilde{u}$ and
+$\tilde{v}$ we obtain
+$$
+\frac{\partial \tilde{h}}{\partial \tilde{t}} + \frac{\partial (\tilde{h}\bar{\tilde{u}}) }{\partial \tilde{x}}=0
+$$ {#eq-evo}
+where we have introduced the mean velocity across the channel (i.e.
+'depth-wise averaged velocity')
+$$
+\bar{\tilde{u}} = \frac{1}{\tilde{h}} \int^{\tilde{h}(\tilde{x},\tilde{t})}_0 \tilde{u} d\tilde{y}.
+$$ {#eq-uav}
+
+Next, to obtain an expression for $\bar{\tilde{u}}$ we must integrate
+the momentum equations. From the $y$-momentum equation @eq-ymom we
+find that $\tilde{p} = \tilde{p}(\tilde{x},\tilde{t})$, i.e. the
+pressure does not change across the channel at a given $\tilde{x}$, so
+we can integrate the $x$-momentum equation @eq-xmom
+across the channel in $\tilde{y}$ to obtain
+$$
+\tilde{u}(\tilde{x},\tilde{t}) = \frac{\tilde{y}^2}{2}\frac{\partial \tilde{p}}{\partial \tilde{x}}  + A(\tilde{x},\tilde{t}) \tilde{y} + B(\tilde{x},\tilde{t})
+$$
+where $A$ and $B$ are arbitrary functions appearing after partial
+integration in $\tilde{y}$. Applying the no-slip boundary conditions
+gives
+$$
+\tilde{u}(\tilde{x},\tilde{t}) = -\frac{1}{2}\frac{\partial \tilde{p}}{\partial \tilde{x}} \tilde{y}(\tilde{h}-\tilde{y}) + \tilde{U}_b\left(1-\frac{\tilde{y}}{\tilde{h}}\right)
+$$
+from which we can clearly identify a Poiseuille component driven by the
+pressure gradient (first term on the right-hand side) and a Couette flow
+component (second term) driven by the motion of the bottom boundary.
+Integrating this expression in $y$ across the channel gives
+$$
+\bar{\tilde{u}} = -\frac{\tilde{h}^2}{12}\frac{\partial \tilde{p}}{\partial \tilde{x}} + \frac{\tilde{U}_b}{2}.
+$$
+Substituting the resulting expressions back into @eq-evo gives
+Reynolds' equation
+$$
+\frac{\partial \tilde{h}}{\partial \tilde{t}} +\frac{\tilde{U}_b}{2} \frac{\partial \tilde{h}}{\partial \tilde{x}}= \frac{\partial}{\partial \tilde{x}}\left( \frac{\tilde{h}^3}{12}\frac{\partial \tilde{p}}{\partial \tilde{x}}\right),
+$$ {#eq-reynolds}
+which in dimensional variables would give us
+$$
+\mu\frac{\partial h}{\partial t} +\frac{\mu U_b}{2} \frac{\partial h}{\partial x}= \frac{\partial}{\partial x}\left( \frac{h^3}{12}\frac{\partial p}{\partial x}\right).
+$$
+Note that this is an equation for the unknown pressure $p=p(x,t)$, as
+the film thickness $h$ is assumed to be prescribed in this case.
+
+### Example: Slider Bearing
+
+A classical case for demonstrating the power of lubrication is to
+consider the slider bearing @fig-slider
+which works by forcing liquid (of viscosity $\mu$) into a converging
+channel in order to support loads and reduce wear associated with
+solid-on-solid contacts.
+
+Consider a solid boundary at $y=h(x)$ and sit in a frame of reference in
+which the top boundary is stationary and the bottom boundary moves with
+speed $U_b$. To make things a little more specific, we consider the
+region $0\le x\le L_x$ the top boundary at
+$h(x) = L_y - \varepsilon^2 m x$, where we have chosen the gradient of
+the slope to scale with $\varepsilon^2$ to represent a small change in
+height across the domain which also ensures the top boundary never
+touches the bottom one. Outside the lubrication region we assume the
+pressure takes its atmospheric value $p_{\text{atm}}$ and to simplify
+matters we shift the pressure $p\to p+p_{\text{atm}}$, taking it
+relative to the value $p_{\text{atm}}$ so that $p(0)=p(L_x)=0$.
+
+::: {#fig-slider}
+![](tikz/SliderBearing.svg){height=5cm}
+
+Geometry for a slider bearing.
+:::
+
+Sensible characteristic scales for our problem are then $U_b$ (so that
+$\tilde{U}_b=1$), $L_x$ and $L_y$ so our dimensionless problem, which is
+steady, is
+$$
+\frac{1}{2} \frac{d \tilde{h}}{d\tilde{x}}= \frac{d}{d\tilde{x}}\left( \frac{\tilde{h}^3}{12}\frac{d\tilde{p}}{d\tilde{x}}\right)
+$$
+subject to $\tilde{p}(0)=\tilde{p}(1)=0$ and with
+$\tilde{h}(\tilde{x}) = 1- \varepsilon m \tilde{x}$. Full derivatives
+our now used as $\tilde{p}$ is a function of $\tilde{x}$ only.
+Integrating, we obtain
+$$
+\frac{d \tilde{p}}{d\tilde{x}}=\frac{6(\tilde{h}-\tilde{h}_0)}{\tilde{h}^3}\qquad\hbox{where } \tilde{h}_0 \hbox{ is a constant},
+$$
+and integrating again we find
+$$
+\tilde{p}(\tilde{x})=\int_0^{\tilde{x}} \frac{6(\tilde{h}(\tilde{s})-\tilde{h}_0)}{\tilde{h}(s)^3} d\tilde{s}
+$$
+where $\tilde{s}$ is a dummy integration variable. The result (check
+this yourself) for our particular geometry is
+$$
+\tilde{p}(\tilde{x}) = 6\left[\left(\frac{1}{\varepsilon m(1-\varepsilon m\tilde{x})}-\frac{h_0}{2\varepsilon m(1-\varepsilon m\tilde{x})^2}\right)-\left(\frac{1}{\varepsilon m} - \frac{h_0}{2\varepsilon m}\right)\right]
+$$
+and we can fix the constant of integration by applying $\tilde{p}(1)=0$
+to find $h_0 = \frac{2(\varepsilon m-1)}{\varepsilon m-2}$, so that
+finally
+$$
+\tilde{p}(\tilde{x}) = \frac{6\varepsilon m \tilde{x}(\tilde{x}-1)}{(\varepsilon m-2)(1-\varepsilon m \tilde{x})^2}.
+$$
+Recalling that pressure was scaled with
+$p = \tilde{p}\frac{\mu U_b}{\varepsilon^2 L_x}$ we find that
+$$
+p(x)= \frac{6\mu U_b}{\varepsilon L_x} \,\frac{m  (x/L_x)(x/L_x-1)}{(\varepsilon m-2)(1-\varepsilon m x/L_x)^2}.
+$$
+Notably, we find $p\sim 1/\varepsilon$ (the $\sim$ indicates the 'order
+of' a term, i.e. the most important term, as a limit is taken) as
+$\varepsilon \to 0$, which shows that the pressure diverges (i.e. goes
+to infinity) as the channel becomes thinner $\varepsilon\to0$.
+
+To see how the lubricant can support a load, we must calculate the
+upward force (per unit length, as we are in 2D) on the body. In the
+lubrication formulation, the leading order terms for the stress (see
+below) are the pressure normal to the solid and the viscous shear stress
+(the
+$\mu\left(\frac{\partial u}{\partial y}+\frac{\partial v}{\partial x}\right)$
+term) tangential to it. Notably, one can show that the tangential force
+scales as $F_x\sim 1$ (try to do this, if you like). This is why
+lubrication films support massive normal forces, as
+$F_y\sim 1/\varepsilon$ whilst allowing tangential slippage as
+$F_x \sim 1 \ll F_y$ when the channel is sufficiently thin
+($\varepsilon \ll1$).
+
+## Thin Film Equations
+
+Let us now consider a different application of the lubrication
+approximation, where we would like to consider the dynamics of thin
+liquid films with free surfaces. In other words, we are now primarily
+interested in liquid films, whose free surface is at $y=h(x,t)$,
+supported on solid surfaces. So the problem changes in character, rather
+than knowing the height of the upper boundary and finding the pressure
+(and hence the force) acting on it using the Reynolds equation
+@eq-reynolds, we now have an equation for the pressure at
+the boundary (involving surface tension) and would like to find the
+height as part of the solution. In order to proceed, we must first
+consider what happens to our boundary conditions under the lubrication
+approximation.
+
+::: {#fig-thin-film-freesurface}
+![](tikz/ThinFilmFreeSurface.svg){height=5cm}
+
+Setup for a thin film flow, where the surface at $y=h(x,t)$ is now
+free.
+:::
+
+### Free Surface Boundary Conditions Under Lubrication Approximation
+
+At the free surface $y=h(x,t)$ we first note that under the lubrication
+approximation
+$$
+\begin{aligned}
+\bfn
+&= \frac{(-\frac{\partial h}{\partial x},1)}{\left(1+\left(\frac{\partial h}{\partial x}\right)^2\right)^{1/2}} =  \frac{(-\varepsilon\frac{\partial \tilde{h}}{\partial \tilde{x}},1)}{\left(1+\varepsilon^2\left(\frac{\partial \tilde{h}}{\partial \tilde{x}}\right)^2\right)^{1/2}}
+\approx \left(-\varepsilon\frac{\partial \tilde{h}}{\partial \tilde{x}},1\right), \\
+\bft
+&= \frac{(1,\frac{\partial h}{\partial x})}{\left(1+\left(\frac{\partial h}{\partial x}\right)^2\right)^{1/2}}\approx \left(1,\varepsilon\frac{\partial \tilde{h}}{\partial \tilde{x}}\right)\\
+\nabla\cdot\bfn
+&= -\frac{\frac{\partial^2 h}{\partial x^2}}{\left(1+\left(\frac{\partial h}{\partial x}\right)^2\right)^{3/2}}
+\approx -\frac{\varepsilon}{L}\frac{\partial^2 \tilde{h}}{\partial \tilde{x}^2}
+\end{aligned}
+$$
+and that the viscous stress tensor $S_{ij}$ is given by
+$$
+S_{ij} =\frac{\mu U}{L}\begin{pmatrix}
+-\frac{\tilde{p}}{\varepsilon^2}   +2\frac{\partial \tilde{u}}{\partial \tilde{x}} & \varepsilon^{-1} \frac{\partial \tilde{u}}{\partial \tilde{y}} + \varepsilon\frac{\partial \tilde{v}}{\partial \tilde{x}}\\
+\varepsilon^{-1}\frac{\partial \tilde{u}}{\partial \tilde{y}} + \varepsilon\frac{\partial \tilde{v}}{\partial \tilde{x}} & -\frac{\tilde{p}}{\varepsilon^2}  +2\frac{\partial \tilde{v}}{\partial \tilde{y}}
+\end{pmatrix}.
+$$
+
+Our boundary conditions are the kinematic ($\frac{D f}{Dt}=0$) condition
+$$
+\frac{\partial h}{\partial t} +  u\frac{\partial h}{\partial x} = v
+$$
+and our dynamic condition
+($-p_{\text{atm}}\,\bfn-\bfS\cdot\bfn = \bfn\,\sigma\nabla\cdot\bfn$)
+which we split into tangential and normal components (by dotting our
+dynamic condition with $\bft$ and $\bfn$, respectively) to
+obtain
+$$
+\bft\cdot(\bfS\bfn) =0 \qquad \hbox{and}\qquad -p_{\text{atm}}-\bfn\cdot(\bfS\bfn) = \sigma\nabla\cdot\bfn.
+$$
+
+Therefore, after identifying the dominant terms in each equation, our
+leading order dimensionless equations are the kinematic equation
+$$
+\frac{\partial \tilde{h}}{\partial \tilde{t}} +  \tilde{u}\frac{\partial \tilde{h}}{\partial \tilde{x}} = \tilde{v}
+$$ {#eq-kin}
+tangential stress equation
+$$
+\frac{\partial \tilde{u}}{\partial \tilde{y}}=0\qquad\hbox{at}\qquad \tilde{y}=\tilde{h}(\tilde{x},\tilde{t})
+$$ {#eq-tang}
+and normal stress equation
+$$
+\tilde{p} - \tilde{p}_{\text{atm}} =  -\frac{\sigma\varepsilon^3}{\mu U}\frac{\partial^2 \tilde{h}}{\partial \tilde{x}^2}\qquad\hbox{at}\qquad \tilde{y}=\tilde{h}(\tilde{x},\tilde{t})
+$$
+where we can again identify a dimensionless parameter the capillary
+number $\mathrm{Ca}=\frac{\mu U}{\sigma}$. At this stage, we can choose
+to either neglect the surface tension terms
+$\mathrm{Ca}\,\varepsilon^{-3} \ll 1$ or keep them alongside the
+pressure terms $\mathrm{Ca}\,\varepsilon^{-3}\sim1$ and the choice will
+depend on the problem in question. We choose the latter option and
+redefine a scaled capillary number
+$\overline{\mathrm{Ca}} = \mathrm{Ca}\,\varepsilon^{-3} = \frac{\mu U L_x^3}{\sigma L_y^3}$
+so that
+$$
+\tilde{p} - \tilde{p}_{\text{atm}} =  -\overline{\mathrm{Ca}}^{-1}\frac{\partial^2 \tilde{h}}{\partial \tilde{x}^2}\qquad\hbox{at}\qquad \tilde{y}=\tilde{h}(\tilde{x},\tilde{t}).
+$$ {#eq-norm}
+
+### Thin Film Equations
+
+Applying our new boundary conditions are combined with the previous
+setup of bulk equations @eq-incom, @eq-xmom and @eq-ymom
+alongside boundary conditions at $y=0$, where for
+simplicity we assume a stationary solid
+$$
+\tilde{u}=\tilde{v}=0\qquad\hbox{at}\qquad \tilde{y}=0.
+$$
+and the procedure will be similar to before, expect now we have a boundary
+condition for $\tilde{p}$ and would like to find $\tilde{h}$ as part of
+the solution.
+
+Integrating the incompressibility equation @eq-incom
+'across the channel' gives
+$$
+0 =  \frac{\partial}{\partial \tilde{x}}\left(\int^{\tilde{h}(\tilde{x},\tilde{t})}_0 \tilde{u} d\tilde{y}\right) - \left.\tilde{u}\frac{\partial \tilde{h}}{\partial \tilde{x}}\right|_{\tilde{y}=\tilde{h}(\tilde{x},\tilde{t})} + \left[\tilde{v}\right]^{\tilde{y}=\tilde{h}(\tilde{x},\tilde{t})}_{\tilde{y}=0}.
+$$
+Applying the kinematic boundary conditions on $\tilde{v}$, that is
+@eq-kin, we obtain
+$$
+0 =  \frac{\partial ( \tilde{h}\bar{\tilde{u}})}{\partial\tilde{x}}  - \left.\tilde{u}\frac{\partial \tilde{h}}{\partial \tilde{x}}\right|_{\tilde{y}=\tilde{h}(x,t)} + \frac{\partial \tilde{h}}{\partial \tilde{t}} +  \left.\tilde{u}\frac{\partial \tilde{h}}{\partial \tilde{x}}\right|_{\tilde{y}=\tilde{h}(x,t)} = \frac{\partial (\tilde{h} \bar{\tilde{u}})}{\partial\tilde{x}}   + \frac{\partial \tilde{h}}{\partial \tilde{t}}
+$$
+where we have again used the mean velocity @eq-uav across the channel.
+
+Noting from @eq-ymom that the pressure does not depend on $y$, at every
+point in $(x,t)$ it must be equal to its value at the free surface,
+given by @eq-norm so that
+$$
+\tilde{p}(\tilde{x},\tilde{t}) =  \tilde{p}_{\text{atm}}  -\overline{\mathrm{Ca}}^{-1}\frac{\partial^2 \tilde{h}}{\partial \tilde{x}^2}\qquad\implies\qquad \frac{\partial \tilde{p}}{\partial \tilde{x}} =-\overline{\mathrm{Ca}}^{-1}\frac{\partial^3 \tilde{h}}{\partial \tilde{x}^3}
+$$
+and hence the $x$-momentum equation @eq-xmom becomes
+$$
+\frac{\partial \tilde{p}}{\partial \tilde{x}} = -\overline{\mathrm{Ca}}^{-1}\frac{\partial^3 \tilde{h}}{\partial \tilde{x}^3} = \frac{\partial^2 \tilde{u}}{\partial \tilde{y}^2}.
+$$
+Integrating this we find
+$$
+\tilde{u} = -\overline{\mathrm{Ca}}^{-1}\frac{\partial^3 \tilde{h}}{\partial \tilde{x}^3} \frac{\tilde{y}^2}{2} +C(\tilde{x},\tilde{t}) y + D(\tilde{x},\tilde{t})
+$$
+which with $\tilde{u}(0)=0$ and
+$\left.\frac{\partial \tilde{u}}{\partial \tilde{y}}\right|_{\tilde{y}=\tilde{h}}=0$
+gives
+$$
+\tilde{u} =  -\overline{\mathrm{Ca}}^{-1}\frac{\partial^3 \tilde{h}}{\partial \tilde{x}^3} \tilde{y}(\frac{\tilde{y}}{2}-\tilde{h})
+$$
+so that from @eq-uav we have
+$$
+\bar{\tilde{u}} = -\frac{1}{\tilde{h}}\overline{\mathrm{Ca}}^{-1}\frac{\partial^3 \tilde{h}}{\partial \tilde{x}^3} \left[\frac{\tilde{y^3}}{6}-\tilde{h}\frac{\tilde{y^2}}{2}\right]^{\tilde{h}}_0 = \frac{\tilde{h}^2}{3}\overline{\mathrm{Ca}}^{-1}\frac{\partial^3 \tilde{h}}{\partial \tilde{x}^3}
+$$ {#eq-meanu}
+and finally we obtain the thin film equation
+$$
+\frac{\partial \tilde{h}}{\partial \tilde{t}} +\frac{1}{3\mathrm{Ca}}\frac{\partial}{\partial\tilde{x}}\left( \tilde{h}^3\frac{\partial^3 \tilde{h}}{\partial \tilde{x}^3} \right) =0.
+$$ {#eq-thinfilm}
+
+In dimensional terms the thin film equation is given by
+$$
+\mu\frac{\partial h}{\partial t} +\frac{\sigma}{3}\frac{\partial}{\partial x}\left( h^3\frac{\partial^3 h}{\partial x^3} \right) =0.
+$$
+showing that the equation represents flow that is governed by a balance
+of viscous (first term) and surface tension (second term). Remarkably,
+we have gone from the impenetrable-looking Navier-Stokes equations with
+complex free surface boundary conditions down to a single partial
+differential equation for the height of the free surface $\tilde{h}$.
+The only disadvantage is that we have now introduced higher order
+derivatives that will need care when computed numerically and
+considerable nonlinearity. Notably, this suggests we will need two
+boundary conditions on $\tilde{h}$ and/or its derivatives at each end of
+the domain.
+
+#### Boundary Conditions
+
+One can consider numerous different possibilities, but one of the
+simplest occurs if we think of the boundaries of our domain either being
+a rigid vertical solid which the free surface meets perpendicularly
+(i.e. $\frac{\partial \tilde{h}}{\partial \tilde{x}}=0$) or a symmetry
+plane meaning again that
+$\frac{\partial \tilde{h}}{\partial \tilde{x}}=0$. Also, in both cases
+there will be no mean velocity at the boundary so that
+$\bar{\tilde{u}}=0$ which from
+@eq-meanu means that $\frac{\partial^3 \tilde{h}}{\partial \tilde{x}^3} =0$ also.
+Therefore, in these cases our two boundary conditions at each end of the
+domain are given by
+$$
+\frac{\partial \tilde{h}}{\partial \tilde{x}} =\frac{\partial^3 \tilde{h}}{\partial \tilde{x}^3} =0\qquad\hbox{at}\qquad \tilde{x}=0,1
+$$ {#eq-bcs}
+
+Of course, many other possibilities exist, e.g. including periodic
+boundary conditions or conditions that specify a particular gradient for
+the free surface.
+<!-- 
+## Fluids coursework project option 3
+
+**Project 3: Fluctuations and Breakup of Nanoscale Liquid Films**\
+In this project, the intention is to build a code capable of capturing
+thin film flow dynamics and to augment this with additional terms that
+represent physics that is not classically accounted for within the
+Navier-Stokes framework. Two relatively recent review articles have been
+written on the general topic of thin films by Oron et al 97 and Craster
+& Matar 09 - I would recommend reading the introductions for some
+background, although there is nothing about fluctuations in these
+reviews.\
+\
+
+![image](images/zhang){height="4cm"} ![image](images/zhao){height="4cm"}
+[]{#fig-thoroddsen label="fig-thoroddsen"}
+
+##### Aims:
+
+To write an approximately 10 page report that demonstrates:
+
+- engagement with the literature on thin film dynamics;
+
+- computational results for a thin film flow containing physics beyond
+  classical theory; and
+
+- validation of code against known results in the literature.
+
+**Project Ideas**
+
+A starting point for this project is to write a code that solves the
+thin film equation subject to appropriate boundary conditions. The
+simplest scheme one could think of would be an explicit forward Euler
+scheme for time stepping, as considered in Week 3 for 'Start Up Flow',
+alongside finite differences for the spatial derivatives. It is clear
+this case will be more complex than previous ones, as
+([\[eq-thinfilm\]](#eq-thinfilm){reference-type="ref"
+reference="eq-thinfilm"}) contains higher derivatives (fourth order) as
+well as considerable nonlinearity.\
+**Given Information on Discretisation** Finite difference coefficients
+for higher derivatives can either be derived or found here
+<https://en.wikipedia.org/wiki/Finite_difference_coefficient>. With
+equations of the form
+([\[eq-thinfilm\]](#eq-thinfilm){reference-type="ref"
+reference="eq-thinfilm"}) one can either use the product rule on the
+spatial derivative to obtain $h^3 h'''' + 3h^2 h'''$ and then use the
+finite difference method on this, or one can consider the derivative
+applied directly to the quantity inside
+$\frac{\partial}{\partial \tilde{x}}$, which is the method I found to be
+most accurate (please feel free to explore).
+
+To be more precise, one can calculate a quantity
+$\tilde{Q}_i = \tilde{h_i}^3\left.\frac{\partial^3 \tilde{h}}{\partial \tilde{x}^3}\right|_{x=x_i}$
+at each node $i$, using a finite difference formula (e.g. second order)
+for the third derivative, and then apply a central difference to this
+quantity to obtain
+$$
+\left.\frac{\partial \tilde{Q}}{\partial \tilde{x}}\right|_{x=x_i} = \left.\frac{\partial}{\partial\tilde{x}}\left( \tilde{h}^3\frac{\partial^3 \tilde{h}}{\partial \tilde{x}^3} \right)\right|_{x=x_i} = \frac{\tilde{Q}_{i+1} - \tilde{Q}_{i-1}}{2 \tilde{dx}}
+$$
+where $\tilde{dx}$ is the mesh size.
+
+You may also wish to experiment with the time step that will produce
+stable time-stepping, with the equations suggesting this could be quite
+strict with $d\tilde{t} \ll d\tilde{x}^4$.
+
+As with all projects, the suggestions below are intended to give you
+ideas of what can be done, but you should feel free to follow your own
+path if you wish.
+
+- Consider the flattening of a film from an initially perturbed
+  profile - e.g. you could choose to sinusoidally perturb the
+  equilibrium height $\tilde{h}=1$.
+
+- Determine the limitations on the time step.
+
+- Investigate higher order explicit time-stepping methods and/or
+  implicit methods, if this interests you.
+
+One direction you may wish to consider is the stability of thin liquid
+films, which is of critical importance for coatings. The setup here
+would be to take a thin film of equilibrium height $\tilde{h}=1$ and
+take small perturbations to this, e.g. of sinusoidal form
+$\tilde{h} = 1+\tilde{A}\cos(\tilde{k} \tilde{x})$ where $\tilde{A}$ is
+the amplitude of the disturbance and $\tilde{k}$ is the wavenumber.
+
+- Perform numerical experiments using
+  ([\[eq-thinfilm\]](#eq-thinfilm){reference-type="ref"
+  reference="eq-thinfilm"}) to see when the film breaks up. You should
+  find that for small perturbations $A\ll 1$ the film is always stable.
+
+- The (linear) stability of thin films goes against evidence from
+  experiments and molecular dynamics simulations (see above) which show
+  that very thin (nanoscopic) films can breakup (i.e. the free surface
+  contacts the solid, which subsequently becomes dry). One physical
+  reason why this could occur is that when films become very thin,
+  long-range attractive van-der-Waals forces (in the simplest case, e.g.
+  via dipole-dipole interactions) create an extra pressure on the free
+  surface that is not accounted for in the classical theory. One can
+  crudely model these using an additional force (or 'disjoining
+  pressure') on the free surface which forces it towards the solid (see
+  § 2E of Oron et al 97, in the Reading List). The potential associated
+  with this force has the (dimensional) form
+  $\phi=\frac{A_{dim}}{6\pi h^3}$ where $A_{dim}$ is the Hamaker
+  constant, with $A>0$ corresponding to attraction between the
+  interfaces, which is the case we are interested in. In the thin film
+  framework, this force leads to an additional term in
+  ([\[eq-thinfilm\]](#eq-thinfilm){reference-type="ref"
+  reference="eq-thinfilm"}) so that
+  $$
+  \frac{\partial \tilde{h}}{\partial \tilde{t}} +\frac{\partial}{\partial\tilde{x}}\left( \frac{\tilde{h}^3}{3\mathrm{Ca}}\frac{\partial^3 \tilde{h}}{\partial \tilde{x}^3} + \frac{A}{\tilde{h}}\frac{\partial \tilde{h}}{\partial \tilde{x}} \right) =0.
+  $$
+  where $A$ is a dimensionless parameter prescribing the strength of the
+  vdW force.
+
+- Connect to the stability analysis in Oron et al 97 (e.g. see equation
+  2.42b for critical wavenumber), which shows both (i) how large the
+  domain must be to allow an instability to grow and (ii) the growth
+  rate of the instability in its initial (linear) stages. You should be
+  able to compare your simulations to these predictions.
+
+- Consider the final stages of the free surfaces' evolution before it
+  ruptures (i.e. the minimum height of the film goes to zero). It is
+  often the case that near the rupture, which we assume occurs at some
+  time $t_r$, theories exist to see how this singularity is approached
+  (usually via similarity solutions, which we do not discuss here). This
+  is the case here, with Oron et al 97 predicting that "the minimal
+  thickness of the film close to the rupture point is therefore expected
+  to decrease linearly with time" - i.e., we should expect to see
+  $\tilde{h}_{min}  = C(\tilde{t}_r - \tilde{t})$ where $C$ is a
+  constant. In contrast, in Zhang & Lister 99, the prediction is that
+  $\tilde{h}_{min}  = C(\tilde{t}_r - \tilde{t})^{1/5}$. Note that to
+  'resolve' the rupture one may have to consider a non-uniform grid, as
+  in Zhang & Lister 99. Engage with this literature and see what your
+  code recovers\...
+
+Alternatively, one may consider the influence that thermal fluctuations
+have on thin nanoscopic liquid films, as seen in molecular dynamics
+simulations. Notably, the standard Navier-Stokes equations do not
+incorporate thermal fluctuations, so that one must consider the
+so-called Fluctuating Hydrodynamics (aka Landau-Lifshitz-Navier-Stokes
+or Stochastic-Navier-Stokes) if one wants to capture these (see Zhao et
+al 19 and Zhang et al 19 in Reading List and references therein).
+
+- Write a code to solve the the thin film equation which incorporates
+  thermal fluctuations (see Zhang et al 2019 for details):
+  $$
+  \frac{\partial \tilde{h}}{\partial \tilde{t}} +\frac{\partial}{\partial\tilde{x}}\left( \frac{\tilde{h}^3}{3\mathrm{Ca}}\frac{\partial^3 \tilde{h}}{\partial \tilde{x}^3} + B \tilde{h}^{3/2}N \right) =0.
+  $$
+  where $B$ is a dimensionless parameter measuring the strength of
+  thermal fluctuations, $N$ represents noise with zero mean which is
+  uncorrelated in time and space so that the covariance
+  $<N(x,t)N(x',t')>=\delta(x-x')\delta(t-t')$ (where the triangular
+  brackets represent an ensemble average and $\delta$ is the Dirac delta
+  function. Numerically, for an explicit time step $\triangle t$ and
+  mesh size $\triangle x$ one can represent $N$ at every node using
+  $$
+  N\approx \frac{randn}{\sqrt{\triangle t \triangle x}}
+  $$
+  where $randn$ are random numbers sampled from a Gaussian distribution with
+  mean zero and variance one.
+
+- Implement the code for the case of a periodic domain, where one has
+  four boundary conditions
+  $\left.\tilde{h}\right|_{x=0} =\left.\tilde{h}\right|_{x=1}$,
+  $\left.\frac{\partial \tilde{h}}{\partial \tilde{x}}\right|_{x=0} =\left.\frac{\partial \tilde{h}}{\partial \tilde{x}}\right|_{x=1}$,
+  $\left.\frac{\partial^2 \tilde{h}}{\partial \tilde{x}^2}\right|_{x=0} =\left.\frac{\partial^2 \tilde{h}}{\partial \tilde{x}^2}\right|_{x=1}$,
+  $\left.\frac{\partial^3 \tilde{h}}{\partial \tilde{x}^3}\right|_{x=0} =\left.\frac{\partial^3 \tilde{h}}{\partial \tilde{x}^3}\right|_{x=1}$.
+
+- Calculate the 'static capillary wave spectrum' for this case which
+  tells you about how strong each of the waves within the domain is. To
+  do so, one must calculate the perturbation from the equilibrium film
+  height $\delta h(x,t) = h(x,t)-1$ at each time step, take the Fourier
+  transform of this to obtain $\hat{\delta \tilde{h}}$ (which is a
+  function of wavenumber $\tilde{k}$), take the modulus squared of this
+  to obtain a real number $|\hat{\delta \tilde{h}}|^2$ and then average
+  over multiple time steps to obtain the spectrum
+  $\tilde{S}(\tilde{k}) = \overline{|\hat{\delta \tilde{h}}|^2}$. This
+  will be a function of wavenumber $\tilde{k}$ and theory predicts that
+  $\tilde{S}(\tilde{k}) \propto \tilde{k}^{-2}$, which one can try to
+  predict with the code (note there will be an initial transient during
+  which the film becomes rough/noisy and this should be neglected).
+
+If one wants a real challenge\....
+
+- Reproduce results from Zhao et al 2019 for the breakup of liquid
+  cylinders. In this case the lubrication equation is applied to a
+  cylindrical coordinate system to provide the so-called 'stochastic
+  lubrication equation'.
+
+**Reading List**
+
+Articles below are just a starting point for your investigations and
+should not be considered exhaustive
+
+- Craster, R. V. and Matar O. K., 2009. Dynamics and stability of thin
+  liquid films. Reviews of Modern Physics, 81.\
+  Relatively recent review article.
+
+- Oron, A., Davis S. H. and Bankoff S.G., 1997. Long scale evolution of
+  thin liquid films. Reviews of Modern Physics, 69.\
+  Classic review article.
+
+- Zhang, Y., Sprittles, J. E. and Lockerby, D. A., 2019. Molecular
+  simulation of thin liquid films: thermal fluctuations and instability.
+  Physical Review E, 100, 023108\
+  Article considering the fluctuations of thin liquid films using
+  molecular dynamics and analytic work based on fluctuating
+  hydrodynamics.
+
+- Zhang, W. W. and Lister, J. R., 1999. Similarity solutions for van der
+  Waals rupture of a thin film on a solid substrate. Physics of Fluids,
+  11, 2454-2462
+
+- Zhao, C., Sprittles, J. E. and Lockerby, D. A., 2019. Revisiting the
+  Rayleigh--Plateau instability for the nanoscale. Journal of Fluid
+  Mechanics (Rapid Communications), 861, R3\
+  Article considering how fluctuations effect the breakup of liquid
+  cylinders. Notably, this involves applying the lubrication
+  approximation in cylindrical coordinates, rather than in Cartesian as
+  considered for thin films. -->

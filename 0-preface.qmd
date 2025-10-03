@@ -1,0 +1,76 @@
+# Module overview {#module-overview .unnumbered}
+
+Significant credit must go to James Sprittles and Lukasz Figiel
+who originally developed this module and the materials I am building on here.
+Below, I detail a range of practical information about the module.
+
+## Moodle {.unnumbered}
+
+Supporting resources for this module will be uploaded to Moodle on a
+week-by-week basis. I will try to upload resources well ahead of the
+lectures, but this is an ambition rather than a promise. The moodle page
+(where you probably found this!) is
+[here](https://moodle.warwick.ac.uk/course/view.php?id=73466).
+
+## Lectures {.unnumbered}
+
+These lecture notes form one of the main resources for the module,
+and there will very likely be updates to them as we go through the module.
+You can find the date of publication for the version you are reading on the title page,,
+and the online version will always be up-to-date.
+
+During lectures I will be going through the notes
+(not just copying them out, but rather focussing on concepts,
+derivations, etc) and it is my intention to use both slides, videos, and
+handwritten notes in combination to present. Many supporting materials are
+linked from the online notes, with videos embedded in the online version.
+
+## Delivery {.unnumbered}
+
+I will be delivering the entire course face to face in MAS2.05/06. If
+you miss the lecture, Lecture Capture should be available. I do very
+much encourage you to attend the lectures and workshops regularly:
+educational research indicates that sustained lecture attendance is very
+strongly correlated with good performance in assessment, and they give
+you both invaluable access to me and your classmates, and time and space
+to focus on the material.
+
+## Workshops {#workshops .unnumbered}
+
+The focus of the workshops will be on the development of computational
+approaches to solving continuum mechanics problems. As this module runs
+alongside PX913, it is
+my intention to provide basic code for you to work with, manipulate and
+extend. However, if you prefer, you can develop your own from scratch
+(in Fortran or Python). Supporting materials for the Workshops will be
+provided in the form of Jupyter notebooks, which can be
+accessed via the Moodle page for the module; we'll discuss this in the first workshop.
+
+There will also be some Examples Sheets for you to complete in order to test
+your knowledge of the core material, and I encourage you to work through
+these as practice; these can also be discussed in the workshops.
+
+## Assessment {.unnumbered}
+
+The assessment for the entire module is based on:
+
+- a computational project on fluids worth 30% of the overall mark,
+
+- a computational project on solids worth 30% of the overall mark, and
+
+- a final viva worth 40% of the overall mark.
+
+I will provide further guidance on the particular parts of the content
+which the viva will focus on later in the module, and I will confirm the
+dates and location after the Christmas break. Success in the
+computational coursework projects will require you to do three things:
+
+1.  Develop code,
+
+2.  Benchmark your code by using known analytic results and exact
+    solutions, and
+
+3.  Engage with existing literature.
+
+All of these aspects are important skills to practice and develop for
+success in your own individual research projects.

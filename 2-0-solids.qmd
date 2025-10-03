@@ -1,0 +1,44 @@
+
+# Solids
+
+## Introduction
+In this half of the module our focus switches to solids, and the
+modelling of shape change and motion of solid materials under the action
+of applied forces. An important fundamental difference between fluids
+and solids is that the latter form of matter does not 'flow'. As a
+consequence, points in a solid material that are nearby at one time tend
+to remain so at later times.
+
+As a thought experiment, consider performing an experiment to observe
+the physical properties of a fluid, pouring it into a beaker, stirring
+it up and then doing the same experiment again. The fluid has been
+completely deformed and distorted by this process, but we expect the
+mechanical properties to remain the same. In contrast, we are not able
+to do the same to a solid, as solids tend to want to return to its
+original shape between experiments: This shows that a solid 'remembers'
+its shape in a way a fluid does not. A common approach is to introduce a
+reference shape for a solid and measure its shape change relative to
+this reference. As we will see, this means it is most convenient to use
+a Lagrangian formulation (rather than an Eulerian formulation, as we
+used in the fluids part) of the appropriate equations.
+
+During the lectures in this second part, we will cover the following
+topics:
+
+- **Linear Elasticity Theory**: strain, Hooke's law, the Lagrangian formalism,
+  stress, the equations of elastostatics
+
+- **The Finite Element Method**: weak and strong form of partial differential
+  equations, discretisation, basis functions, boundary conditions, implementation
+
+- **Beam Theory**: Bernoulli-Euler beam equation, Finite Elements for the
+  reduced problem, other reduced theories
+
+- **Elasticity for Crystal Defects**: point defects as elastic inclusions, the elastic
+  Green's function, linking atomistic and continuum theory
+
+In the workshops you will develop your own codes to solve real-world
+problems.
+
+- **Computational Solid Mechanics**: the finite element method, basis functions, numerical
+  integration, linear algebra, error, meshing and refinement.

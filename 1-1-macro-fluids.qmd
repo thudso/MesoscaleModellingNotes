@@ -1,0 +1,708 @@
+{{< include macros.qmd >}}
+
+# Macroscopic Modelling of Fluids {#sec-flu-macroscopic}
+
+The intention of this chapter is to build up the mathematical tools and
+concepts we will require in order to derive the Navier-Stokes equations
+in the next chapter, which are the governing equations of macroscopic
+fluid flow.
+
+## Mathematical Background
+
+It is useful to have some exposure to the main operators that appear
+routinely in fluid mechanics, so we will do a brief recap of some
+standard notation used in these notes.
+
+### Vectors and Tensors
+
+Vectors and tensors will be written by their components *relative to a
+set of basis vectors* $\bfe_1,\bfe_2,\bfe_3$. For
+example, the position vector
+$\bfx=x_1\bfe_1 + x_2\bfe_2+x_3\bfe_3=(x_1,x_2,x_3)$
+will be written as $\bfx=x_i$, where '$i$' is the *free
+index* which will take values $i=1,2,3$ and we repeat that the $x_i$
+are components relative to a set of specified basis vectors. We will
+only use subscripts for indices.
+
+The velocity field in Cartesian coordinates will be
+$\bfv = (u,v,w)$ where $u$ is the $x$-component of velocity, $v$
+is the $y$-component and $w$ is its $z$-component.
+
+For the derivations we make, we will only consider Cartesian
+coordinates so that $\bfx=x_i=(x,y,z),$ although later on
+we will also consider problems most naturally formulated in
+cylindrical or spherical coordinates. The specification
+$\bfv = \bfv(\bfx,t)$ would be written as
+$v_i =  v_i(x_j,t)$.
+
+### Vector Calculus
+
+The following are important differential operators which we can apply to
+various important fields.
+
+The gradient operator
+$\nabla=\left(\frac{\partial }{\partial x},\frac{\partial }{\partial y},\frac{\partial }{\partial z}\right)$,
+which generalises the usual derivative, acting on a scalar function
+$f(\bfx,t)$ gives
+$$
+\nabla f= \left(\frac{\partial f}{\partial x},\frac{\partial f}{\partial y},\frac{\partial f}{\partial z}\right)
+$$
+and so is a vector composed of partial derivatives of $f$ in the three
+Cartesian directions which identifies the direction of greatest
+increase of the function $f$ at a particular point.
+
+The divergence operator $\nabla\cdot$ acts on vectors (tensors) to
+produce a scalar (low order tensor) that quantifies the flux from such
+a vector (tensor) field. When acting on a vector in Cartesian
+coordinates $\bfv(\bfx,t)=(u,v,w)$ one has
+$$
+\nabla\cdot \bfv= \frac{\partial u}{\partial x}+\frac{\partial v}{\partial y}+\frac{\partial w}{\partial z},
+$$
+which we will later see ensures that the flow is incompressible.
+
+In fluid mechanics one is often interested in the local (rate of)
+rotation of the fluid, which is measured by the vorticity.
+
+::: {.callout-note title="Definition"}
+The *vorticity* vector $\bfomega$ at a point in a fluid is defined as the curl, $\nabla\times$, of the velocity field
+$$
+\bfomega=\nabla\times\bfv= \left(\frac{\partial w}{\partial y}-\frac{\partial v}{\partial z},\frac{\partial u}{\partial z}-\frac{\partial w}{\partial x},\frac{\partial v}{\partial x}-\frac{\partial u}{\partial y}  \right).
+$$
+:::
+
+Note that in Cartesian coordinates one can think of (i) the divergence
+as being the dot product of the gradient operator with a vector and (ii)
+the curl being the cross product of the gradient operator with a vector.
+
+### Index Notation
+
+Sometimes it will be convenient to use index notation
+(described/recapped below). When using index notation, the summation
+convention and some additional shorthand provide a succinct way to write
+PDEs.
+
+For matrices and tensors the same procedure will be used. For example,
+the components of the stress tensor are $T_{ij}$ where $i$ and $j$ are
+free indices, meaning that in general this tensor has $3\times3=9$
+components.
+
+::: {.callout-note title="Definition"}
+The *Kronecker delta* is the symbol
+$$
+\delta_{ij} = \begin{cases}
+0& \text{for }i\neq j\\
+1& \text{for }i=j.
+\end{cases}
+$$
+:::
+
+One use it will have is to confine the gravitational
+acceleration $g\, \delta_{i3}$ to a single direction (usually aligned
+with the $z$-axis).
+
+Index notation can also be used to represent different operators, e.g.
+the gradient applied to the density $\rho$ gives
+$$
+\nabla \rho = \left(\frac{\partial \rho}{\partial x},\frac{\partial \rho}{\partial y},\frac{\partial \rho}{\partial z}\right) = \frac{\partial \rho}{\partial x_i}
+$$
+where we recall that $i=1,2,3$ is implied in this notation.
+
+Where *repeated indices* are used, automatic summation over these is
+implied. This is the *summation convention*. For example, the dot product
+$$
+\bfa\cdot\bfb=a_1b_1+a_2b_2+a_3b_3=\xcancel{\sum_{j=1}^{3}} a_j b_j = a_j b_j
+$$
+is written in index notation succinctly as $a_j b_j$, with summation
+over $j$ implied. The choice of repeated index is arbitrary, as this
+is a dummy variable which does not appear in the final result (e.g.
+$a_k b_k$ would be equally valid for the dot product).
+
+Repeated indices can also be used for differential operators. Examples
+in Cartesian coordinates are:
+
+  - The divergence $\nabla\cdot$ applied to a vector $\bfv$ is
+    $$
+    \nabla\cdot\bfv= \frac{\partial u}{\partial x}+\frac{\partial v}{\partial y}+\frac{\partial w}{\partial z}
+    =\xcancel{\sum_{j=1}^{3}}\frac{\partial v_j}{\partial x_j}= \frac{\partial v_j}{\partial x_j}
+    $$
+
+  - The Laplacian $\nabla^2$ applied to a function $f$ can be written as
+    $$
+    \nabla^2 f
+    = \frac{\partial^2 f}{\partial x^2}+\frac{\partial^2 f}{\partial y^2}+\frac{\partial^2 f}{\partial z^2}
+    = \xcancel{\sum_{j=1}^{3}}\frac{\partial}{\partial x_j}\frac{\partial f}{\partial x_j}
+    = \frac{\partial^2 f}{\partial x_j^2}
+    $$
+    where the repeated index is in the denominator $\partial x_j^2$.
+
+  - The curl of a vector $\bfv$ is
+    $$
+    \omega_i = \nabla\times\bfv = \epsilon_{ijk}\frac{\partial v_k}{\partial x_j},
+    $$
+    where $\bfomega=\omega_i$ is the *vorticity* as defined above, and $\epsilon_{ijk}$ is the Levi-Civita symbol, defined below.
+
+::: {.callout-note title="Definition"}
+The *Levi-Civita symbol* is defined as follows:
+$$
+\epsilon_{ijk} =
+\begin{cases}
+  0& \text{if}~~i=j, j=k~~\text{or} ~~i=k\\\
+  1& \text{for}~~(i,j,k)=(1,2,3), (2,3,1) ~~\text{or} ~~(3,1,2)\\
+  -1& \text{for}~~(i,j,k)=(1,3,2), (2,1,3)~~ \text{or} ~~(3,2,1)\\
+\end{cases}
+$$
+:::
+
+When applied to the term $\bfd = \nabla^2\bfv$ (the label
+$\bfd$ is arbitrary) in the Navier-Stokes equations we have
+$$
+\bfd = d_i = \frac{\partial^2 v_i}{\partial x_j^2}
+$$
+with one free index $i$.
+
+::: {.callout-caution title="Example"}
+How would you write the $y$-component of $v_j\, \frac{\partial v_i}{\partial x_j}$? 
+
+As an aside: using vector calculus this can be written as $\left(\bfv\cdot\nabla\right)\bfv$.
+:::
+
+Always check that each term in an equation formed using index notation
+has to contain the same free indices (e.g.
+$a_{ij} = b_{ijk}e_k + f_{ij}$ is fine, but
+$a_{ij} = b_{ijk}e_j + f_{ik}$ would not be!).
+
+## What is Macroscopic Fluid Dynamics?
+
+With a bit of maths background out the way, we can next ask exactly we mean by a fluid.
+Fluids, unlike solids, can 'flow' by changing their shape. They
+include not only liquids (water, oil, etc) but also gaseous media
+(air, plasma, etc.).
+
+Fluid flow occurs across huge variations in scale: from the very small
+(e.g. microdrops from a 3D printer) to the huge (tornados) and from
+the incredibly slow (motion of glaciers) to the very fast
+(aeronautics). Examples of flows at these different scales are found in @fig-examples.
+
+::: {#fig-examples layout-ncol=2 fig-align=center}
+![](resized/inkdrop.png){height=5cm}
+![](resized/glacier.png){height=5cm}
+
+![](resized/tornado.png){height=5cm}
+![](resized/aeroplane.png){height=5cm}
+
+Flow at different scales: small (inkjet microdrops) to large (tornado);
+slow (glacial flow) to fast (aeronautics).
+:::
+
+Moreover, fluid flow phenomena can be seen (and heard!) all around us; some more examples are shown
+in @fig-everyday.
+
+::: {#fig-everyday layout-ncol=2 fig-align=center}
+![](resized/water_waves.png){height=5cm}
+![](resized/soundwaves.png){height=5cm}
+
+![](resized/flight.png){height=5cm}
+![](resized/weather.png){height=5cm}
+
+Everyday fluid phenomena - water waves, sound, flight and weather.
+:::
+
+While we have good intuition about how water behaves at human scales,
+fluid motion at extreme scales can often appear counter-intuitive.
+Nevertheless, it is remarkable that the same set of equations, the Navier-Stokes equations,
+can be used to describe the flow of both gases and liquids in huge number of
+the aforementioned situations.
+The study of fluids using these equations is often referred to as
+'fluid mechanics', 'fluid dynamics' or 'hydrodynamics' and it assumes
+that the fluid can be idealised as a continuous medium, i.e. it uses
+continuum mechanics.
+
+The continuum approach is accurate when the length scale $\ell$
+characterising molecular motion is much smaller than the dimensions of
+the flow $L$, so that $\ell/L \ll 1$ (the continuum limit takes
+$\ell/L \rightarrow 0$). Note that $\ell/L$ is a 'dimensionless
+number/parameter', which compares the size of two dimensional
+quantities - we will encounter more of these later. For gases, if
+$\ell$ is taken to be the mean free path (i.e. the average distance
+between molecular collisions) then $\ell/L$ is called the Knudsen
+number.
+
+## Incompressible Fluids
+
+Our focus will be on using continuum mechanics to describe the state of
+a fluid flow at coordinate $\bfx \in \bbR^d$ of
+$d$-dimensional space, $d=1,2$ or $3$ at time $t$. In general one has
+$d=3$, but upon simplifications one can have $d=2$ and even $d=1$ (e.g.
+for flow in a channel).
+
+- The state of an incompressible fluid flow with constant density can be
+  characterised by its velocity $\bfv = \bfv(\bfx,t)$
+  and pressure $p =p(\bfx,t)$. In more complex cases, other
+  relevant fields enter the description (e.g. density, temperature,
+  electromagnetism, chemical composition, etc).
+
+- Our main task is to find these fields (especially the velocity field
+  $\bfv$ as this tells us where 'stuff' is going) and thus be able
+  to predict the flow behaviour in space and time.
+
+- The incompressible Navier-Stokes equations we will derive are based on
+  conservation of mass and momentum.
+
+- The derivation is complicated because a fluid flows, so that
+  conservation laws must be applied to a material that moves and deforms
+  in time.
+
+- The complexity of the Navier-Stokes equations makes solving them an
+  extremely difficult task. One can either (a) use mathematical
+  modelling to simplify the problem and/or (b) use computational
+  approaches (the field of Computational Fluid Dynamics - CFD).
+
+- In this course we will see that in simplified cases analytic solutions
+  can be obtained and that these have a crucial role in validating CFD.
+  The CFD can then be applied to more complex flows where analytic
+  solutions do not exist.
+
+## Lagrangian and Eulerian Descriptions
+
+The equations of fluid dynamics will be formulated in Eulerian
+coordinates; but, it will also be important to appreciate Lagrangian
+coordinates which 'follow the fluid'. The following video discusses this concept.
+
+{{< video https://www.youtube.com/watch?v=mdN8OOkx2ko >}}
+
+::: {#fig-lagrangian}
+![](resized/coordinates.png){width=100%}
+
+The motion of a material fluid element $M$ whose properties (e.g.
+velocity) can be described by Eulerian coordinates $(x,y,z)$ or
+Lagrangian ones $(X,Y,Z)$. The Lagrangian coordinates remain frozen
+inside $M$ as it evolves and deforms in time (from $t_0$ to $t_1$), i.e.
+they follow material points as advected by the fluid
+velocity.
+:::
+
+- In classical mechanics, we know the motion of a material point if we
+  can specify its Eulerian coordinates $x_i$ as a function $f_i$ of time
+  $$
+  x_i = f_i(t).
+  $$
+  To extend this to a fluid modelled as a continuous
+  medium we need to identify and follow the (infinitely many) material
+  points which form the continuum.
+
+- Material points in a fluid will be referred to as *fluid elements* or
+  *fluid particles*, i.e. infinitesimal volumes of fluid which are
+  advected with the fluid's velocity $\bfv$ and hence are always
+  composed of the same material.
+
+- One way to uniquely identify each fluid element $x_i$ is by its
+  Eulerian coordinates $x_j(t=t_0) = X_j=(X_1,X_2,X_3)$ at a reference
+  (or initial) time $t_0$ and then allow these coordinates to move and
+  deform with the fluid throughout its motion. The $X_j$ are then
+  Lagrangian coordinates (see @fig-lagrangian) and the position of a fluid element
+  $x_i(t)$ at a time $t$ is given by
+  $$
+  x_i = f_i(X_j,t).
+  $$
+
+- Whilst in the Eulerian description one sits at a fixed position and
+  watches the flow pass (like standing at the bank of a river), in the
+  Lagrangian description we 'follow the fluid' (as in a boat flowing
+  with the river or on a weather balloon).
+
+- It is possible to formulate the equations of fluid mechanics in
+  Lagrangian coordinates (so that $v_i = v_i(X_j,t)$) but this is quite
+  un-natural for fluid flow as it is impossible to identify a sensible
+  reference configuration (not such an issue in solid mechanics).
+
+- The notion of 'following the fluid' will be an important one, as the
+  laws of nature (e.g. Newton's second law) are formulated for material
+  substances (i.e. fluid elements), rather than to arbitrary points in
+  space (which are composed of different fluid elements at every
+  instant). This consideration will lead us to the notion of the
+  material derivative, which allows us to express the rate of change
+  inside a material element (i.e. a Lagrangian derivative) in terms of
+  Eulerian coordinates.
+
+## Flow Visualisation
+
+In order to gain some intuition about exactly what a fluid is doing, we need
+ways to visualise flows, both experimentally and theoretically.
+The following video discusses approaches to flow visualisation.
+
+{{< video https://www.youtube.com/watch?v=nuQyKGuXJOs&list=PL0EC6527BE871ABA3&index=5 >}}
+
+The most common way to visualise a flow, theoretically (once we have
+$\bfv$) or experimentally, is to consider the paths which
+particles take inside it. Alternatively, we may be interested in the
+velocity field at an instant in time (the streamlines). Only for a
+steady flow ($\partial_t \bfv=\bfzero$) do these curves
+coincide.
+
+### Particle Paths
+
+The paths of fluid elements ('*particle paths*') $x_i^{p}(t)$ are
+defined by
+$$
+\left.\frac{\partial x_i^{p}(t)}{\partial t}\right|_{\text{fixed $X_k$}} = v_i
+$$ {#eq-paths}
+with *initial positions fixed* $x_i^{p}(t=0)=X_i$. Upon integration,
+eliminating $t$ gives the particle paths.
+
+This also provides a way to switch from the Eulerian description to the
+Lagrangian one, with the three constants of integration $(X,Y,Z)$
+specifying the Lagrangian coordinates of a particular trajectory (i.e. a
+specific fluid element).
+
+### Streamlines
+
+In general, the particle paths differ from the *streamlines* defined by
+curves which are tangential to the velocity at every point at a *fixed
+time*. Mathematically, if we parameterise these curves by an independent
+parameter $s$ then our streamlines $(x,y,z)=(x(s),y(s),z(s))$ are
+obtained by solving
+$$
+\left.\frac{\partial x_i(s)}{\partial s}\right|_{\text{fixed $t$}} = v_i.
+$$
+
+### Experimental Visualisation
+
+To visualise a flow field one usually places illuminated passive tracers
+(e.g. dye, bubbles or beads that don't alter the flow) into the flow (@fig-expstreamlines). Then, to obtain particle paths one
+simply tracks the position of these tracers as a function of time,
+whilst to obtain the streamlines one could take a short exposure photo
+so that the illuminated tracers show short streak lines (whose length
+will be proportional to the fluid speed). In a steady flow, this
+streamline pattern will be fixed for all times and a fluid particle
+starting on a streamline will remain on it, whereas for unsteady flow
+the particle paths and streamlines will not coincide.
+
+::: {#fig-expstreamlines}
+![](images/cylinderimage.jpg){width=100%}
+
+Steady laminar flow (from left to right) around a solid cylinder with
+streamlines/particle paths showing the trajectories of fluid
+elements
+:::
+
+Notably, even in a steady flow, as fluid particles travel along the
+streamlines their velocity will change, i.e. they will accelerate and
+decelerate. To formalise this rate of change caused by the evolution of
+fluid particles, we have to introduce the material derivative.
+
+## The Material Derivative
+
+The *material derivative* $D_t=\frac{D}{D t}$ gives the rate of change
+of a quantity which 'follows the fluid' (i.e. moves under the fluid's
+velocity field) as opposed to $\partial_t$ which gives the rate of
+change of a quantity at a point fixed with respect to Eulerian
+coordinates. In other words, it gives the time derivative moving along a
+fluid particle trajectory described by @eq-paths.
+
+When applied to a quantity (scalar or vector) $f(x_i^p(t),t)$, written
+in Eulerian coordinates, a simple application of the chain rule gives:
+$$
+\frac{Df}{Dt}
+= \frac{d}{dt} f(x_i^p(t),t)
+= \frac{\partial f}{\partial t} + \frac{\partial f}{\partial x_i} \frac{\partial x_i^{p}(t)}{\partial t}
+= \left( \frac{\partial }{\partial t} + v_i \frac{\partial }{\partial x_i}\right) f
+$$
+so that symbolically the material derivative operator is
+$$
+\frac{D}{Dt}  \equiv \left(\frac{\partial}{\partial t} + \bfv  \cdot \nabla \right)
+$$
+
+- The first term is the local rate of change at a fixed Eulerian
+  position $\bfx$ due to temporal changes.
+
+- The second is the 'convective rate of change' caused by the velocity
+  $\bfv$ driving fluid elements through spatial gradients in the
+  quantity of interest.
+
+::: {.callout-caution title="Example"}
+If there is a concentration of pollutant $c=c(x)$ in a
+river that flows steadily with constant speed $\bfv=(v_0,0,0)$,
+how does the concentration change in a fluid element that 'follows the
+fluid'?
+
+![](images/river.jpg){width=100%}
+
+A complementary video can be found [here](https://www.youtube.com/watch?v=BLVY69SYVBQ).
+::::
+
+- The material derivative will be important when it comes to a
+  consideration of the acceleration $a_i$ of a fluid element.
+
+- If $D_t f  = 0$, then clearly the quantity $f$ is a constant *in a
+  particular fluid element*. However, this constant can take different
+  values in different fluid elements - all we know is that $f$ retains
+  the value it started with.
+
+### Acceleration
+
+It is the material derivative which gives us the rate of change of
+velocity, i.e. the acceleration $\bfa=a_i$, of the fluid element
+$$
+a_i = \frac{Dv_i}{Dt}  = \frac{\partial v_i}{\partial t} + v_j \frac{\partial v_i}{\partial x_j} \qquad \text{or} \qquad  \bfa = \frac{D\bfv}{Dt} = \frac{\partial\bfv}{\partial t} + (\bfv  \cdot \nabla) \bfv.
+$$
+Notably, even when the flow is *steady*, so that
+$\partial_t \bfv=0$, the acceleration still has a component
+$(\bfv  \cdot \nabla) \bfv$ due to the spatial variation of
+the velocity field---this is the convective acceleration.
+
+::: {.callout-caution title="Example"}
+If we take a one-dimensional steady flow
+$\bfv = (u(x),0,0)$, then what is the acceleration of fluid
+particles?
+
+![](images/acceleration.jpg){width=100%}
+
+:::
+
+In the Examples Sheet you will consider a *steady* flow in uniform
+rotation with angular velocity $\Omega$ with velocity given by
+$(u,v,w)=(-\Omega y, \Omega x,0)$. As we know, fluid particles must be
+accelerating inwardly (centrifugal force) and you will see it is the
+convective acceleration that accounts for this term.
+
+## Kinematics {#sec-kinematics}
+
+The study of the deformation of continuous media (including solid and
+fluid dynamics) is a course in its own right, so we will only consider
+the concepts we will require to formulate the equations of fluid
+mechanics, with additional details contained in @sec-vorticity-and-ros and the
+video on Deformation of Continuous Media, [here](https://www.youtube.com/watch?v=pqWwHxn6LNo).
+In particular, we will attempt to understand how flow deforms fluid elements; as it is this
+(rate of) deformation that will generate the internal stress (and hence
+forces) required by our momentum balance equations (Newton II). This is
+in contrast to elasticity, where in the simplest case it is displacement
+that generates stress (via Hooke's law).
+
+The velocity can be decomposed into fundamental components which specify
+the kinematics of the flow (the geometry of the motion), i.e. how small
+fluid elements are deformed by the flow. To do so, consider the flow at
+an infinitesimal distance $\delta x_j$ from a reference point $x_j$, see
+@fig-deform.
+
+::: {#fig-deform}
+
+![](images/deform.jpg){width=100%}
+
+Flow kinematics - how the flow velocity varies in the vicinity of (a
+distance $\delta \bfx$ from) a point
+$\bfx$.
+
+:::
+
+The Taylor expansion of $v_i(x_j+\delta x_j)$, keeping only the terms up
+to the first power in $\delta x_j$ inclusive, gives
+$$
+\begin{aligned}
+v_i(x_j+\delta x_j,t) 
+&= v_i(x_j,t) + \frac{\partial  v_i}{\partial x_j}~\delta x_j \\
+&=  \underbrace{\underbrace{\vphantom{\frac{\omega_j}{2}}v_i(x_j)}_{\text{Translation}} \; +\;  \underbrace{ \epsilon_{ijk}\frac{\omega_j}{2} \delta x_k}_{\text{Rotation}}}_{\text{Rigid Body Motions}} \quad +\!\!\!\! \underbrace{\quad\vphantom{\underbrace{\frac{\omega_j}{2}}_{\text{Rotation}}}e_{ij} ~\delta x_j\quad}_{\text{Shearing and Extension}}
+\end{aligned}
+$$ {#eq-decomposition1}
+where we have decomposed $\partial_{x_j}  v_i$ into a rotational part
+and a shearing/extensional part; see @sec-vorticity-and-ros
+for further details. Writing the deformation this way allows us to identify the
+*vorticity* $\bfomega$ as half of the local rate of rotation in
+the fluid; in Cartesian coordinates, the vorticity can be computed by working out the determinant
+$$
+\bfomega 
+= \begin{vmatrix}
+    \bfe_x &  \bfe_y & \bfe_z\\
+    \frac{\partial}{\partial x} & \frac{\partial}{\partial y} & \frac{\partial}{\partial z} \\
+    u & v & w
+  \end{vmatrix}
+= \left(\frac{\partial w}{\partial y} - \frac{\partial v}{\partial z},\, \frac{\partial u}{\partial z} - \frac{\partial w}{\partial x},\, \frac{\partial v}{\partial x} - \frac{\partial u}{\partial y}\right).
+$$
+The symmetric ($e_{ij}=e_{ji}$) *rate of strain tensor* is
+a measure of the relative flow of adjacent fluid elements
+$$
+e_{ij} = \frac{1}{2} \left( \frac{\partial  v_i}{\partial x_j}+  \frac{\partial  v_j}{\partial x_i}\right).
+$$
+@sec-vorticity-and-ros discusses why this is indeed the rate of strain
+tensor, as does the following video.
+
+{{< video https://www.youtube.com/watch?v=O4J4M2K3Tq0 >}}
+
+In particular, we find that the first two terms in
+@eq-decomposition1 are associated with rigid body motion,
+it is the third term $v_i^S = e_{ij}\delta x_j$ which represents the
+straining motions which distinguish the flow through the relative motion
+of adjacent fluid elements. The rate of strain tensor $e_{ij}$ can be
+further decomposed into:
+
+  a. diagonal elements, which are associated with stretching and compressive motion, and
+  b. off-diagonal elements, give the shear rate of strain, describing how much adjacent fluid elements slide past one another.
+
+::: {#fig-deformation}
+
+![](images/deformationtypes.jpg){width=100%}
+
+Different modes of deformation to a fluid element (in
+2D).
+:::
+
+So we have seen that it is the vorticity and rate of strain that give us
+all of the information we require to understand how fluid elements are
+locally deformed, with the former telling us about the rotation of the
+flow and the latter about the relative motion of fluid elements (which
+generates viscous stress).
+
+An important class of flows we will encounter are those without
+vorticity $\bfomega=\bfzero$, and they are said to be
+*irrotational*. In such flows, each fluid element has no angular
+velocity. For example, we will see that fluid elements in the viscous
+boundary layer near a solid are rotational, so that these elements
+rotate end over end as they move parallel to the boundary, whereas
+elements outside this layer are irrotational (@fig-rotational).
+
+::: {#fig-rotational}
+
+![](images/boundarylayer.jpg){width=100%}
+
+The difference between rotational (in the boundary layer) and
+irrotational flow (outside the layer). The crosses represent markers
+placed into the flow, which would rotate inside the boundary layer and
+not outside.
+:::
+
+## Vorticity and the Rate of Strain Tensor* {#sec-vorticity-and-ros}
+
+This section complements @sec-kinematics, showing why $\bfe$ and $\bfomega$
+are indeed associated with rate of strain and vorticity.
+
+### Decomposition
+
+Recalling the Taylor expansion of $v_i(x_j+\delta x_j)$ made in @eq-decomposition1, we name the terms
+$$
+\begin{aligned}
+v_i(x_j+\delta x_j,t)
+&= v_i(x_j,t) + \frac{\partial  v_i}{\partial x_j}~\delta x_j \\
+&=  \underbrace{\underbrace{v_i(x_j)}_{\text{Translation}} \; +\;  \underbrace{r_{ij}~\delta x_j}_{\text{Rotation}}}_{\text{Rigid Body Motions}} \quad +\!\!\!\! \underbrace{\vphantom{\underbrace{\delta x_j}_{\text{Rotation}}}\;e_{ij} ~\delta x_j\;}_{\text{Shearing and Extension}}
+\end{aligned}
+$$ {#eq-decomposition2}
+where we have decomposed $\frac{\partial v_i}{\partial x_j}$ into an anti-symmetric (meaning that $r_{ij} = -r_{ji}$)
+*rate of rotation tensor*
+$$
+r_{ij}=\frac{1}{2}\left( \frac{\partial  v_i}{\partial x_j} -  \frac{\partial  v_j}{\partial x_i}\right)
+$$
+and the symmetric (meaning that $e_{ij}=e_{ji}$) *rate of strain tensor*
+$$
+e_{ij} = \frac{1}{2} \left( \frac{\partial  v_i}{\partial x_j}+  \frac{\partial  v_j}{\partial x_i}\right).
+$$
+
+Each of the terms in @eq-decomposition2 contributes a term to the overall velocity:
+$$
+v_i(x_j+\delta x_j,t) = v_i^T + v_i^R + v_i^S,
+$$ {#eq-decomposition3}
+where
+$$
+v_i^T = v_i(x_j),\quad  v_i^R = r_{ij}~\delta x_j,\quad \text{and}\quad v_i^S = e_{ij} ~\delta x_j,
+$$
+and each of the terms can now be analysed.
+
+### Vorticity
+
+Due to the antisymmetry of $r_{ij}$, there are only 3 independent
+components. All of the diagonal elements are zero; for example $r_{11}=-r_{11}$ means that $r_{11}=0$. 
+In this case, we can rewrite the term
+$v_i^R = r_{ij}~\delta x_j$ in @eq-decomposition3 as a cross product
+$v_i^R = \epsilon_{ijk}\Omega_j \delta x_k$ or
+$\bfv^R = \bfOmega\times\delta\bfx$ (see
+@fig-rotation), where $\Omega_j = (r_{32},r_{13},r_{21})$ is
+the *rate of rotation vector* (you are encouraged to check this for yourself).
+Thus we see that this term is associated with rigid body rotation about the reference
+point with rotational rate $\bfOmega$. The direction of $\bfOmega$ determines the axis
+of rotation, and the magnitude determines the speed of rotation.
+
+::: {#fig-rotation}
+
+![](images/rotation.jpg){width=100%}
+
+Sketch illustrating the rigid body rotation
+$\bfv^R = \bfOmega\times\delta\bfx$ induced a
+distance $\delta\bfx$ away from a point $\bfx$ by
+the rotation rate $\bfOmega$. Here, $\bfOmega$ points out of the
+paper.
+:::
+
+Notably, the rate of rotation vector $\bfOmega$ is equal to half
+the *vorticity* vector
+$$
+\bfomega = \nabla\times\bfv
+= 2\bfOmega, \qquad\text{so that}\qquad \bfv^R
+= \frac 1 2 \bfomega\times\delta\bfx
+$$ {#eq-vorticity}
+which is an important fluid mechanical quantity we will repeatedly
+encounter. Now we can recognise it as a measure of the local rate of
+rotation in the fluid.
+
+### Rate of Strain Tensor
+
+Consider how the components of $e_{ij}$ deform an infinitesimal
+rectangular fluid element of size $\delta x\times\delta y$
+(@fig-straincomponents) in a two-dimensional flow
+$\bfv=(u(x,y,t),v(x,y,t),0)$. For simplicity, we will remove
+translation of the fluid element by considering flow relative to the
+point $A$, so that a Taylor expansion gives the flow components at
+adjacent points to $A$ shown in @fig-straincomponents.
+
+::: {#fig-straincomponents}
+![](images/deformation0.jpg){width=100%}
+
+The velocity components relative to a point A in a material element M
+at time $t$.
+:::
+
+#### Extensional Strain Rate
+
+From @fig-strained we can see that *extensional rate of strain*
+acts to increase the lengths of the sides. For example, taking the line
+$AB$, in a time $\delta t$ the point B moves so that the new length of
+$AB$ at time $t+\delta t$ is
+$$
+\delta x(t+\delta t) = \delta x(t) +  \underbrace{\frac{\partial u}{\partial x}\delta x(t)}_{\text{speed}}\,\underbrace{\vphantom{\frac{\partial u}{\partial x}}\delta t}_{\text{time}}.
+$$ {#eq-strain}
+Therefore, the (infinitesimal) strain (extension/original length)
+$$
+\delta S_x
+= \frac{\delta x(t+\delta t) - \delta x(t)}{\delta x(t)}
+= \frac{\partial u}{\partial x}\delta t \quad\text{so the rate of strain is} \quad\frac{\partial S_x}{\partial t}
+=\frac{\partial u}{\partial x}= e_{11},
+$$
+as hoped/expected.
+
+::: {#fig-strained layout-ncol=2}
+![](images/extensional.jpg){height=5cm}
+
+![](images/shearstrain.jpg){height=5cm}
+
+Left: deformation due to extensional strain on the material
+element at a time $t+\delta t$. Right:
+influence of shear strain on the material element at a time $t+\delta t$.
+:::
+
+It can be shown that the extensional components change the volume $V$ of
+the fluid element as
+$$
+\frac{1}{V}\frac{D V}{Dt} = e_{kk}, \qquad\text{or symbolically,}\qquad \frac{1}{V}\frac{D V}{Dt} = \nabla\cdot\bfv
+$$ {#eq-volume}
+so that for an incompressible fluid, where the volume of the fluid
+element does not change in time ($D_t V=0$), we have
+$e_{kk}=e_{11}+e_{22}+e_{33}=0$. In other words, extension of a fluid
+element in one direction must lead to contraction in one of the other
+directions.
+
+#### Shear Strain Rate
+
+The *shear* rate of strain acts to drive the element from its
+rectangular shape. This can be quantified by measuring the angle between
+the sides. It can be shown that the angle $\theta$ at $CAB$ in
+@fig-straincomponents evolves according to
+$$
+-\frac{\partial \theta}{\partial t} = 2e_{12}.
+$$
+You can check this as an example, if you like!

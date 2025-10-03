@@ -1,0 +1,91 @@
+
+# Fluids
+
+## Introduction
+
+As HetSys cohorts tend to be very interdisciplinary, it is inevitable
+that some of you will find many part of this course relatively
+straightforward (and may have covered some of the material before),
+whilst others of you will find it extremely challenging, particularly
+those with a less mathematical background. Where possible, particularly
+for the Projects, I have tried to provide both the basics and more
+advanced concepts for those with more previous experience in this area,
+and I will take into account your prior knowledge when assessing you. I
+have tried to focus the course on gaining an appreciation for the
+macroscopic modelling of fluid flow, whilst also streamlining the
+derivation of the governing equations of fluid dynamics. Various
+additional details are contained in Appendices at the end of chapters
+for the interested reader, and plenty more excellent material is
+available in the recommended textbooks.
+
+Although we will encounter some canonical flows where analytic solutions
+are attainable, the use of mathematical techniques to solve fluid flow
+problems is not the focus of this course. Instead, the intention is to
+give you an introduction to various computational techniques in the
+workshops, and an appreciation for some of the important considerations
+that underly the method one chooses to solve a particular problem.
+
+During the lectures in the first part, we will cover the following
+topics:
+
+- **Macroscopic Modelling of Fluid Flow**: vector calculus, index
+  notation, continuum limit, incompressible flows, Lagrangian/Eulerian
+  descriptions, flow visualisation, material derivative, vorticity &
+  rate of strain
+
+- **Governing Equations of Fluid Dynamics**: conservation laws,
+  constitutive equations, Navier-Stokes/Euler/Stokes equations,
+  dimensionless parameters, boundary/initial condition, modelling
+  frameworks
+
+- **Canonical Flows**: stream function, plane parallel shear flows,
+  Couette/Poiseuille flow, circular flows, rigid body rotation, point
+  vortex
+
+- **Free Surface Flows**: kinematic/dynamic boundary conditions, surface
+  tension, bubbles, Bond/capillary numbers, Young-Laplace equation
+
+In the workshops you will develop your own codes to solve real-world
+problems.
+
+- **Computational Fluid Dynamics**: finite differences, linear/nonlinear
+  equations, unsteady problems, solving free surface flows
+
+## Supporting Resources
+
+### Reading list
+There are a huge array of books on the topic of fluid dynamics and you
+should feel free to engage with any of them. My particular favourite is:
+
+- **D.J. Acheson**, Elementary Fluid Dynamics, OUP. (Well-written
+  accessible exposition of fluid dynamics with a useful set of questions
+  and solutions.).
+
+However other famous possibilities include:
+
+- **G. K. Batchelor** An Introduction to Fluid Dynamics, CUP (A classic
+  which goes into greater detail than the present course).
+
+- **L.D. Landau and E.M. Lifshitz**, Fluid Mechanics, OUP. (A classic
+  for those with a deep interest in fluid dynamics in modern physics.)
+
+- **A.R. Paterson**, A First Course in Fluid Dynamics, CUP. (Easier than
+  Acheson.)
+
+- **D.J. Tritton**, Physical Fluid Dynamics, Oxford Science Publs.
+  (Emphasis is on the physical phenomena and less on the mathematics.)
+
+For the Chapters on interfacial flow I would recommend John Bush's notes
+(which go into far more detail that I will have time to) which you can
+obtain as MIT Open Courseware [here](https://ocw.mit.edu/courses/mathematics/18-357-interfacial-phenomena-fall-2010/lecture-notes/MIT18_357F10_lec_all.pdf).
+
+### Videos
+
+In the 1960's a fantastic set of videos were filmed by the National
+Committee for Fluid Mechanics Films (see
+[here](http://web.mit.edu/hml/ncfmf.html)). These can now be found on YouTube
+[here](http://tinyurl.com/pwnud46) (though you'll need to put up with
+the sound being out of sync with the presenter's voice!). Another good
+resource for fluid videos and pictures is to be found [here](https://gfm.aps.org/).
+I will try to provide links to relevant videos on Moodle - if you find any
+other interesting videos/pictures, please let me know.

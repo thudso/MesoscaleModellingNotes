@@ -1,0 +1,14 @@
+# Quarto build output
+/_site/
+/*.html
+
+# R or Python junk
+.Rproj.user/
+.Rhistory
+.RData
+__pycache__/
+*.pyc
+
+# OS files
+.DS_Store
+Thumbs.db

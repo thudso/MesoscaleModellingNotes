@@ -1,0 +1,1244 @@
+# Beam theory
+
+While the equations of linear elasticity can be studied directly with Finite Elements (and indeed, this
+is a standard computational task in R&D in industry), it can be very useful to work with reduced versions
+of the full elasticity equations. Originally, these reduced theories were developed because they were more
+analytically tractable in the days before computers, but they still offer a lot of physical insight and
+can be solved more quickly via computational methods than a full finite element simulation, as we will explore.
+
+Among the many reduced theories that exist, we focus here on *beam theory*, a version of which dates back
+to Leonhard Euler and Johannes Bernoulli in the middle of the 18th century.
+
+## Beams
+A *beam* is a long, thin object with a constant cross-section.
+The beam equation is
+$$
+-EI\frac{d^4w}{dX^4}+T\frac{d^2w}{dX^2}=f(X_1),
+$$ {#eq-beam}
+where:
+
+- $E$ is the Young's modulus,
+- $I$ is the second moment of the cross-sectional area,
+- $T$ is the tension, and
+- $f$ is the effective applied load.
+
+We will not directly derive this equation from the equations of linear elasticity, as doing so is a quite a long and complicated story, but we can show that it seems reasonable as an effective model by the argument presented below.
+
+## Three-point bending
+
+A classic materials test is the three-point bending test. A real example of an experimental rig to perform this test is shown in @fig-3pt-experiment.
+
+::: {#fig-3pt-experiment}
+![](images/three-point-bend.jpg){height=5cm}
+
+A three-point bending experiment ([image source](https://www.instron.com/en/products/testing-accessories/flexure-fixtures/three-point-bend-test-fixtures/)).
+:::
+
+In the experimental rig, a sample of material is placed on two supports and a press is pushed from above into the sample. This test is usually performed for either thin rod-like samples, or flat plate samples.
+
+In a typical test, there is no applied tension along the sample, nor is there any moment or other force applied at the ends. as we see from the picture, the ends are left free. To model this, we can set $T=0$ in the beam equation, and we use the boundary conditions
+$$
+\frac{\partial^3 w}{\partial x^3} = \frac{\partial w^2}{\partial x^2} = 0
+$$
+at the ends of the beam. The problem we need to solve is therefore
+$$
+-EI\frac{d^4w}{dX^4} = f
+$$
+
+::: {#fig-3pt-solution}
+![](tikz/ThreePointBending.svg){height=5cm}
+
+A model for the three-point bending test with supports and press as point forces.
+:::
+
+To model the influence of the supports and the press, we can assume that the applied force is concentrated at contact points. Let's assume a symmetrical set-up where the supports are at $x=\pm S$ and the press is at $x=0$, as shown in @fig-3pt-solution. The length of the beam is assumed to be $L$, so the ends are at $\pm\frac12L$.
+
+Assuming that the supports provide an equal positive net force on the beam and the press causes a negative net force on the beam, we set
+$$
+f = \tfrac12 F\delta_{-S}-F\delta_0+\tfrac12 F\delta_{+S},
+$$
+where $\delta_{-S}$, $\delta_0$ and $\delta_{+S}$ are Dirac delta functions. Dirac delta functions are not really functions but measures (this is a long story in itself, which we will ignore here). The subscript indicates where the delta function is centred. For our purposes, the imporant facts about $\delta_c$ are the following:
+
+1. Integrating a continuous function $f$ multiplied by a Dirac delta yields the evaluation of that function.
+$$
+\int_a^b f(x)\delta_y(x)\, dx = f(y).
+$$
+2. This in turn means that we can solve differential equations which have delta functions on their right hand sides, as follows:
+$$
+\frac{df}{dx}(x) = A\delta_y(x)
+\quad\text{implies that}\quad
+f(x) =
+\begin{cases}
+    C & x < y\\
+    C+A & x >y,
+\end{cases}
+$$
+where $C$ is an unknown constant. Notice that the delta function leads to a function with a jump. The factor multiplying the delta function determines the size of the jump, $A$, while the position of the delta function, $y$, determines the location of the jump.
+
+For convenience, let's divide the equation through by the factor $EI$, so defining $\tilde{F} := F/EI$, we need to solve
+$$
+-\frac{d^4w}{dX^4} = \tfrac12 \tilde{F}\delta_{-S}-\tilde{F}\delta_0+\tfrac12 \tilde{F}\delta_{+S}
+$$
+Integrating the beam equation we get
+$$
+\frac{d^3w}{dx^3} = \begin{cases}
+    a_0 & -L<x\leq -S\\
+    a_0+\tfrac12\tilde{F} & -S< x\leq 0,\\
+    a_0-\tfrac12\tilde{F} & 0< x\leq S,\\
+    a_0 & S< x\leq L,
+\end{cases}
+$$
+where $a_0$ is a constant to be determined. Note that our boundary conditions
+$$
+\frac{\partial^3 w}{\partial x^3}(\pm L) = 0
+$$
+imply that $a_0=0$. Notice that the two conditions amount to the same requirement on $a_0$:
+what is the physical reason for this?
+
+Substituting $a_0=0$ and integrating again, we have
+$$
+\frac{d^2w}{dx^2} = \begin{cases}
+    -\tfrac12\tilde{F}S+a_1 & -L<x\leq -S\\
+    +\tfrac12\tilde{F}x+a_1 & -S< x\leq 0,\\
+    -\tfrac12\tilde{F}x+a_1 & 0< x\leq S,\\
+    -\tfrac12\tilde{F}S+a_1 & S< x\leq L.
+\end{cases}
+$$
+Note that we have a new constant $a_1$ to be determined, and we have defined the piecewise function in such a way that it is continuous throughout. The second-order boundary conditions
+$$
+\frac{\partial^2 w}{\partial x^2}(\pm L) = 0
+$$
+mean that we require $a_1=\tfrac12\tilde{F}S$. Subbing in, we have
+$$
+\frac{d^2w}{dx^2} = \begin{cases}
+    0 & -L<x\leq -S\\
+    \tfrac12\tilde{F}(S+x) & -S< x\leq 0,\\
+    \tfrac12\tilde{F}(S-x) & 0< x\leq S,\\
+    0 & S< x\leq L.
+\end{cases}
+$$
+Integrating again, we have
+$$
+\frac{dw}{dx} = \begin{cases}
+    a_3-\tfrac14\tilde{F}S^2 & -L<x\leq -S\\
+    +\tfrac14\tilde{F}(S+x)^2+a_3-\tfrac14\tilde{F}S^2 & -S< x\leq 0,\\
+    -\tfrac14\tilde{F}(S-x)^2+a_3+\tfrac14\tilde{F}S^2 & 0< x\leq S,\\
+    a_3+\tfrac14\tilde{F}S^2 & S< x\leq L.
+\end{cases}
+$$
+Integrating once more, we have
+$$
+w = \begin{cases}
+    (a_3-\tfrac14\tilde{F}S^2)x+a_4 & -L<x\leq -S\\
+    \tfrac1{12}\tilde{F}(x+S)^3+(a_3-\tfrac14\tilde{F}S^2)x+a_4 & -S< x\leq 0,\\
+    \tfrac1{12}\tilde{F}(x-S)^3+(a_3+\tfrac14\tilde{F}S^2)x+a_4 & 0< x\leq S,\\
+    (a_3+\tfrac14\tilde{F}S^2)x+a_4 & S< x\leq L.
+\end{cases}
+$$
+Note that we have two free constants left in the equation, even after applying all the boundary conditions! We can set these by requiring that the vertical displacement at the supports is identical and equal to zero, our reference height, so $w(\pm S)=0$.
+This leads to the equations
+$$
+\begin{aligned}
+-a_3S+\tfrac14\tilde{F}S^3+a_4 &= 0\\
++a_3S+\tfrac14\tilde{F}S^3+a_4 &= 0,
+\end{aligned}
+$$
+which can be solved to yield
+$$
+a_3=0
+\quad\text{and}\quad
+a_4 = -\tfrac14\tilde{F}S^3
+$$
+The final displacement function is therefore
+$$
+w = \begin{cases}
+    -\tfrac14\tilde{F}S^2(S+x) & -L<x\leq -S\\
+    -\tfrac14\tilde{F}S^2(S+x)+\tfrac1{12}\tilde{F}(S+x)^3 & -S< x\leq 0,\\
+    -\tfrac14\tilde{F}S^2(S-x)+\tfrac1{12}\tilde{F}(S-x)^3 & 0< x\leq S,\\
+    -\tfrac14\tilde{F}S^2(S-x) & S< x\leq L.
+\end{cases}
+$$
+This solution (for particular values of $\tilde{F}$ and $S$) is shown in @fig-3pt-solution.
+Recalling that $\tilde{F} = F/EI$, we notice that the vertical displacement of the plate in the centre
+from the reference height is the same as the value of $a_4$, i.e.
+$$
+\text{Deflection} = -\frac{FS^3}{4EI}.
+$$
+If we can measure the forces applied and the distance between the supports $S$, and we also
+measure the displacement, we can infer the value of $EI$. This demonstrates the utility of the three-point bend
+test for thin structures: it gives us a way to characterise the elastic properties of materials.
+
+## Finite elements for the beam equation
+
+To construct a finite element approximation for the beam equation, we need to find an appropriate weak form.
+Multiplying by a test function $\varphi$ and integrating, we have
+$$
+\int_{-L}^L -EI\frac{d^4w}{dx^4}\varphi+T\frac{d^2w}{dx^2}\varphi\,dx=\int_{-L}^L f \varphi\,dx.
+$$
+Integrating the fourth-order term by parts twice, we have:
+$$
+\begin{aligned}
+\int_{-L}^L -EI\frac{d^4w}{dx^4}\varphi\,dx
+&= -EI\left[\frac{d^3w}{dx^3}\varphi\right]_{x=-L}^{x=L}+\int_{-L}^L EI\frac{d^3w}{dx^3}\frac{d\varphi}{dx}\,dx\\
+&= -EI\left[\frac{d^3w}{dx^3}\varphi\right]_{x=-L}^{x=L}+EI\left[\frac{d^2w}{dx^2}\frac{d\varphi}{dx}\right]_{x=-L}^{x=L}-\int_{-L}^L EI\frac{d^2w}{dx^2}\frac{d^2\varphi}{dx^2}\,dx
+\end{aligned}
+$$
+Integrating the second-order term by parts once gives
+$$
+\int_{-L}^L T\frac{d^2w}{dx^2}\varphi\,dx = T\left[\frac{dw}{dx}\varphi\right]_{x=-L}^{x=L}-\int_{-L}^L T\frac{dw}{dx}\frac{d\varphi}{dx}\,dx.
+$$
+Putting everything together, we find that a solution to @eq-beam must satisfy
+$$
+-EI\left[\frac{d^3w}{dx^3}\varphi\right]_{x=-L}^{x=L}+EI\left[\frac{d^2w}{dx^2}\frac{d\varphi}{dx}\right]_{x=-L}^{x=L}+T\left[\frac{dw}{dx}\varphi\right]_{x=-L}^{x=L}-\int_{-L}^L EI\frac{d^2w}{dx^2}\frac{d^2\varphi}{dx^2}+ T\frac{dw}{dx}\frac{d\varphi}{dx}\,dx
+=\int_{-L}^L f \varphi\,dx
+$$
+for any test function $\varphi$. Depending on the boundary conditions, we might
+have that some of the evaluation terms on the left hand side vanish too. For concreteness, let's consider clamped ends,
+which means that $w$ and $\frac{dw}{dx}$ are fixed to be zero; this means we don't need to consider the third evaluation term involving $\frac{dw}{dx}$ at the ends. Choosing $\varphi$ such that $\varphi(\pm L)=\frac{d\varphi}{dx}(\pm L)=0$, the other evaluation terms also
+vanish, and we obtain
+$$
+\int_{-L}^L EI\frac{d^2w}{dx^2}\frac{d^2\varphi}{dx^2}+ T\frac{dw}{dx}\frac{d\varphi}{dx}+ f \varphi\,dx=0
+$$
+for any $\varphi$ satisfying the conditions above.
+
+
+### Basis functions
+We will take a Galerkin approach to this problem, so we will write approximate solutions and test functions in the form
+$$
+u^h = \sum_i a_i\phi_i
+\quad\text{and}\quad
+\varphi^h = \sum_{i}a_i \phi_i.
+$$
+To make sense of weak solutions to this problem, it turns out that the basis functions we should use should be continuous
+and have continuous derivatives at the end points. One possible way to ensure this is to choose two sets of piecewise polynomial functions
+satisfying
+$$
+\begin{aligned}
+\phi_i(x_j) &= \delta_{ij}&\text{and}&&
+\phi_i'(x_j) &= 0,\\
+\psi_i(x_j) &= 0&\text{and}&&
+\psi_i'(x_j) &= \delta_{ij}.
+\end{aligned}
+$$
+Functions which satisfy these conditions are:
+$$
+\begin{aligned}
+\phi(\xi) &=
+\begin{cases}
+    1-3\xi^2-2\xi^3 & -1\leq \xi\leq 0\\
+    1-3\xi^2+2\xi^3 & 0\leq \xi\leq 1\\
+    0 &\text{otherwise.}
+\end{cases}\\
+\psi(\xi) &=
+\begin{cases}
+    \xi+2\xi^2+\xi^3 & -1\leq \xi\leq 0\\
+    \xi-2\xi^2+\xi^3 & 0\leq \xi\leq 1\\
+    0 &\text{otherwise.}
+\end{cases}
+\end{aligned}
+$$
+The profiles of these functions are shown in @fig-cubic-elements.
+
+::: {#fig-cubic-elements layout-ncol=2}
+![](tikz/CubicHermiteElements-A.svg){height=5cm style="height:5cm; width:auto; display:block; margin:0 auto;"}
+
+![](tikz/CubicHermiteElements-B.svg){height=5cm style="height:5cm; width:auto; display:block; margin:0 auto;"}
+
+Cubic Hermite basis functions for solving the beam equation on the fundamental
+domain $[-1,1]$. In the first panel, the functions themselves; in the second, their
+derivatives.
+:::
+
+The derivatives of these functions we need to integrate are:
+$$
+\begin{aligned}
+\phi'(\xi) &=
+\begin{cases}
+    -6\xi-6\xi^2 & -1\leq \xi\leq 0\\
+    -6\xi+6\xi^2 & 0\leq \xi\leq 1\\
+    0 &\text{otherwise.}
+\end{cases}\\
+\psi'(\xi) &=
+\begin{cases}
+    1+4\xi+3\xi^2 & -1\leq \xi\leq 0\\
+    1-4\xi+3\xi^2 & 0\leq \xi\leq 1\\
+    0 &\text{otherwise.}
+\end{cases}
+\end{aligned}
+$$
+$$
+\begin{aligned}
+\phi''(\xi) &=
+\begin{cases}
+    -6-12\xi & -1\leq \xi\leq 0\\
+    -6+12\xi & 0\leq \xi\leq 1\\
+    0 &\text{otherwise.}
+\end{cases}\\
+\psi''(\xi) &=
+\begin{cases}
+    4+6\xi & -1\leq \xi\leq 0\\
+    -4+6\xi & 0\leq \xi\leq 1\\
+    0 &\text{otherwise.}
+\end{cases}
+\end{aligned}
+$$
+On an element $(x_i,x_{i+1})$, these functions become
+$$
+\phi_i(x) = 1-3\left(\frac{x-x_i}{x_{i+1}-x_i}\right)^2-2\left(\frac{x-x_i}{x_{i+1}-x_i}\right)^3
+$$
+
+
+## Solids Coursework Project Option 1 {#sec-sol-proj1}
+
+This project is entitled **Finite Element Simulation of a thin structure**, and is one
+of two project options you will have in this section of the module. The second will be
+described in @sec-sol-proj2.
+
+### Project aims
+You should write an approximately 10 page report that demonstrates:
+
+- Engagement with the literature on thin elastic structures;
+
+- Computational results for equilibria under a variety of loading conditions; and
+
+- Validation of code against your own analytic results as well as
+  experimental and/or theoretical results from the published literature.
+
+### Other loading conditions
+
+### Higher-order finite elements
+
+### Project ideas
+The suggestions below are intended to give you ideas of what can be
+done, but you should feel free to follow your own path if you wish.
+
+The starting point for this project is to implement the finite element method for the beam
+equation as considered within the Week 3 Workshop.
+Two possible extensions are to explore nonlinear theories, the derivation
+of the beam equations.
+
+#### Other 
+
+#### Non-linear beam theories
+The beam equation @eq-beam used above is valid for small deflections, and there
+are a range of other nonlinear equations for beams. Some examples include:
+
+#### Going further
+
+
+
+### Analytic solution
+Consider
+$$
+-EI\frac{d^4w}{dx^4}+T\frac{d^2w}{dx^2} = 0.
+$$
+The classical way to solve this equation is to introduce the ansatz $w = \mathrm{e}^{\lambda x}$ and
+try to find the values of $\lambda$ where we get solutions. Subbing in, we find that
+$$
+-EI\lambda^4+T\lambda^2 = 0,
+$$
+with solutions $\lambda = 0$ (twice) and $\lambda = \pm\sqrt{\frac{T}{EI}}$. We can write the general solution as
+$$
+w(x) = A + Bx + C\exp(\sqrt{\frac{T}{EI}}x)+D\exp(-\sqrt{\frac{T}{EI}}x).
+$$
+Subbing in $w(\pm L) = 0$, we have
+$$
+\begin{aligned}
+A - BL + C\exp(-\sqrt{\frac{T}{EI}}L)+D\exp(+\sqrt{\frac{T}{EI}}L) &= 0 \\
+A + BL + C\exp(+\sqrt{\frac{T}{EI}}L)+D\exp(-\sqrt{\frac{T}{EI}}L) &= 0.
+\end{aligned}
+$$
+Adding and subtracting the equations, we find that
+$$
+\begin{aligned}
+A + (C+D)\cosh(\sqrt{\frac{T}{EI}}L)&=0\\
+B + (C-D)\sinh(\sqrt{\frac{T}{EI}}L)&=0.
+\end{aligned}
+$$
+
+# Old!
+
+Clearly many mechanical problems of interest can't just be reduced to a
+1D case, so we need to extend our approach to treat problems in higher
+dimensions. In two and three dimensions there are many possible ways to
+split up a domain into elements; in 2D we can use triangles or
+quadrilaterals, and in the 3D we can use tetrahedra or cuboids. The
+range of possible subdivisions of the domain and the need to automate
+all of this in software means that we need to think more carefully about
+how we parametrise the integrals needed to derive the weak form for
+partial differential equation models and assemble a discretisation.
+
+## Force balance in strong and weak form
+
+The first thing to do is to derive the weak form of the force balance
+equations. For simplicity, let's neglect gravity, so we have
+$$
+\nabla\cdot{\boldsymbol S}= {\boldsymbol 0}
+\qquad\text{or}\qquad
+\begin{aligned}
+    \frac{\partial S_{11}}{\partial X_1}+\frac{\partial S_{12}}{\partial X_2}&=0,\\
+    \frac{\partial S_{21}}{\partial X_1}+\frac{\partial S_{22}}{\partial X_2}&=0,
+\end{aligned}
+\qquad\text{or in Voigt notation:}\qquad
+\begin{aligned}
+    \frac{\partial S_{1}}{\partial X_1}+\frac{\partial S_{6}}{\partial X_2}&=0,\\
+    \frac{\partial S_{6}}{\partial X_1}+\frac{\partial S_{2}}{\partial X_2}&=0,
+\end{aligned}
+$$
+We will add in prescribed displacements
+$\overline{{\boldsymbol u}}$ and tractions $\overline{{\boldsymbol t}}$
+on different pieces of the boundary $\partial D$, which we respectively
+denote $\Gamma_D$ and $\Gamma_N$. The full strong form is:
+$$
+\begin{aligned}
+    \nabla\cdot{\boldsymbol S}&= {\boldsymbol 0} &\quad&\text{in }D,\\
+    {\boldsymbol u}&= \overline{{\boldsymbol u}}&\quad&\text{on }\Gamma_D,\\
+    {\boldsymbol S}{\boldsymbol n}&= \overline{{\boldsymbol t}}&\quad&\text{on }\Gamma_N.
+\end{aligned}
+$$
+
+Next, we recall that the steps needed to derive the weak form are:
+
+1.  Multiply by a test function.
+
+2.  Integrate over the domain.
+
+3.  Integrate by parts to move derivatives from the solution onto the
+    test function.
+
+Here, multiplying by a test function means taking the dot product with a
+vector-valued test function ${\boldsymbol w}= (w_1,w_2)$; after
+integrating over the domain $D$, we get
+$$
+\int_D\left(\nabla\cdot{\boldsymbol S}\right)\cdot{\boldsymbol w}\,dA = 0.
+$$
+Using component expressions with the summation convention and then
+applying the divergence theorem to do our 'integration by parts' step,
+we have that
+$$
+\begin{aligned}
+    \int_D\frac{\partial S_{ij}}{\partial X_j}w_i \,dA
+    &= \int_D \frac{\partial}{\partial X_j}(S_{ij}w_i)-S_{ij}\frac{\partial w_i}{\partial X_j}dA\\
+    &= \int_D \nabla\cdot({\boldsymbol S}^T{\boldsymbol w})-{\boldsymbol S}:\nabla{\boldsymbol w}\,dA\\
+    &= \int_{\partial D}{\boldsymbol S}^T{\boldsymbol w}\cdot{\boldsymbol n}d\ell-\int_DS_{ij}\frac{\partial w_i}{\partial X_j}\,dA\\
+    &= \int_{\partial D}{\boldsymbol w}\cdot({\boldsymbol S}{\boldsymbol n}) d\ell-\int_DS_{ij}\frac{\partial w_i}{\partial X_j}\,dA.
+\end{aligned}
+$$
+In the expressions above, ${\boldsymbol n}$ is the
+outward-pointing unit normal on the boundary. Rearranging, we arrive at
+the following weak form of the force balance equation (note that
+actually this holds in 3D too!):
+$$
+\int_D {\boldsymbol S}:\nabla{\boldsymbol w}\,dA 
+= \int_{\partial D}{\boldsymbol w}\cdot({\boldsymbol S}{\boldsymbol n})\,d\ell\qquad\text{for all test functions }{\boldsymbol w}.
+$$
+It will be convenient to go a little further to make implementation of
+the discrete problem easier. Since the stress tensor ${\boldsymbol S}$
+is symmetric, we note that
+$$
+S_{ij}\frac{\partial w_i}{\partial X_j} = \tfrac12(S_{ij}+S_{ji})\frac{\partial w_i}{\partial X_j} = S_{ij}\frac12\left(\frac{\partial w_i}{\partial X_j}+\frac{\partial w_j}{\partial X_i}\right) = S_{ij}\varepsilon({\boldsymbol w})_{ij},
+$$
+where ${\boldsymbol \varepsilon}({\boldsymbol w})$ is the infinitesimal
+strain tensor corresponding to the test function ${\boldsymbol w}$.
+Again, it turns out that we should take test functions ${\boldsymbol w}$
+to vanish on any parts of the domain boundary $\partial D$ where we fix
+the displacement; we call the remainder of the boundary $\Gamma_N$,
+where we assume the traction is fixed to be
+${\boldsymbol S}{\boldsymbol n}= {\boldsymbol t}$. This means that the
+weak form becomes:
+$$
+\int_D{\boldsymbol S}:{\boldsymbol \varepsilon}({\boldsymbol w})\,dA=\int_{\Gamma_N}{\boldsymbol t}\cdot{\boldsymbol w}\,d\ell\qquad\text{for any test function }{\boldsymbol w}\text{ vanishing on }\Gamma_D.
+$$
+
+## Discretisation
+
+We now turn to discretising the 2D problem. We want to break up the
+domain into elements, and introduce shape functions $N_i$. Our choice
+will be to take 2D elements which are quadrilaterals with nodes at the
+corners, which we denote ${\boldsymbol c}_i$. We will choose the shape
+functions to again satisfy the Kronecker delta property so
+$N_i({\boldsymbol c}_j)=\delta_{ij}$, and such that they are continuous
+along the edges of each element. Note that our shape functions are now
+going to be functions of the two spatial variable, and each node needs
+two DoFs corresponding to the two components of the displacement at each
+node, so
+$$
+{\boldsymbol u}^h = \sum_{i=1}^M {\boldsymbol d}_i N_i,
+\quad\text{where}\quad
+{\boldsymbol d}_i = \left(
+\begin{array}{c}
+    d_{i1} \\ d_{i2}
+\end{array}
+\right)
+$$
+Just as for the 1D problem, we will take our discretised
+test functions to be expressed as a combination of the same shape
+functions, so
+$$
+{\boldsymbol w}^h = \sum_{i=1}^M{\boldsymbol w}_i N_i,\quad\text{where}\quad{\boldsymbol w}_i =
+\left(
+\begin{array}{c}
+    w_{i1} \\ w_{i2}
+\end{array}
+\right).
+$$
+
+Now let's set things up using the Voigt notation approach. Recall that
+in the cases of plane stress and plane strain, we have that
+$$
+\left(
+    \begin{array}{c}
+        S_{11} \\ S_{22} \\ S_{12}
+    \end{array}
+\right) =
+{\boldsymbol C}\left(
+\begin{array}{c}
+    \varepsilon_{11} \\ \varepsilon_{22} \\ 2\varepsilon_{12}
+\end{array}
+\right)
+\quad\text{and}\quad
+\left(
+\begin{array}{c}
+    \varepsilon_{11} \\ \varepsilon_{22} \\ 2\varepsilon_{12}
+\end{array}
+\right)
+=
+\left(
+    \begin{array}{c}
+        \frac{\partial u_1}{\partial X_1} \\ \frac{\partial u_2}{\partial X_2} \\ \frac{\partial u_1}{\partial X_2}+\frac{\partial u_2}{\partial X_1}
+    \end{array}
+\right),
+$$
+where ${\boldsymbol C}$ is a $3\times3$ symmetric matrix
+encoding the relevant parts of the elasticity tensor. For convenience,
+we define $3\times 2$ strain matrices corresponding to each shape
+function as follows:
+$$
+{\boldsymbol B}_i = \left(
+    \begin{array}{cc}
+        \frac{\partial N_i}{\partial X_1} & 0 \\
+        0 & \frac{\partial N_i}{\partial X_2} \\
+        \frac{\partial N_i}{\partial X_2} & \frac{\partial N_i}{\partial X_1}
+    \end{array}
+\right).
+$$
+Note that each of the entries here are functions: we can
+express the approximation of the strain at any point ${\boldsymbol X}$
+in the domain as
+$$
+\left(
+\begin{array}{c}
+    \varepsilon_{11}({\boldsymbol X}) \\ \varepsilon_{22}({\boldsymbol X}) \\ 2\varepsilon_{12}({\boldsymbol X})
+\end{array}
+\right) 
+=\sum_{i=1}^M{\boldsymbol B}_i({\boldsymbol X}){\boldsymbol d}_i.
+$$
+This is a really nice feature of finite elements: we don't just get
+nodal values for the displacements, but also approximate strains (and
+stresses; see below) at all points in the domain! For numerical
+implementation purposes, can encode the formula above in a big
+matrix--vector product as follows:
+$$
+\left(
+\begin{array}{c}
+    \varepsilon_{11} \\ \varepsilon_{22} \\ 2\varepsilon_{12}
+\end{array}
+\right)=
+\left(
+\begin{array}{c|c|c}
+    {\boldsymbol B}_1 & \cdots & {\boldsymbol B}_M
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+    {\boldsymbol d}_1 \\\hline \vdots \\\hline {\boldsymbol d}_M
+\end{array}
+\right)
+=
+\left(
+\begin{array}{cc|c|cc}
+    \frac{\partial N_i}{\partial X_1} & 0 & \cdots & \frac{\partial N_M}{\partial X_1} & 0\\
+    0 & \frac{\partial N_i}{\partial X_2} & \cdots & 0 & \frac{\partial N_M}{\partial X_2}\\
+    \frac{\partial N_i}{\partial X_2} & \frac{\partial N_i}{\partial X_1} & \cdots & \frac{\partial N_i}{\partial X_2} & \frac{\partial N_i}{\partial X_1}
+\end{array}
+\right)\left(
+\begin{array}{c}
+    d_{11}\\
+    d_{12}\\\hline
+    \vdots\\\hline
+    d_{M1}\\
+    d_{M2}
+\end{array}
+\right).
+$$
+The matrix on the left of the product is $3\times 2M$, and
+the vector on the right is $2M\times 1$. We can do the same for test
+functions, replacing $\varepsilon_{ij}$ corresponding to $\mathbf{u}$ by
+the infinitesimal strains corresponding to $\mathbf{w}$, and
+${\boldsymbol d}_i$ by ${\boldsymbol w}_i$ in the formula above. The
+next piece of the puzzle will be to rewrite the product
+${\boldsymbol S}:{\boldsymbol \varepsilon}({\boldsymbol w})= S_{ij}\varepsilon({\boldsymbol w})_{ij}$
+as 
+$$
+S_{ij}\varepsilon({\boldsymbol w})_{ij}
+=\left(
+\begin{array}{ccc}
+    \varepsilon({\boldsymbol w})_{11} & \varepsilon({\boldsymbol w})_{22} & 2\varepsilon({\boldsymbol w})_{12}
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+    S_{11} \\ S_{22} \\ S_{12}
+\end{array}
+\right)\\
+=\left(
+\begin{array}{ccc}
+    \varepsilon({\boldsymbol w})_{11} & \varepsilon({\boldsymbol w})_{22} & 2\varepsilon({\boldsymbol w})_{12}
+\end{array}
+\right)
+{\boldsymbol C}
+\left(
+\begin{array}{c}
+    \varepsilon({\boldsymbol u})_{11} \\ \varepsilon({\boldsymbol u})_{22} \\ 2\varepsilon({\boldsymbol u})_{12}
+\end{array}
+\right),
+$$
+where ${\boldsymbol C}$ is the Voigt elasticity matrix
+corresponding to plane stress or plane strain. Using the expression we
+derived above, we find that
+$$
+{\boldsymbol S}:{\boldsymbol \varepsilon}({\boldsymbol w}) =
+\left(
+\begin{array}{c|c|c}
+    {\boldsymbol w}_1^T & \cdots & {\boldsymbol w}_M^T
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+    {\boldsymbol B}_1^T \\\hline \cdots \\\hline {\boldsymbol B}_M^T
+\end{array}
+\right)
+{\boldsymbol C}
+\left(
+\begin{array}{c|c|c}
+    {\boldsymbol B}_1 & \cdots & {\boldsymbol B}_M
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+    {\boldsymbol d}_1 \\\hline \vdots \\\hline {\boldsymbol d}_M
+\end{array}
+\right).
+$$
+Note that in sequence from left to right, the product on
+the right-hand side of formula is: a $1\times 2M$ row vector, a
+$2M\times 3$ matrix, a $3\times 3$ matrix, a $3\times 2M$ matrix, and a
+$2M\times 1$ column vector. If we integrate the resulting expression
+over the domain $D$, we find that we can express
+$$
+\int_D{\boldsymbol S}:{\boldsymbol \varepsilon}({\boldsymbol w})\,dA = {\boldsymbol w}^T{\boldsymbol K}{\boldsymbol d},
+$$
+where we have defined the $2M\times 2M$ global stiffness matrix as:
+$$
+{\boldsymbol K}= \int_D \left(
+\begin{array}{c}
+    {\boldsymbol B}_1^T \\\hline \cdots \\\hline {\boldsymbol B}_M^T
+\end{array}
+\right)
+{\boldsymbol C}
+\left(
+\begin{array}{c|c|c}
+    {\boldsymbol B}_1 & \cdots & {\boldsymbol B}_M
+\end{array}
+\right)\,dA.
+$$ 
+We can view this as being made up of smaller $2\times2$ blocks:
+$$
+{\boldsymbol K}=
+\left(
+\begin{array}{c|c|c}
+    {\boldsymbol K}_{11} & \cdots & {\boldsymbol K}_{1M} \\\hline
+    \vdots & \ddots & \vdots \\\hline
+    {\boldsymbol K}_{M1} & \cdots & {\boldsymbol K}_{MM}
+\end{array}
+\right)
+\quad\text{with}\quad
+{\boldsymbol K}_{ij} = 
+\int_D {\boldsymbol B}_i^T{\boldsymbol C}{\boldsymbol B}_j\,dA.
+$$
+Moreover, we can think of each of these sub-blocks as containing a sum
+of contributions due to each element $E$ in the domain. In other words,
+we can write:
+$$
+\int_D{\boldsymbol B}_i^T{\boldsymbol C}{\boldsymbol B}_j\,dA = \sum_E \int_E {\boldsymbol B}_i^T{\boldsymbol C}{\boldsymbol B}_j\,dA.
+$$
+If we think back to the 1D problem we saw previously, the integral over
+each element only adds something meaningful on the right when both the
+strains ${\boldsymbol B}_i$ and ${\boldsymbol B}_j$ are both non-zero on
+the element. This means we just need to go element-by-element, work out
+which shape functions contribute, and add each of these contributions to
+the appropriate part of the global stiffness matrix! This is a way to
+numerically assemble the stiffness matrix step by step, but we still
+need a practical way to do all of the integrals necessary, which is the
+subject we turn to next.
+
+## Isoparametric formalism
+
+A complicated feature of 2D and 3D problems is that we need to
+parametrise integrals over each element. If we want the flexibility to
+have elements of different shapes, we need a convenient way to automate
+this.
+
+The *isoparametric formalism* treats each element as being a form of the
+same fundamental shape, a translated and distorted version of a *parent
+domain*. We will see that this idea will allow us to parameterise each
+element in a consistent way. In 1D, a reasonable choice of parent domain
+is just the fixed interval $[-1,1]$, since the natural choice of element
+is an interval of the form $[a,b]$, as we saw in the previous chapter.
+The simplest mapping we can define from the parent domain to the element
+is linear:
+$$
+X(\xi) := \tfrac12(1-\xi)a+ \tfrac12(1+\xi)b=\tfrac12(b-a)\xi+\tfrac12(a+b).
+$$
+This function has the property that $X(-1)=a$ and $X(+1)=b$.
+
+As we saw when we constructed stiffness matrices previously, we need to
+compute integrals of shape functions (and their derivatives) on each
+element. Remembering the change of variable formula for 1D integrals,
+$$
+dX = J(\xi)d\xi\qquad\text{where}\quad J(\xi):=\frac{dX}{d\xi}(\xi)=\frac{b-a}{2},
+$$
+we can substitute so that the integral of a function $f$ defined on the
+element beomes
+$$
+\int_a^b f(X)\,dX = \int_{-1}^1 f\big(X(\xi)\big)J(\xi)\,d\xi = \int_{-1}^1f\Big(\tfrac12(b-a)\xi+\tfrac12(a+b)\Big)\frac{b-a}{2}\,d\xi.
+$$
+In practice, the $f$ that we want to integrate takes the form
+$$
+f(X) \to B_i(X) E B_j(X).
+$$
+For later, it might help to note that the
+Young's modulus $E$ and stiffnesses $B_i$ can be viewed as $1\times 1$
+matrices replacing the $3\times 3$ matrix ${\boldsymbol C}$ and the
+$2\times 3$ and $3\times 2$ strain matrices in the 2D problem here!
+
+If we want to change variable, we can use the chain rule to note that
+$$
+\frac{d}{d\xi}N_i\big(X(\xi)\big) = \frac{dN_i}{dX}\big(X(\xi)\big)J(\xi)\qquad\text{so}\qquad \frac{dN_i}{dX} = \frac{dN_i}{d\xi}J^{-1}.
+$$
+Putting this into our integral above, we find that
+$$
+\int_a^b\frac{dN_i}{dX}E\frac{dN_j}{dX}\,dX = \int_{-1}^1 \left(\frac{dN_i}{d\xi}J^{-1}\right)E\left(\frac{dN_j}{d\xi}J^{-1}\right)J\,d\xi.
+$$
+
+The really nice thing about what we've just done is that if we determine
+all the parent shape functions, then there is only a short list of all
+possible combinations of $B_i=\frac{dN_i}{d\xi}$, and we just have to
+work out what the factor $J(\xi)^{-1}$ is. For our 1D elements, we've
+seen that this factor is just 2 divided by the length of the element,
+i.e.:
+$$
+J^{-1} = \frac{2}{b-a}.
+$$
+In the case where we use piecewise
+linear shape functions, the basic shape functions that are non-zero on
+the parent element are
+$$
+N_{-1}(\xi) = \tfrac12(1-\xi)\quad\text{and}\quad N_{+1}(\xi) = \tfrac12(\xi+1),
+$$
+where we label these shape functions by the point at which they are
+non-zero. The corresponding derivatives are
+$$
+B_{-1}=\frac{dN_{-1}}{d\xi} = -\frac12\quad\text{and}\quad B_{+1}=\frac{dN_{+1}}{d\xi} = \frac12.
+$$
+Using our change of variable, on each element we now just need a
+consistent way to compute the integrals
+$$
+\int_{-1}^1 E\frac{dN_i}{d\xi}\frac{dN_j}{d\xi}\frac{1}{J(\xi)}\,d\xi,
+$$
+where the length-change factor $J(\xi)^{-1}$ is the only place that the
+dependency on the true element geometry appear.
+
+Just to confirm that everything matches up, let's return to our 3
+element example from the last chapter. Here, $b-a=h = \frac13L$ for all
+3 elements, and so we have
+$$
+\int_{-1}^{+1} E \frac{dN_{-1}}{d\xi}\frac{dN_{+1}}{d\xi}J^{-1}\,d\xi = E\int_{-1}^{+1} -\frac12\cdot\frac12\cdot\frac{2}{h}\,d\xi = -\frac{E}{h}.
+$$
+This matches the contribution to the stiffness we got when we did things
+by hand before, as it should!
+
+## Elements in 2D
+
+Our choice here is going to be to split up our domain into
+quadrilaterals, and we'll use an isoparametric approach as we described
+in 1D above. Our parent element in this case will be the square
+$-1\leq \xi,\eta\leq +1$.
+
+<figure>
+
+<figcaption>The 2D parent domain and an example quadrilateral
+element.</figcaption>
+</figure>
+
+We are going to use shape functions which are linear in each coordinate
+(technically, they are tensor products of linear functions), and we will
+introduce nodes at the four corners of the parent element, which are the
+points $(-1,+1)$, $(-1,-1)$, $(+1,-1)$ and $(+1,+1)$. The corresponding
+parent shape functions defined on the parent domain are:
+$$
+\begin{aligned}
+    N_1({\boldsymbol \xi}) &= \tfrac14(1-\xi)(1+\eta)& N_2({\boldsymbol \xi})&=\tfrac14(1-\xi)(1-\eta)\\
+    N_3({\boldsymbol \xi})&= \tfrac14(1+\xi)(1-\eta)& N_4({\boldsymbol \xi})&=\tfrac14(1+\xi)(1+\eta).
+\end{aligned}
+$$
+A plot of $N_2$ is shown in
+Figure [4.1](#fig:2Dshapefuncs){reference-type="ref"
+reference="fig:2Dshapefuncs"}; the other parent shape functions are just
+rotated versions of this.
+
+<figure id="fig:2Dshapefuncs">
+
+<figcaption>Parent shape function <span
+class="math inline"><em>N</em><sub>2</sub></span> for the quadrilateral
+element.</figcaption>
+</figure>
+
+On an element $E$, we will need to compute integrals involving
+derivatives of shape functions. In two dimensions, the chain rule says
+that
+$$
+\left(
+\begin{array}{c}
+    \frac{\partial N_i}{\partial \xi} \\ \frac{\partial N_i}{\partial \eta}
+\end{array}
+\right) = \underbrace{\left(
+\begin{array}{cc}
+    \frac{\partial X_1}{\partial \xi} & \frac{\partial X_2}{\partial \xi} \\
+    \frac{\partial X_1}{\partial \eta} & \frac{\partial X_2}{\partial \eta}
+\end{array}
+\right)}_{={\boldsymbol J}({\boldsymbol \xi})}\left(
+\begin{array}{c}
+    \frac{\partial N_i}{\partial X_1} \\ \frac{\partial N_i}{\partial X_2}
+\end{array}
+\right),
+$$
+where ${\boldsymbol J}$ is the Jacobian matrix of the
+transformation. This allows us to express
+$$
+\left(
+\begin{array}{c}
+    \frac{\partial N_i}{\partial X_1} \\ \frac{\partial N_i}{\partial X_2}
+\end{array}
+\right)={\boldsymbol J}({\boldsymbol \xi})^{-1}\left(
+\begin{array}{c}
+    \frac{\partial N_i}{\partial \xi} \\ \frac{\partial N_i}{\partial \eta}
+\end{array}
+\right),
+$$
+where everything on the left is in terms of $(X_1,X_2)$,
+and everything on the right is in terms of $(\xi,\eta)$. Working things
+out further, we find that we can express the strain matrix for a given
+shape function as
+$$
+{\boldsymbol B}_i({\boldsymbol X}) =
+\left(
+\begin{array}{cc}
+    \frac{\partial N_i}{\partial X_1} & 0\\
+    0 & \frac{\partial N_i}{\partial X_2}\\
+\frac{\partial N_i}{\partial X_1} & \frac{\partial N_i}{\partial X_2}
+\end{array}
+\right)
+=
+\left(
+\begin{array}{cc}
+    \frac{\partial N_i}{\partial \xi} & 0\\
+    0 &  \frac{\partial N_i}{\partial \eta}\\
+    \frac{\partial N_i}{\partial \xi} &  \frac{\partial N_i}{\partial \eta}
+\end{array}
+\right){\boldsymbol J}({\boldsymbol \xi})^{-1}
+=:\widetilde{{\boldsymbol B}}_i({\boldsymbol \xi}).
+$$
+In both cases, this is really just a consequence of the chain rule.
+
+Recalling the element-wise integrals for each sub-block, and the change
+of variable formula in 2D, we have
+$$
+\int_E {\boldsymbol B}_i^T({\boldsymbol X}){\boldsymbol C}{\boldsymbol B}_j({\boldsymbol X})\,dA = \int_{-1}^1\!\int_{-1}^1 \widetilde{{\boldsymbol B}}_i^T({\boldsymbol \xi}){\boldsymbol C}\widetilde{{\boldsymbol B}}_j({\boldsymbol \xi})|\!\det{\boldsymbol J}({\boldsymbol \xi})|\,d\xi d\eta.
+$$ {#eq-elementintegral}
+To find ${\boldsymbol J}$, we need to prescribe a particular function
+${\boldsymbol X}({\boldsymbol \xi})$ to map points in the parent domain
+to the element $E$ we want to integrate over. Here, a cute feature of
+what we're doing is that we can actually reuse the same basic shape
+functions! Taking each shape function on the parent element and
+multiplying by the position of the appropriate corner of the element
+${\boldsymbol c}_i$, we get a map that takes points in the parent
+element to the element in the domain, so
+$$
+{\boldsymbol X}({\boldsymbol \xi}) = \sum_{i=1}^4 {\boldsymbol c}_iN_i({\boldsymbol \xi}),
+\qquad\text{so}\qquad
+{\boldsymbol J}({\boldsymbol \xi}) =
+\left(
+\begin{array}{cc}
+    \sum_{i=1}^4c_{i1}\frac{\partial N_i}{\partial \xi} & \sum_{i=1}^4c_{i2}\frac{\partial N_i}{\partial \eta}\\
+    \sum_{i=1}^4c_{i1}\frac{\partial N_i}{\partial \xi} & \sum_{i=1}^4c_{i2}\frac{\partial N_i}{\partial \eta}
+\end{array}
+\right),
+$$
+where ${\boldsymbol c}_i = (c_{i1},c_{i2})$.
+
+Let's now pan out and look back at what we've done. Numerically, if we:
+
+1.  Had implemented the parent shape functions $N_1,N_2,N_3,N_4$ on the
+    parent domain;
+
+2.  Had implemented the corresponding strain matrices
+    ${\boldsymbol B}_i$ on the parent domain; and
+
+3.  Knew the positions of the corners of the element we want to
+    integrate over,
+
+we could construct the Jacobian matrix ${\boldsymbol J}$, its inverse
+and transpose and its determinant $\det{\boldsymbol J}$ at any point
+${\boldsymbol \xi}$ in the parent domain. We would therefore have all
+the parts of the function we want to integrate on the right-hand side of
+[\[eq:elementintegral\]](#eq:elementintegral){reference-type="eqref"
+reference="eq:elementintegral"}. Now all we need to do is find a way to
+numerically integrate it, and that's what we turn to next.
+
+## Numerical quadrature
+
+While we have computed integral by hand up to now, we would like to
+avoid doing this in general and automate the process in software. The
+good news is that since we have chosen shape functions which have a nice
+polynomial form on each element, we can actually do this almost exactly
+through evaluating the functions we integrate at special points called
+*quadrature points*, and multiplying by the right weights. There are
+actually many ways to construct quadrature rules; the method we focus on
+is called *Legendre-Gauss quadrature*.
+
+### The one-dimensional case
+
+Let's start in 1D, and consider the integral
+$$
+I = \int_{-1}^1f(\xi)\,d\xi.
+$$
+If we want to approximate this
+integral, a simple option is to simply approximate the function $g$ by
+taking its value at a single point in the domain. If we pick the point
+$\xi^*$, then the approximation becomes
+$$
+I\approx \int_{-1}^1 f(\xi^*)\,d\xi = 2f(\xi^*).
+$$
+See Figure [4.2](#fig:singlepoint){reference-type="ref"
+reference="fig:singlepoint"} for an illustration.
+
+<figure id="fig:singlepoint">
+
+<figcaption>Single point quadrature. The red shaded area is the
+approximation to the area under the curve.</figcaption>
+</figure>
+
+Obviously, this is only going to be a good approximation of the integral
+if $f$ doesn't vary too much over the interval we're integrating. In
+fact, the result would be exact if the function $f$ was constant. To
+specify $\xi^*$, we can ask whether there is a best possible choice. One
+way to define 'best' is to choose the point that always gives the right
+answer for affine functions, not just for constants. If
+$f(\xi) = a_0+a_1\xi$, then notice that
+$$
+\int_{-1}^1 f(\xi) \,d\xi = 2a_0 = 2 f(0).
+$$
+This means that picking
+$\xi^*=0$ gives us exactly the correct result if the function $f$ is a
+linear function, not just constant! Any other choice will lead to some
+unavoidable error when integrating linear functions. Of course, we can't
+hope it to be exact for quadratic functions or anything else more
+complicated. The factor 2 that enters in front of $f(0)$ is called the
+*weight* for the quadrature point.
+
+To get better results for a more complicated function, we need to
+evaluate the function at more points and choose appropriate weights. In
+general, it turns out that we can use $q$ different points to get
+accurate integrals for polynomial functions of degree $2q-1$. Each
+quadrature point is assigned its own weight, and the general
+approximation is of the form
+$$
+\int_{-1}^1f(\xi)\,d\xi\approx \sum_{k=1}^q f(\xi_k)w_k.
+$$
+In the
+example above, $w_1=2$. This approach to approximating integrals is
+called *Gauss quadrature*. Since finite elements tend to use piecewise
+polynomial shape functions, Gauss quadrature provides us with a great
+way to compute integrals: by evaluation the shape functions at a few
+points, we can do all the integrals exactly!
+Table [4.1](#tab:gauss){reference-type="ref" reference="tab:gauss"}
+gives the quadrature points and weights for $q=1$, $2$ and $3$. For
+example, if $q=3$, then we have the approximation
+$$
+\int_{-1}^1 f(\xi)\,d\xi\approx \sum_{k=1}^3f(\xi_k)w_k = \frac{5 f\Big(-\sqrt{3/5}\Big)+8f(0)+5f\Big(+\sqrt{3/5}\Big)}{9}.
+$$
+Points and weights can be found for ever higher values of $q$, and
+libraries in various programming languages are available to compute
+them. In practice, the integrals converge very fast with the number of
+quadrature points, so we don't need many; it's usually more convenient
+to refine our elements instead.
+
+::: {#tab:gauss}
+   $q$        Quadrature points, $\xi_k$             Weights, $w_k$
+  ----- -------------------------------------- ---------------------------
+    1                     0                                 2
+    2     $-\sqrt{\tfrac13},\sqrt{\tfrac13}$              $1,1$
+    3    $-\sqrt{\tfrac35},0,\sqrt{\tfrac35}$   $\frac59,\frac89,\frac59$
+
+  : A table of quadrature points for functions defined on the interval
+  $[-1,1]$, with corresponding weights. The quadrature with $q$ points
+  gives the integral exactly for polynomials of degree $2q-1$.
+:::
+
+To handle integrals over another interval, say $[a,b]$, we can change
+variable by defining
+$$
+X(\xi) = \tfrac12a(\xi-1)+\tfrac12b(\xi+1).
+$$
+In this case, we can change variable in the integral and then use our
+quadrature rule as follows:
+$$
+\begin{aligned}
+    \int_a^b f(X)\,dX
+    &= \int_{-1}^1 f\left(\tfrac12a(\xi-1)+\tfrac12b(\xi+1)\right)\frac{dX}{d\xi}\,d\xi\\
+    &= \int_{-1}^1 f\left(\tfrac12a(\xi-1)+\tfrac12b(\xi+1)\right)\frac{b-a}{2}\,d\xi\\
+    &\approx \sum_{i=1}^qw_k f\left(\tfrac12a(\xi_k-1)+\tfrac12b(\xi_k+1)\right)\frac{b-a}{2}.
+\end{aligned}
+$$
+
+### The two-dimensional case
+
+In 2D, we want to evaluate double integrals of the form
+$$
+I = \int_{-1}^1\int_{-1}^1 f(\xi,\eta)\,d\xi\,d\eta.
+$$
+As the domain of integration is just two copies of the interval $[-1,1]$, we can take
+two copies of the quadrature points and weights and sum up as follows:
+$$
+\int_{-1}^1\int_{-1}^1f(\xi,\eta)\,d\xi\,d\eta\approx\sum_{k=1}^q\sum_{\ell=1}^q f(\xi_k,\eta_\ell)w_kw_\ell.
+$$
+The appropriate points and weights for a 4 point rule (2 values for each
+of $\xi$ and $\eta$) are as given in
+Table [4.2](#tab:2Dquadrature){reference-type="ref"
+reference="tab:2Dquadrature"}. More generally (saving you implementation
+work!), you could use a library that gives you the quadrature points and
+weights that you need. In Python, `numpy.polynomial.legendre` provides
+functions to do this. Both 1D and 2D quadrature will be the subject of
+one of the workshop tasks this week.
+
+[]{#tab:2Dquadrature label="tab:2Dquadrature"}
+
+::: {#tab:2Dquadrature}
+      Quadrature point, $(\xi_k,\eta_\ell)$      Weight, $w_kw_\ell$
+  --------------------------------------------- ---------------------
+                                                
+   $(-\frac{1}{\sqrt{3}},-\frac{1}{\sqrt{3}})$            1
+   $(-\frac{1}{\sqrt{3}},+\frac{1}{\sqrt{3}})$            1
+   $(+\frac{1}{\sqrt{3}},-\frac{1}{\sqrt{3}})$            1
+   $(+\frac{1}{\sqrt{3}},+\frac{1}{\sqrt{3}})$            1
+
+  : 4 quadrature points and the corresponding weights for the square
+  parent element where $-1\leq \xi,\eta\leq 1$ in 2D.
+:::
+
+In theory, we could choose different numbers of points and weights in
+the different coordinate directions, but there isn't really any need to
+do this unless we have reason to believe the function is varying more
+rapidly in one of the directions.
+
+### Constructing the stiffness matrix
+
+We are now in position to use quadrature and the theory we developed to
+assemble the stiffness matrix. For each element $E$ and each possible
+pair of shape function indices $i$, $j$ we need to compute the integral
+in [\[eq:elementintegral\]](#eq:elementintegral){reference-type="eqref"
+reference="eq:elementintegral"}. Using the change of variable to the
+parent element and a quadrature rule as given above, this becomes:
+$$
+\begin{aligned}
+    \int_E {\boldsymbol B}_i^T({\boldsymbol X}){\boldsymbol C}{\boldsymbol B}_j({\boldsymbol X})\,dA
+    &= \int_{-1}^1\!\int_{-1}^1 {\boldsymbol J}^{-1}({\boldsymbol \xi}){\boldsymbol B}_i^T({\boldsymbol \xi}){\boldsymbol C}{\boldsymbol B}_j({\boldsymbol \xi}){\boldsymbol J}^{-T}({\boldsymbol \xi})|\det{\boldsymbol J}({\boldsymbol \xi})|\,d\xi d\eta\\
+    &\approx \sum_{k=1}^q\sum_{\ell=1}^qw_kw_\ell{\boldsymbol B}_i^T{\boldsymbol C}{\boldsymbol B}_j|\!\det{\boldsymbol J}|\bigg|_{{\boldsymbol \xi}=(\xi_k,\eta_\ell)}.
+\end{aligned}
+$$
+In reality, the only integrals that are non-zero arise
+when $i$ and $j$ are indices which correspond to nodes on the corners of
+the element. That means we just need to loop through elements $E$ and
+then through indices $i$, $j$ which correspond to pairs of corners on
+each element, compute the functions and sums necessary, and adding the
+resulting submatrices in to the global stiffness matrix as we go. This
+(on a much larger scale!) is very similar to the approach you took when
+thinking about Q2 in Workshop 3.
+
+## Boundary conditions
+
+We have (theoretically, at least) identified a way to approximate the
+stiffness matrix ${\boldsymbol K}$, but we still need to find the
+forcing vector ${\boldsymbol f}$ that leads to the linear problem
+$$
+{\boldsymbol K}{\boldsymbol d}={\boldsymbol f}.
+$$
+Recall that ${\boldsymbol f}$ comes from the right hand side of the weak form:
+$$
+\int_{\Gamma_N}{\boldsymbol w}^h\cdot{\boldsymbol t}\,d\ell = {\boldsymbol w}^T{\boldsymbol f}
+= \left(
+\begin{array}{c|c|c}
+    {\boldsymbol w}_1^T & \cdots & {\boldsymbol w}_M^T
+\end{array}
+\right)
+\int_{\Gamma_N}
+\left(
+\begin{array}{cc}
+    N_1({\boldsymbol X}) & 0 \\
+    0 & N_1({\boldsymbol X}) \\
+    \vdots & \vdots\\
+    N_M({\boldsymbol X}) & 0 \\
+    0 & N_M({\boldsymbol X})
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+    t_1 \\ t_2
+\end{array}
+\right)\,d\ell,
+$$
+and so we find that
+$$
+{\boldsymbol f}= \left(
+\begin{array}{c}
+    \int_{\Gamma_N}t_1 N_1({\boldsymbol X})\,d\ell\\
+    \int_{\Gamma_N}t_2 N_1({\boldsymbol X})\,d\ell\\
+    \vdots\\
+    \int_{\Gamma_N}t_1N_M({\boldsymbol X})\,d\ell\\
+    \int_{\Gamma_N}t_2N_M({\boldsymbol X})\,d\ell
+\end{array}
+\right).
+$$
+Each integral can be split up into a contribution coming
+from the boundary of each element, and we need to change variable to
+integrate correctly on the parent domain.
+
+If $L$ is the edge of an element that is also part of $\Gamma_N$, and is
+mapped from the edge of the parent element $\xi=-1$, then using the 1D
+change of variables formula, we have
+$$\int_{L} t_iN_i({\boldsymbol X})\,d\ell = \int_{-1}^1 t_iN_i(-1,\eta)\frac{2}{|{\boldsymbol c}_i-{\boldsymbol c}_j|}\,d\eta,$$
+where $|{\boldsymbol c}_i-{\boldsymbol c}_j|$ are the corners sitting at
+the ends of the edge $L$. If $t_i$ is constant, we can do this integral
+exactly using Gauss quadrature with a 1-point rule as $N_i$ is linear
+along the edge of an element. This means $$\begin{aligned}
+  \int_{L} t_aN_i({\boldsymbol X})\,d\ell
+  = \int_{-1}^1 t_aN_i(-1,\eta)\frac{2}{|{\boldsymbol c}_i-{\boldsymbol c}_j|}\,d\eta = t_aN_i(-1,0)\frac{4}{|{\boldsymbol c}_i-{\boldsymbol c}_j|}.
+\end{aligned}$$
+
+## Solids coursework project
+
+In this chapter, we:
+
+- Found the weak form of the elasticity equations,
+  $$\int_D{\boldsymbol S}:{\boldsymbol \varepsilon}({\boldsymbol w})\,dA=\int_{\Gamma_N}{\boldsymbol t}\cdot{\boldsymbol w}\,d\ell\qquad\text{for any test function }{\boldsymbol w}\text{ vanishing on }\Gamma_D;$$
+
+- Discussed meshing a domain in 2D with quadrilateral elements, with
+  nodes ${\boldsymbol c}_i$ at the corners;
+
+- Discussed how to change variable to a parent domain
+  $[-1,1]\times[-1,1]$;
+
+- Introduced the shape functions we can use to both express the change
+  of coordinates
+  ${\boldsymbol \xi}\mapsto{\boldsymbol X}({\boldsymbol \xi})$ and the
+  approximate solution ${\boldsymbol u}^h$; and
+
+- Discussed how to approximate the integrals necessary to compute the
+  stiffness matrix ${\boldsymbol K}$ and forcing vector
+  ${\boldsymbol f}$ using quadrature rules.
+
+Putting all of these pieces together in code, we can approximate
+solutions to the 2D elasticity equations, and this will be the subject
+of the solids coursework project detailed below.
+
+### Solids Coursework Project: Finite Elements for Planar Elasticity {#solids-coursework-project-finite-elements-for-planar-elasticity .unnumbered}
+
+Consider the 2D geometry below, identical to that considered in
+Workshop 4:
+
+##### Aims.
+
+Extend your Python script for a single element covered in Workshop 4 to
+multiple linear element calculations. You should address the problem
+with this geometry using the parameters and boundary conditions supplied
+to you individually by email. You will be provided with a template
+notebook that will provide you with a meshing tool for this problem. You
+can use this to develop a code that can solve the problem with multiple
+elements, allowing you to:
+
+- Evaluate nodal displacements;
+
+- Evaluate strains and stresses at appropriate integration points; and
+
+- Perform mesh refinements to assess mesh convergence.
+
+##### Submission requirements.
+
+You should submit a Jupyter notebook containing your Python code and
+write-up (in accompanying markdown cells) via the [Moodle portal
+here](https://moodle.warwick.ac.uk/mod/assign/view.php?id=2559949) by
+**12pm on Wednesday 26 March**. While you have plenty of time to
+complete the project, I encourage you to get most of the work done while
+PX912 is fresh in your mind! As a minimum, your notebook should include:
+
+- Plots showing the model geometry with boundary conditions;
+
+- The problem you are solving in strong and weak form;
+
+- Discussion of your findings, focussing on stress and strain; and
+
+- An investigation of the discretisation error as a function of element
+  size.
+
+I need to be able to run your code, so you should not use any packages
+beyond `numpy`, `scipy`, `sympy` and `matplotlib` without consulting
+with me first.
+
+##### Mark scheme.
+
+The broad expectations for this project are as follows:
+
+- **High Distinction (80--100%):** As well as meeting the criteria for
+  Distinction listed below, the work is comprehensive, going beyond the
+  original brief, exhibiting critical analysis of the work undertaken
+  and a highly professional approach.
+
+- **Distinction (70--79%):** The work demonstrates mastery of the
+  methodologies and subject matter. Accuracy and presentation are both
+  excellent, with only a few minor mistakes.
+
+- **Merit (60--69%):** Conceptual understanding is solid, but analysis
+  may contain minor flaws. The work is well-structured and organised,
+  but may lack depth and breadth in places.
+
+- **Pass (50--59%):** The work demonstrates a grasp of the subject
+  matter, but there are areas of confusion. The work is fairly well
+  structured, but may tend towards the factual rather than demonstrating
+  deep understanding.
+
+- **Fail (0--49%):** There are frequent misconceptions, and work is
+  poorly organised. Conclusions are unreliable or unsubstantiated.
+
+##### Extension ideas.
+
+There is **no expectation** that you go beyond the project brief to
+achieve a good mark, but for those wishing to hit really high marks, I
+will expect you to go significantly beyond the original problem. Some
+ideas for investigation include:
+
+- Adding a body force to the problem;
+
+- Considering a problem for a more complicated geometry; or
+
+- Writing a comprehensive set of unit tests for your implementation.

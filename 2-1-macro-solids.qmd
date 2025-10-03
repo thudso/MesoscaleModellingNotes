@@ -1,0 +1,842 @@
+# Linear Elasticity Theory {#sec-sol-basics}
+
+## Motion and deformation
+
+Consider a continuum body $B$ at time $t=0$, which will be the
+*reference configuration*. At later times, we describe the new shape of
+the body $B_t$ and the position of the points within it by introducing a
+*motion* or *deformation map*,
+${\boldsymbol \varphi}({\boldsymbol X},t)$, taking points
+${\boldsymbol X}\in B$ to their positions ${\boldsymbol x}$ at time $t$.
+The new shape of the body at time $t$ is denoted $B_t$, defined to be
+all points ${\boldsymbol x}$ with
+$$
+{\boldsymbol x}= {\boldsymbol \varphi}({\boldsymbol X},t)\qquad\text{for some point }{\boldsymbol X}\in B.
+$$
+In mathematical notation, we can write
+$B_t = {\boldsymbol \varphi}(B,t)$, and the set of points $B_t$ is
+referred to as the *deformed configuration*.
+
+::: {.callout-caution title="Example"}
+Suppose the reference configuration is a cube of material
+with sides of unit length with $0\leq X_i \leq 1$. What happens to the
+cube when it undergoes the motion
+$$
+{\boldsymbol \varphi}({\boldsymbol X},t) = (3X_1t+X_1+t,X_2,X_3)?
+$$
+:::
+
+An alternative way to describe the shape change of a solid body is to
+use a *displacement* function. Instead of describing the new positions
+of points in the body in full as the deformation map does, the
+displacement measures relative motion. The displacement of a reference
+point ${\boldsymbol X}$ at time $t$ is defined to be
+$$
+{\boldsymbol u}({\boldsymbol X},t) = {\boldsymbol \varphi}({\boldsymbol X},t)-{\boldsymbol X}.
+$$
+Unfortunately, it is standard in solid mechanics to use
+${\boldsymbol u}$ to express the displacement (which is the same as the
+notation we used for the Eulerian velocity field in fluids!). Even
+though the concepts are distinct, we will stick with this notation
+because it is so widely used. In this part, the Eulerian velocity field
+will be denoted ${\boldsymbol v}$ instead.
+
+## Strain
+
+The term *strain* is used to refer to a variety of measures of shape
+change which are important in describing solids, and there are quite a
+few different choices available for different reasons. Strain measures
+are usually dimensionless, since they involve first spatial derivatives
+of some sort of postion variable.
+
+The first measure we introduce is the deformation gradient
+${\boldsymbol F}$. This is a tensor field, defined to be
+$$
+{\boldsymbol F}= \nabla{\boldsymbol \varphi},\qquad\text{or in components:}\quad F_{ij} = \frac{\partial\varphi_i}{\partial X_j}.$$
+To see why this measures strain, consider a small segment of material in
+the reference configuration connecting the point ${\boldsymbol X}$ to
+the nearby point ${\boldsymbol X}+\delta {\boldsymbol X}$. After the
+deformation is applied, we can Taylor expand the differences in the
+$i$th coordinate to see that
+$$
+\varphi_i({\boldsymbol X}+\delta {\boldsymbol X})-\varphi_i({\boldsymbol X}) = \frac{\partial \varphi_i}{\partial X_j}({\boldsymbol X})\delta X_j+O\left(|\delta{\boldsymbol X}|^2\right) \approx F_{ij}({\boldsymbol X})\delta X_j,
+$$
+and we see that ${\boldsymbol F}$ encodes the local transformation of
+the initial displacement $\delta{\boldsymbol X}$. A simple class of
+deformation we can consider are those where ${\boldsymbol F}$ is
+constant in the body (but possibly time-dependent). This means that the
+corresponding motion must take the form
+$$
+{\boldsymbol \varphi}({\boldsymbol X},t) = {\boldsymbol F}(t){\boldsymbol X}+{\boldsymbol c}(t),
+$$
+where ${\boldsymbol c}$ is a translation vector. Motions of this type
+are called *homogeneous deformations*, and provide us with a simple
+class to test our theories with.
+
+::: {.callout-caution title="Example"}
+Consider the two-dimensional deformation in which
+$$
+\begin{aligned}
+    x_1 &= \tfrac14(18+4X_1+6X_2)\\
+    x_2 &= \tfrac14(14+6X_2).
+\end{aligned}
+$$
+What is the $(2\times 2)$ deformation gradient tensor
+${\boldsymbol F}$ in this case? Sketch the deformation of a reference
+square of material centred at $(0,0)$.
+:::
+
+Let's consider how lengths change under a deformation. Again consider
+two nearby points ${\boldsymbol X}$ and
+${\boldsymbol X}+\delta{\boldsymbol X}$. After deformation, the distance
+between these points can be approximated using the deformation gradient
+as follows:
+$$
+|{\boldsymbol \varphi}({\boldsymbol X}+\delta{\boldsymbol X})-{\boldsymbol \varphi}({\boldsymbol X})|^2 \approx |{\boldsymbol F}\,\delta{\boldsymbol X}|^2 = ({\boldsymbol F}\delta{\boldsymbol X})\cdot({\boldsymbol F}\delta{\boldsymbol X}) = \delta{\boldsymbol X}\cdot\left(({\boldsymbol F}^T{\boldsymbol F})\delta{\boldsymbol X}\right)
+$$
+where ${\boldsymbol F}^T$ is the transpose, obtained by swapping
+components across the diagonal so $(F^T)_{ij} = F_{ji}$. The tensor
+${\boldsymbol C}:= {\boldsymbol F}^T{\boldsymbol F}$ is called the right
+Cauchy-Green strain, and it provide a way to encode infinitesimal length
+change. ${\boldsymbol C}$ is not sensitive to rotations, whereas
+${\boldsymbol F}$ is, and it is always symmetric.
+
+The case where there is no length change (and so no shape change) occurs
+when ${\boldsymbol C}$ is the identity tensor ${\boldsymbol I}$. If we
+shift by removing the identity tensor (and by convention dividing by
+$2$), we get another form of strain, called the *Lagrange strain*:
+$$
+{\boldsymbol E}:= \tfrac12({\boldsymbol C}-{\boldsymbol I}) = \tfrac12({\boldsymbol F}^T{\boldsymbol F}-{\boldsymbol I}).
+$$
+Another way to measure strain is to use the *displacement gradient*,
+denoted
+$$
+\nabla{\boldsymbol u}= {\boldsymbol F}-{\boldsymbol I},\quad\text{with components}\quad (\nabla {\boldsymbol u})_{ij} = \frac{\partial u_i}{\partial X_j}.
+$$
+If we write the Lagrange strain in terms of $\nabla {\boldsymbol u}$, we
+find
+$$
+{\boldsymbol E}= \frac12\Big(({\boldsymbol I}+\nabla{\boldsymbol u})^T({\boldsymbol I}+\nabla{\boldsymbol u})-{\boldsymbol I}\Big) = \frac12\Big(\nabla{\boldsymbol u}+\nabla{\boldsymbol u}^T+\nabla{\boldsymbol u}^T\nabla{\boldsymbol u}\Big).
+$$
+If $\nabla{\boldsymbol u}$ is small, then we can linearise this
+definition by neglecting the
+$\nabla{\boldsymbol u}^T\nabla{\boldsymbol u}$ term, which gives us the
+definition of the *infinitesimal strain*, denoted
+$$
+{\boldsymbol \varepsilon}= \frac12\Big(\nabla{\boldsymbol u}+\nabla{\boldsymbol u}^T\Big)\quad\text{with}\quad \varepsilon_{ij} = \frac12\left(\frac{\partial u_i}{\partial X_j}+\frac{\partial u_j}{\partial X_i}\right).
+$$
+Notice that ${\boldsymbol C}$, ${\boldsymbol E}$ and
+${\boldsymbol \varepsilon}$ are symmetric tensors, while the direct
+derivatives ${\boldsymbol F}= \nabla{\boldsymbol \varphi}$ and
+$\nabla{\boldsymbol u}$ are not. For much of what we do in this part of
+the module, our main focus will be on models where we use the linearised
+strain ${\boldsymbol \varepsilon}$, as this is the measure of strain
+which is used in linear elasticity theory.
+
+::: {.callout-caution title="Example"}
+Again, consider the two-dimensional deformation in which
+$$
+\begin{aligned}
+    x_1 &= \tfrac14(18+4X_1+6X_2)\\
+    x_2 &= \tfrac14(14+6X_2).  
+\end{aligned}
+$$
+What are the different measures of strain
+${\boldsymbol C}$, ${\boldsymbol E}$, ${\boldsymbol \varepsilon}$ in
+this case?
+:::
+
+## Stress in solids
+
+Recall that in @sec-flu-equations, we showed Newton's second
+law implies that
+$$
+\rho\frac{D{\boldsymbol v}}{Dt} = \nabla\cdot{\boldsymbol S}-\rho g{\boldsymbol e}_3,
+$$
+where we now use ${\boldsymbol v}$ to denote the velocity field, and
+${\boldsymbol S}$ is the *Cauchy stress tensor*. Recall that
+${\boldsymbol S}{\boldsymbol n}$ expresses the forces per unit area
+acting across a surface with normal ${\boldsymbol n}$ in the deformed
+configuration (i.e. in the Eulerian setting). This equation holds for
+solids too, it's just that to model these materials, we will need to
+change the constitutive equation for ${\boldsymbol S}$.
+
+In particular, we are going to focus on the static form of this equation
+in which there is no motion. If ${\boldsymbol v}={\boldsymbol 0}$, we
+can rearrange to get the *force balance* equations:
+$$
+\nabla\cdot{\boldsymbol S}= \rho g{\boldsymbol e}_3\quad\text{or}\quad \frac{\partial S_{ij}}{\partial X_j} = \rho g \delta_{i3}.$$
+This gives us 3 equations for 6 unknowns (the components of the stress
+tensor), so to close the equations we need a constitutive relation. For
+solids, we typically assume ${\boldsymbol S}$ depends on some measure of
+strain. This is in constrast to fluids, where it tends to depend only
+strain rate.
+
+Before introducing the constitutive relation used in linear elasticity
+theory, we'll discuss stress in general. Solids tend to exhibit a lot
+more variability in their response to applied stresses, essentially
+because they don't flow. To allow us to discuss this response, we'll
+introduce the following definitions, which are illustrated in
+@fig-stressstates:
+
+- If the stress tensor ${\boldsymbol S}$ takes the form
+  $$
+  {\boldsymbol S}= \left(
+  \begin{array}{ccc}
+      -p &  0 & 0 \\
+       0 & -p & 0 \\
+       0 &  0 & -p
+  \end{array}\right),
+  $$
+  where $p$ is a scalar pressure, we say that
+  a *spherical* state of stress exists at ${\boldsymbol x}$.
+
+- The stress is said to be *uniaxial* is there exists Cartesian
+  coordinate system in which the stress tensor takes the form
+  $$
+  {\boldsymbol S}= 
+    \left(
+    \begin{array}{ccc}
+    \sigma & 0 & 0 \\
+    0      & 0 & 0 \\
+    0      & 0 & 0
+    \end{array}\right).
+  $$
+  If $\sigma>0$, we call this state a *pure tension*, and if $\sigma<0$, a *pure compression*.
+
+- If in some Cartesian coordinate system the stress tensor takes the
+  form
+  $$
+  {\boldsymbol S}=
+    \left(
+      \begin{array}{ccc}
+        0 & \tau & 0 \\
+        \tau & 0 & 0 \\
+        0    & 0 & 0
+      \end{array}
+    \right)
+  $$
+  then we say that a state of *pure shear stress* exists.
+
+- More generally, if in some Cartesian coordinate system
+  ${\boldsymbol S}$ takes the form
+  $$
+  {\boldsymbol S}=
+    \left(
+      \begin{array}{ccc}
+        S_{11} & S_{12} & 0 \\
+        S_{21} & S_{22} & 0 \\
+        0     & 0     & 0
+      \end{array}
+    \right),
+  $$
+  we say that a state of *plane stress* exists.
+
+Most stress states are more general than these particular examples, but
+these tend to be the easiest to visualise and understand.
+
+::: {#fig-stressstates layout-ncol=2 layout-nrow=2}
+![A spherical state of stress](tikz/StressStates-A.svg){#fig-stressstates-spherical height=6cm}
+
+![A uniaxial state of stress](tikz/StressStates-B.svg){#fig-stressstates-uniaxial height=6cm}
+
+![A pure shear state of stress](tikz/StressStates-C.svg){#fig-stressstates-shear height=6cm}
+
+![A plane state of stress](tikz/StressStates-D.svg){#fig-stressstates-plane height=6cm}
+
+An illustration of some simple stress states acting on a 2D
+slice of a body.
+:::
+
+### Principal stresses
+
+The eigenvalues of ${\boldsymbol S}$ evaluated are called the *principal
+stresses*. The corresponding eigenvectors are called the *principal
+stress directions*. We note that since the stress tensor is symmetric,
+there are three real principal stresses, and three orthogonal principal
+stress directions for each point.
+
+Consider a surface with unit normal ${\boldsymbol n}$. The corresponding
+stress vector ${\boldsymbol t}= {\boldsymbol S}{\boldsymbol n}$ acting
+on this surface can be decomposed into two parts:
+$$
+\begin{aligned}
+    \text{a \emph{normal stress}:}&\qquad&{\boldsymbol t}_n &= ({\boldsymbol t}\cdot{\boldsymbol n}){\boldsymbol n},\\
+    \text{and a \emph{shear stress}:}&\qquad&{\boldsymbol t}_s&= {\boldsymbol t}-({\boldsymbol t}\cdot{\boldsymbol n}){\boldsymbol n},
+\end{aligned}
+$$
+In particular, we have ${\boldsymbol t}={\boldsymbol t}_n+{\boldsymbol t}_s$, and we call
+$\sigma_n=|{\boldsymbol t}_n|$ the *normal stress* and
+$\sigma_s=|{\boldsymbol t}_s|$ the *shear stress* on the surface with
+normal ${\boldsymbol n}$ at ${\boldsymbol x}$.
+
+It is often of interest to understand what sorts of surfaces experience
+the largest stresses of various types, because we want to be sure that
+the material does not fail. For example, both high levels of tension (a
+normal stress state) and high levels of shear stress can induce
+cracking. The threshold for these two different modes of failure is
+often different, and so the places which may be prone to issues can vary
+depending on the material and the shape of a design.
+
+A nice fact is that we can work out the maximal stresses directly using
+the principal stresses. If the principal stresses $\sigma_i$ are
+distinct and ordered, with $\sigma_1>\sigma_2>\sigma_3$, then
+
+- The *maximum tensile stress* is $\sigma_1$ (assuming $\sigma_1>0$);
+
+- The *maximum compressive stress* is $\sigma_3$ (assuming
+  $\sigma_3<0$); and
+
+- The *maximum shear stress* $\sigma_s$ is $\frac12|\sigma_1-\sigma_3|$.
+
+In practice, this provides us with a nice way to post-process a
+computational prediction of stress to work out which regions we should
+be concerned about: all we need to do is find the stress tensor in the
+material, find the appropriate eigenvalues, compute these quantities
+relative to their critical values, and visualise the results.
+
+## Hooke's law
+
+Hooke's law is a simple rule about the behaviour of springs which you
+probably first learned about in school. It states that the tensile force
+$\tau$ needed to increase the length of a spring is directly
+proportional to its extension. We can write this law as
+$$
+\tau = ke\quad\text{with}\quad e = \ell-\ell_0,
+$$
+where:
+
+- $\tau$ is the tension;
+
+- $k$ is the constant of proportionality, known as the spring constant;
+
+- $e$ is the extension of the spring;
+
+- $\ell$ is the current length; and
+
+- $\ell_0$ is the equilibrium or reference length of the spring.
+
+Clearly, the spring constant $k$ will depend on the exact spring being
+stretched. In fact, a simple model is that the spring constant of a
+spring made of a given material is approximately inversely proportional
+to its equilibrium length. This means that $k = \mathbb{C}/\ell_0$ for
+some material constant $\mathbb{C}$ which is independent of the length,
+and hence
+$$
+  \tau = \mathbb{C}\frac{\ell-\ell_0}{\ell_0}.
+$$ {#eq-springstrain}
+Note that this
+hopefully makes intuitive sense to you: a spring which is twice as long
+stretches twice as far under the same force; see
+@fig-springs.
+
+::: {#fig-springs}
+![](tikz/Springs.svg){height=5cm}
+
+Two springs of different equilibrium lengths, expanding
+under the same force. The extension in the spring twice as long is twice
+as large under the same force.
+:::
+
+The ratio of extension over length that appears in
+@eq-springstrain is a first example of a measure of
+*strain*, describing the change in length relative to some reference
+length. In fact, it can be thought of as a component of the
+infinitesimal strain ${\boldsymbol \varepsilon}$. To see the connection
+with our definitions in the previous chapter, if we introduce a
+reference domain $[0,\ell_0]$, then we can define a deformation
+$$
+\varphi(X) = \frac{\ell}{\ell_0}X\quad\text{for }0\leq X\leq \ell_0.
+$$
+The deformation gradient in this one-dimensional example is
+$$
+F = \varphi'(X) = \frac{\ell}{\ell_0},
+$$
+and the displacement is
+$$
+u(X) = \varphi(X)-X = \frac{\ell}{\ell_0}X-X = \frac{\ell-\ell_0}{\ell_0}X
+$$
+so the displacement gradient is
+$$
+u'(X) = \frac{\ell-\ell_0}{\ell_0}.
+$$
+Since there is nothing to symmetrise in this case, the infinitesimal
+strain is $\varepsilon = \frac{\ell-\ell_0}{\ell_0}$, and so we see that
+$$
+\tau = \mathbb{C}\varepsilon.
+$$
+Linear elasticity amounts to a generalisation of this relationship to the full three-dimensional
+setting.
+
+## Linear elasticity
+
+As we saw in the first part of the course, forces acting across surfaces
+inside and on the boundary of a continuum body can be encoded using the
+stress tensor. In linear elasticity theory, we generalise Hooke's law by
+assuming that the stress tensor ${\boldsymbol S}$ can be expressed as a
+linear function of the infinitesimal strain tensor
+${\boldsymbol \varepsilon}$. In this case, the single coefficient
+$\mathbb{C}$ discussed above for a spring becomes a fourth-order
+elasticity tensor $\mathbb{C}$, with
+$$
+{\boldsymbol S}= \mathbb{C}{\boldsymbol \varepsilon}\qquad\text{with components}\qquad S_{ij} = \mathbb{C}_{ijkl}\varepsilon_{kl}.
+$$
+In principle, $\mathbb{C}$ could contain 81 independent parameters (also
+sometimes called *moduli*) as it has this many different indices.
+However, since ${\boldsymbol S}$ and ${\boldsymbol \varepsilon}$ are
+both symmetric and the elasticity tensor satisfies *major symmetry*,
+meaning that $\mathbb{C}_{ijkl} =\mathbb{C}_{klij}$, there are in fact
+only 21 possible unique parameters in general. In fact, one way to see
+this is to use *Voigt notation*, where we relate the vectors
+$$
+\begin{aligned}
+  \widetilde{{\boldsymbol S}} &= (S_{11},S_{22},S_{33},S_{23},S_{31},S_{12}) \\
+  \text{and}\quad\widetilde{{\boldsymbol \varepsilon}}&= (\varepsilon_{11},\varepsilon_{22},\varepsilon_{33},2\varepsilon_{23},2\varepsilon_{31},2\varepsilon_{12})
+\end{aligned}
+$$
+via a matrix multiplication. It is common to make the
+change of index notation
+$$
+11\leftrightarrow 1,\,
+22\leftrightarrow 2,\,
+33\leftrightarrow 3,\,
+23=32\leftrightarrow 4,\,
+31=13\leftrightarrow 5,\,
+12=21\leftrightarrow 6,
+$$
+and then we have
+$$
+\left(
+\begin{array}{c}
+    S_1 \\ S_2 \\ S_3 \\ S_4 \\ S_5 \\ S_6
+\end{array}
+\right)
+=
+\left(
+\begin{array}{cccccc}
+    C_{11} & C_{12} & C_{13} & C_{14} & C_{15} & C_{16} \\
+            & C_{22} & C_{23} & C_{24} & C_{25} & C_{26} \\
+            &        & C_{33} & C_{34} & C_{35} & C_{36} \\
+            &        &        & C_{44} & C_{45} & C_{46} \\
+            &        &        &       & C_{55} & C_{56} \\
+            &        &        &       &       & C_{66}
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+    \varepsilon_1 \\ \varepsilon_2 \\ \varepsilon_3 \\ 2\varepsilon_4 \\ 2\varepsilon_5 \\ 2\varepsilon_6
+\end{array}
+\right),
+$$
+where the part of the matrix below the diagonal is the
+reflection of that above the diagonal, i.e. $C_{ij} = C_{ji}$. The
+mysterious factor of 2 appearing is there to ensure that
+$$
+\tfrac12\widetilde{{\boldsymbol S}}\cdot\widetilde{{\boldsymbol \varepsilon}} = \tfrac12S_{ij}\varepsilon_{ij} = \tfrac12\mathbb{C}_{ijkl}\varepsilon_{ij}\varepsilon_{kl},
+$$
+which encodes the elastic energy density in the material.
+
+Under more specific assumptions about the symmetries of the underlying
+material, the number of independent components reduces much further. A
+common simplifying assumption to assume that a material is *isotropic*:
+this entails that there are just two independent elasticity parameters,
+and the matrix above becomes
+$$
+\left(
+\begin{array}{cccccc}
+    C_{11} & C_{12} & C_{12} & 0 & 0 & 0 \\
+    C_{12} & C_{11} & C_{12} & 0 & 0 & 0 \\
+    C_{12} & C_{12} & C_{11} & 0 & 0 & 0 \\
+    0 & 0 & 0 & C_{44} & 0     & 0 \\
+    0 & 0 & 0 & 0     & C_{44} & 0 \\
+    0 & 0 & 0 & 0     & 0     & C_{44}
+\end{array}
+\right),
+$$ with the additional restriction that
+$C_{12} = C_{11}-2C_{44}$. Even in this simplest case, there are still
+twice as many parameters as are needed to describe a Newtonian fluid,
+where we have only one viscosity parameter! This is because common
+elastic materials are not incompressible (even approximately). Another
+common case is crystalline materials with cubic symmetry, where
+$C_{11}$, $C_{12}$ and $C_{44}$ are independent parameters. We will
+focus in particular on the isotropic case, since this makes various
+aspects easier, but the theory can obviously be developed in general.
+
+In an isotropic linear elastic material, the elasticity tensor can be
+represented neatly as
+$$
+\mathbb{C}_{ijkl} = \kappa\, \delta_{ij}\delta_{kl} + G\left(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}-\tfrac23\delta_{ij}\delta_{kl}\right),
+$$
+or in Voigt notation, the matrix representation is
+$$
+\left(
+    \begin{array}{cccccc}
+      \kappa+\frac43G & \kappa-\frac23G & \kappa-\frac23G & 0 & 0 & 0 \\
+      \kappa-\frac23G & \kappa+\frac43G & \kappa-\frac23G & 0 & 0 & 0 \\
+      \kappa-\frac23G & \kappa-\frac23G & \kappa+\frac43G & 0 & 0 & 0 \\
+      0 & 0 & 0 & G & 0 & 0 \\
+      0 & 0 & 0 & 0 & G & 0 \\
+      0 & 0 & 0 & 0 & 0 & G
+    \end{array}
+  \right),
+$$
+The parameters involved here are $\kappa$, the *bulk
+modulus*; and $G$, the *shear modulus*. To illustrate why these
+parameters have these names, we now consider a couple of simple thought
+experiments.
+
+### The bulk modulus
+
+::: {#fig-bulkmodulus}
+![](tikz/BulkModulus.svg){height=5cm}
+
+An illustration of the uniform expansion considered in
+discussion of bulk modulus.
+:::
+
+Consider an isotropic linear elastic material undergoing a uniform
+compression or expansion, i.e. experiencing the deformation
+${\boldsymbol \varphi}({\boldsymbol X}) = (1+\tfrac13\alpha){\boldsymbol X}$.
+The volume of unit cube after this deformation can be expressed using
+the determinant of the deformation gradient,
+$$
+J = \det{\boldsymbol F}= (1+\tfrac13\alpha)^3 = 1+\alpha+\tfrac13\alpha^2+\tfrac{1}{27}\alpha^3.
+$$
+When $\alpha$ is small, we can neglect the quadratic and cubic terms to
+approximate the new volume as $J \approx 1+\alpha$, so $\alpha$ tells us
+the approximate change in volume in this case.
+
+Let's now see what the stress in the material, assuming it is an
+isotropic linear elastic solid. First, we translate from deformation
+into displacement, where
+$$
+u_i = \tfrac13\alpha X_i\quad\text{so}\quad \frac{\partial u_i}{\partial X_j} = \tfrac13\alpha\delta_{ij}\quad\text{and}\quad \varepsilon_{ij} = \tfrac13\alpha\delta_{ij}.
+$$
+Plugging in, we find
+$$
+\varepsilon_{kk} = \tfrac13\alpha\delta_{kk} = \alpha,
+$$
+so
+$$
+\varepsilon_{ij} - \tfrac13\delta_{ij}\varepsilon_{kk} = \tfrac13\alpha\delta_{ij}-\tfrac13\alpha\delta_{ij} = 0.
+$$
+The stress tensor is therefore
+$$
+S_{ij} = \kappa\alpha\delta_{ij}\quad\text{or in tensor notation}\quad{\boldsymbol S}= \kappa\alpha{\boldsymbol I}.
+$$
+Recalling our definition from above, this is a *spherical* state of
+stress, with pressure $p = -\kappa\alpha$, and we see that $\kappa$ is
+the constant of proportionality between the approximate volume change
+$\alpha$ and the resulting pressure induced in the material.
+
+### The shear modulus
+
+::: {#fig-shearmodulus}
+![](tikz/ShearModulus.svg){height=5cm}
+
+A simple shear.
+:::
+
+Consider an isotropic linear elastic material undergoing a simple shear
+in which
+$$
+{\boldsymbol \varphi}({\boldsymbol X}) = (X+\alpha Y,Y,Z).
+$$
+We have
+$$
+{\boldsymbol u}= (\alpha Y,0,0)\quad\text{so}\quad
+  \nabla{\boldsymbol u}= \left(
+    \begin{array}{ccc}
+      0 & \alpha & 0 \\
+      0 & 0 & 0 \\
+      0 & 0 & 0
+    \end{array}
+  \right)\quad\text{and}\quad
+  {\boldsymbol \varepsilon}= \left(
+    \begin{array}{ccc}
+      0 & \tfrac12\alpha & 0 \\
+      \tfrac12\alpha & 0 & 0 \\
+      0 & 0 & 0
+    \end{array}
+  \right).
+$$
+It is easy to check that $\varepsilon_{kk} = 0$, and so plugging in,
+$$
+{\boldsymbol S}=
+\left(
+    \begin{array}{ccc}
+        0 & G\alpha & 0 \\
+        G\alpha & 0 & 0 \\
+        0 & 0 & 0
+    \end{array}
+\right).
+$$
+This is a state of pure shear stress, and we see that $G$
+is the constant of proportionality relating the shear strain to the
+shear stress induced in the material.
+
+### Young's modulus and the Poisson ratio
+
+::: {#fig-uniaxial}
+![](tikz/Uniaxial.svg){height=5cm}
+
+A uniaxial stretch.
+:::
+
+Along with the bulk and shear moduli, there are other possible elastic
+coefficients we can use; another convenient pair are the *Young's
+modulus*, $E$ and *Poisson ratio*, $\nu$.
+
+To illustrate what these coefficents are, let's consider stretching the
+material in one direction. In general, you may already be aware that
+material tends to thin in directions orthogonal to that in which it is
+stretched (think of an elastic band). This means it will be useful for
+us to consider the material simultaneously contracting in the other
+directions, so we consider the deformation
+$$
+{\boldsymbol \varphi}({\boldsymbol X}) = \big((1+\alpha)X,(1-\beta)Y,(1-\beta)Z\big).
+$$
+We have
+$$
+{\boldsymbol u}= (\alpha X,-\beta Y,-\beta Z)\quad\text{so}\quad
+\nabla{\boldsymbol u}= \left(
+    \begin{array}{ccc}
+        \alpha & 0 & 0 \\
+        0 & -\beta & 0 \\
+        0 & 0 & -\beta
+    \end{array}
+\right)={\boldsymbol \varepsilon},
+$$
+where the latter equality holds because $\nabla{\boldsymbol u}$ is symmetric. Plugging in, we find
+$$
+{\boldsymbol S}=
+\left(
+    \begin{array}{ccc}
+        (\kappa-\tfrac23G)(\alpha-2\beta)+2G\alpha & 0 & 0 \\
+        0 & (\kappa-\tfrac23G)(\alpha-2\beta)-2G\beta & 0 \\
+        0 & 0 & (\kappa-\tfrac23G)(\alpha-2\beta)-2G\beta
+    \end{array}
+    \right).
+$$
+Let us set $\nu = \beta/\alpha$, and pull out a factor of
+$\alpha$. Then, working through the algebra, we can write
+$$
+{\boldsymbol S}= \alpha\left(
+    \begin{array}{ccc}
+        (\kappa+\tfrac43G)-2\nu(\kappa-\tfrac23G) & 0 & 0 \\
+        0 & (\kappa-\tfrac23G)-2\nu(\kappa+\tfrac13G) & 0 \\
+          0 & 0 & (\kappa-\tfrac23G)-2\nu(\kappa+\tfrac13G)
+    \end{array}
+\right).
+$$
+Now recall that we are free to choose $\beta$, or
+equivalently $\nu$. If we choose the special value
+$$
+\nu = \frac{\kappa-\tfrac23G}{2\kappa+\tfrac23G} = \frac{3\kappa-2G}{2(3\kappa+G)},
+$$
+then $S_{22}=S_{33}=0$, and so the stresses on the sides orthogonal to
+the direction of of our box vanish. This is exactly what we would expect
+to happen when we perform a simple stretching experiment, and the value
+of $\nu$ is known as the *Poisson ratio* of the material, since it
+describes the ratio by which the material thins in directions
+perpendicular to that which it is stretched.
+
+If we simply further in the case where we choose $\nu$ as above, we have
+$$
+{\boldsymbol S}= \alpha\left(
+    \begin{array}{ccc}
+        \frac{9\kappa G}{3\kappa+G} & 0 & 0 \\
+        0 & 0 & 0 \\
+        0 & 0 & 0
+    \end{array}
+\right).
+$$
+We can therefore express the only non-zero stress component
+as $S_{11} = E\alpha$, where $E = \frac{9\kappa G}{3\kappa+G}$ is the
+*Young's modulus* of the material. Note that the Young's modulus is the
+equivalent of the coefficient $\mathbb{C}$ which was discussed in the
+motivation section on springs above.
+
+### Summary
+
+The 4 parameters $\kappa$, $G$, $\nu$ and $E$ can be used to describe
+material behaviour, and we have seen how they are defined based on some
+simple thought experiments. In practice, these are the basic experiments
+that are used to identify the appropriate parameters in standard tests,
+and if the material is truly isotropic, then we can convert between any
+pair of the coefficients. You can find a table to do so on Wikipedia;
+see the bottom of [this
+page](https://en.wikipedia.org/wiki/Elastic_modulus) for example. In
+particular, the inverse of the formulae we derived above for $E$ and
+$\nu$ are:
+$$
+\kappa = \frac{E}{3(1-2\nu)}\quad \text{and}\quad G = \frac{E}{2(1+\nu)}.
+$$
+Note that the cases where $\nu=\tfrac12$ and $\nu=-1$ are problematic,
+but most materials have $\nu$ in this range (and most have
+$\nu\approx 0.3$).
+
+Some indicative values of the moduli are shown in
+Table [2.1](#tab:moduli){reference-type="ref" reference="tab:moduli"}.
+As the infinitesimal strain is dimensionless, we find that $\kappa$, $G$
+and $E$ all have the same units as stress. Since the Poisson ratio is
+really a special strain value, it is dimensionless. The SI unit of
+stress is the pascal, written $1\text{Pa}$, which is equivalent to
+1Nm$^{-2}$. Given the typical values observed from materials, it is more
+common to express the stresses experienced in solids using megapascals
+(1MPa = $10^6$Pa) or gigapascals (1GPa = $10^9$Pa).
+
+::: {#tab:moduli}
+      Material       $\kappa$ (GPa)   $G$ (GPa)   $\nu$   $E$ (GPa)
+  ----------------- ---------------- ----------- ------- -----------
+      Aluminium            75            25       0.36       70
+       Copper             140            47       0.35       125
+       Diamond            540            460       0.2      1100
+        Lead               41             5       0.44       14
+   Silicone Rubber         2            0.01      0.48      0.05
+   Stainless Steel        140            78       0.27       195
+
+  : Approximate elastic moduli for some materials at room temperature.
+  The closer that $\nu$ is to the value of $0.5$, the closer the
+  material is to being incompressible; most materials have a Poisson
+  ratio in the range $0.2$--$0.4$, so lead and rubber are outliers.
+:::
+
+[]{#tab:moduli label="tab:moduli"}
+
+## The equations of linear elastostatics
+
+Now we have developed some physical understanding of the elastic moduli,
+we focus on the equations of isotropic elasticity. If we use the
+constitutive assumption that
+${\boldsymbol S}= \mathbb{C}{\boldsymbol \varepsilon}$, the relationship
+that
+${\boldsymbol \varepsilon}= \frac12(\nabla{\boldsymbol u}+\nabla{\boldsymbol u}^T)$
+and substitute into the force balance equation, we get the system of
+equations
+$$
+(\kappa+\tfrac13G)\nabla(\nabla\cdot{\boldsymbol u}) + G\nabla^2{\boldsymbol u}+ \rho g{\boldsymbol e}_3 = {\boldsymbol 0}.
+$$
+This can be written in component form as
+$$
+(\kappa+\tfrac13 G)\frac{\partial^2 u_j}{\partial X_i\partial X_j}+G\frac{\partial^2u_i}{\partial X_j\partial X_j}+\rho g\delta_{i3} = 0.
+$$
+These equations must be accompanied by appropriate boundary conditions.
+In simple problems, these are often *displacement* boundary conditions
+where ${\boldsymbol u}$ is prescribed on part of the boundary, or
+*traction* boundary conditions where ${\boldsymbol S}{\boldsymbol n}$ is
+prescribed on part of the boundary. In general, a mixture of these
+condition will be used; see for example @fig-elasticityBCs. The full linear elastic problem becomes:
+$$
+\begin{aligned}
+    (\kappa+\tfrac13 G)\nabla(\nabla\cdot{\boldsymbol u}) + G\nabla^2{\boldsymbol u}+ \rho g{\boldsymbol e}_3 &= {\boldsymbol 0} && \text{in }B,\\
+    {\boldsymbol S}{\boldsymbol n}&= {\boldsymbol t}&& \text{on }\Gamma_N,\\
+    {\boldsymbol u}&= {\boldsymbol u}_0 && \text{on }\Gamma_D.
+\end{aligned}
+$$ {#eq-isotropic_elast_forcebalance}
+Note there are
+in general 3 partial differential equations for 3 components of the
+displacement at points inside the domain, and 3 conditions at each
+boundary point. This is therefore a closed set of equations, and in
+general it has smooth solutions (away from corners and other nasty
+boundary points).
+
+### Special cases
+
+It is sometimes convenient to make modelling approximations to reduce
+the three-dimensional system of equations. Three important cases of this
+are:
+
+1.  **Plane strain**, in which we assume that displacements take place
+    only in $x_1,x_2$ plane, and hence
+    ${\boldsymbol u}= (u_1(x_1,x_2),u_2(x_1,x_2),0)$. This is used to
+    model the interior of a specimen which is very *thick* in the $x_3$
+    direction, so that the $u_3$ component doesn't change very much in
+    any slice of the body. In this case, we just need to consider the
+    reduced matrix
+    $$
+    \left(
+        \begin{array}{c}
+            S_{11} \\ S_{22} \\ S_{12}
+        \end{array}
+    \right)
+    =
+    \frac{E}{(1+\nu)(1-2\nu)}
+    \left(
+        \begin{array}{ccc}
+            1-\nu & \nu & 0 \\
+            \nu & 1-\nu & 0 \\
+            0 & 0 & \frac{1-2\nu}{2}
+        \end{array}
+    \right)
+    \left(
+        \begin{array}{c}
+            \varepsilon_{11} \\ \varepsilon_{22} \\ 2\varepsilon_{12}
+        \end{array}
+    \right)
+    $$
+
+2.  **Plane stress**, in which we assume that $S_{13}$, $S_{23}$ and
+    $S_{33}$ are zero. This is usually used to model a specimen that is
+    very *thin* in the $x_3$ direction. In this case, if the top and
+    bottom of a sheet are free, then zero traction boundary conditions
+    mean that these components are likely to be very small. In this
+    case, we just need to consider the reduced matrix
+    $$
+    \left(
+        \begin{array}{c}
+            S_{11} \\ S_{22} \\ S_{12}
+        \end{array}
+    \right)
+    =
+    \frac{E}{1-\nu^2}
+    \left(
+        \begin{array}{ccc}
+            1 & \nu & 0 \\
+            \nu & 1 & 0 \\
+            0 & 0 & \frac{1-\nu}{2}
+        \end{array}
+    \right)
+    \left(
+        \begin{array}{c}
+            \varepsilon_{11} \\ \varepsilon_{22} \\ 2\varepsilon_{12}
+        \end{array}
+    \right).
+    $$
+
+3.  **Anti-plane stress**, in which we assume that the displacement only
+    occurs in the $x_3$ direction, so that
+    ${\boldsymbol u}=(0,0,u_3(x_1,x_2))$. This is typically used to
+    model the cross-section of a long thin component, where loads are
+    applied along the axis, such as a tube or bar. In this case, we get
+    In this case, we just need to consider the reduced matrix 
+    $$
+    \left(
+        \begin{array}{c}
+            S_{12} \\ S_{13}
+        \end{array}
+    \right)
+    =
+    G
+    \left(
+        \begin{array}{cc}
+            1 & 0 \\
+            0 & 1
+        \end{array}
+    \right)
+    \left(
+        \begin{array}{c}
+            2\varepsilon_{12} \\ 2\varepsilon_{13}
+        \end{array}
+    \right).
+    $$
+
+::: {#fig-elasticityBCs}
+
+![](tikz/ElasticityBCs.svg){height=5cm}
+
+Displacement and traction boundary conditions used to
+simulate a tensile test. Regions where traction boundary conditions are
+applied are shown in blue, while displacement boundary conditions apply
+on the surfaces shown in red.
+:::

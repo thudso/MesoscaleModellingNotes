@@ -1,0 +1,128 @@
+\documentclass[tikz, border=2pt]{standalone}
+\usepackage{tikz,pgfplots}
+\usepgfplotslibrary{colormaps}
+\usepackage{tikz-3dplot}
+\usepackage{amsmath,bm,array}
+\usepackage{amsfonts,amsthm,titlesec}
+\usetikzlibrary{arrows.meta}
+\tikzset{>={Stealth[round]}}
+
+\newcommand{\bbA}{\mathbb{A}}
+\newcommand{\bbB}{\mathbb{B}}
+\newcommand{\bbC}{\mathbb{C}}
+\newcommand{\bbD}{\mathbb{D}}
+\newcommand{\bbE}{\mathbb{E}}
+\newcommand{\bbF}{\mathbbF}
+\newcommand{\bbG}{\mathbb{G}}
+\newcommand{\bbH}{\mathbb{H}}
+\newcommand{\bbI}{\mathbb{I}}
+\newcommand{\bbJ}{\mathbb{J}}
+\newcommand{\bbK}{\mathbb{K}}
+\newcommand{\bbL}{\mathbb{L}}
+\newcommand{\bbM}{\mathbb{M}}
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbO}{\mathbb{O}}
+\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\bbQ}{\mathbb{Q}}
+\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbS}{\mathbb{S}}
+\newcommand{\bbT}{\mathbb{T}}
+\newcommand{\bbU}{\mathbb{U}}
+\newcommand{\bbV}{\mathbb{V}}
+\newcommand{\bbW}{\mathbb{W}}
+\newcommand{\bbX}{\mathbb{X}}
+\newcommand{\bbY}{\mathbb{Y}}
+\newcommand{\bbZ}{\mathbb{Z}}
+
+\def\bfa{{\boldsymbol a}}
+\def\bfb{{\boldsymbol b}}
+\def\bfc{{\boldsymbol c}}
+\def\bfd{{\boldsymbol d}}
+\def\bfe{{\boldsymbol e}}
+\def\bff{{\boldsymbol f}}
+\def\bfg{{\boldsymbol g}}
+\def\bfh{{\boldsymbol h}}
+\def\bfi{{\boldsymbol i}}
+\def\bfj{{\boldsymbol j}}
+\def\bfk{{\boldsymbol k}}
+\def\bfl{{\boldsymbol l}}
+\def\bfm{{\boldsymbol m}}
+\def\bfn{{\boldsymbol n}}
+\def\bfo{{\boldsymbol o}}
+\def\bfp{{\boldsymbol p}}
+\def\bfq{{\boldsymbol q}}
+\def\bfr{{\boldsymbol r}}
+\def\bfs{{\boldsymbol s}}
+\def\bft{{\boldsymbol t}}
+\def\bfu{{\boldsymbol u}}
+\def\bfv{{\boldsymbol v}}
+\def\bfw{{\boldsymbol w}}
+\def\bfx{{\boldsymbol x}}
+\def\bfy{{\boldsymbol y}}
+\def\bfz{{\boldsymbol z}}
+
+\def\bfA{{\boldsymbol A}}
+\def\bfB{{\boldsymbol B}}
+\def\bfC{{\boldsymbol C}}
+\def\bfD{{\boldsymbol D}}
+\def\bfE{{\boldsymbol E}}
+\def\bfF{{\boldsymbol F}}
+\def\bfG{{\boldsymbol G}}
+\def\bfH{{\boldsymbol H}}
+\def\bfI{{\boldsymbol I}}
+\def\bfJ{{\boldsymbol J}}
+\def\bfK{{\boldsymbol K}}
+\def\bfL{{\boldsymbol L}}
+\def\bfM{{\boldsymbol M}}
+\def\bfN{{\boldsymbol N}}
+\def\bfO{{\boldsymbol O}}
+\def\bfP{{\boldsymbol P}}
+\def\bfQ{{\boldsymbol Q}}
+\def\bfR{{\boldsymbol R}}
+\def\bfS{{\boldsymbol S}}
+\def\bfT{{\boldsymbol T}}
+\def\bfU{{\boldsymbol U}}
+\def\bfV{{\boldsymbol V}}
+\def\bfW{{\boldsymbol W}}
+\def\bfX{{\boldsymbol X}}
+\def\bfY{{\boldsymbol Y}}
+\def\bfZ{{\boldsymbol Z}}
+
+\def\bf0{{\boldsymbol 0}}
+\def\bfxi{{\boldsymbol \xi}}
+\def\bfkappa{{\boldsymbol \kappa}}
+\def\bfeps{{\boldsymbol \varepsilon}}
+\def\bfeta{{\boldsymbol \eta}}
+\def\bfphi{{\boldsymbol \varphi}}
+\def\bfnu{{\boldsymbol \nu}}
+\def\bfomega{{\boldsymbol \omega}}
+\def\bfOmega{{\boldsymbol \Omega}}
+\def\bfpsi{{\boldsymbol \psi}}
+\def\bfchi{{\boldsymbol \chi}}
+\def\bftau{{\boldsymbol \tau}}
+\def\bfsigma{{\boldsymbol \sigma}}
+\def\bfSigma{{\boldsymbol \Sigma}}
+
+\def\Reyn{\mathrm{Re}}
+\def\Bond{\mathrm{Bo}}
+\def\Cap{\mathrm{Ca}}
+\def\Sto{\mathrm{St}}
+
+
+\begin{document}
+\begin{tikzpicture}
+  \draw[->] (-1.5,0) -- (1.5,0) node[below] {$x$};
+  \draw[->] (0,-1.5) -- (0,1.5) node[left] {$y$};
+  % phi
+  \draw[red,domain=-1:0,samples=100,smooth]
+  plot (\x,1+3*\x^2-2*\x^3) node[above right] {$\phi$};
+  \draw[red,domain=0:1,samples=100,smooth]
+  plot (\x,1-3*\x^2+2*\x^3);
+
+  % psi
+  \draw[blue,domain=-1:0,samples=100,smooth]
+  plot (\x,{\x-2*\x^2+\x^3}) node[above left] {$\psi$};
+  \draw[blue,domain=0:1,samples=100,smooth]
+  plot (\x,{\x-2*\x^2+\x^3});
+\end{tikzpicture}
+\end{document}
