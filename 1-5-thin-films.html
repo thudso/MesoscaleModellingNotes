@@ -30,6 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./2-0-solids.html" rel="next">
 <link href="./1-4-free-surfaces.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -208,6 +209,29 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./2-0-solids.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Solids</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2-1-macro-solids.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear Elasticity Theory</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2-2-finite-elements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">The Finite Element Method</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -262,7 +286,7 @@ window.Quarto = {
 <p>From a mathematical modelling perspective, the geometry of the flow will allow us to make significant simplifications to the full system of Navier-Stokes equations, firstly for the case of a fluid trapped between two solid surfaces, and secondly for the case of a liquid film on a solid surface, where the free surface boundary conditions add even further complexity. This chapter will bring together many of the aspects from the earlier ones and also introduce further techniques of applied mathematics, namely non-dimensionalisation (done in full detail now!) and a brief look at asymptotic techniques.</p>
 <section id="the-lubrication-equation" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="the-lubrication-equation"><span class="header-section-number">5.1</span> The Lubrication Equation</h2>
-<p>We begin by considerind the two-dimensional incompressible Navier-Stokes equations in Cartesian coordinates, with gravitational acceleration pointing in the negative <span class="math inline">y</span>-direction: <span class="math display">
+<p>We begin by considering the two-dimensional incompressible Navier-Stokes equations in Cartesian coordinates, with gravitational acceleration pointing in the negative <span class="math inline">y</span>-direction: <span class="math display">
 \begin{aligned}
 \frac{\partial u}{\partial x}+\frac{\partial v}{\partial y} &amp;= 0, \\
 \rho\left(\frac{\partial u}{\partial t} + u\frac{\partial u}{\partial x} + v\frac{\partial u}{\partial y} \right)&amp;= -\frac{\partial p}{\partial x} + \mu\left(\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}\right), \\
@@ -1238,6 +1262,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./2-0-solids.html" class="pagination-link" aria-label="Solids">
+        <span class="nav-page-text">Solids</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

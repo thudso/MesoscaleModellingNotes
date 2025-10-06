@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Module overview – PX912 Continuum and Mesoscale Modelling</title>
+<title>Solids – PX912 Continuum and Mesoscale Modelling</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./1-0-fluids.html" rel="next">
-<link href="./index.html" rel="prev">
+<link href="./2-1-macro-solids.html" rel="next">
+<link href="./1-5-thin-films.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -84,7 +84,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./0-preface.html">Module overview</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./2-0-solids.html">Solids</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -121,7 +121,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./0-preface.html" class="sidebar-item-text sidebar-link active">
+  <a href="./0-preface.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Module overview</span></a>
   </div>
 </li>
@@ -168,7 +168,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./2-0-solids.html" class="sidebar-item-text sidebar-link">
+            <a href="./2-0-solids.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Solids</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -199,11 +199,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#moodle" id="toc-moodle" class="nav-link active" data-scroll-target="#moodle">Moodle</a></li>
-  <li><a href="#lectures" id="toc-lectures" class="nav-link" data-scroll-target="#lectures">Lectures</a></li>
-  <li><a href="#delivery" id="toc-delivery" class="nav-link" data-scroll-target="#delivery">Delivery</a></li>
-  <li><a href="#workshops" id="toc-workshops" class="nav-link" data-scroll-target="#workshops">Workshops</a></li>
-  <li><a href="#assessment" id="toc-assessment" class="nav-link" data-scroll-target="#assessment">Assessment</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#outline" id="toc-outline" class="nav-link" data-scroll-target="#outline">Outline</a></li>
   </ul>
 </nav>
     </div>
@@ -212,7 +209,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="module-overview" class="quarto-section-identifier">Module overview</span></h1>
+<h1 class="title">Solids</h1>
 </div>
 
 
@@ -229,40 +226,27 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Significant credit must go to James Sprittles and Lukasz Figiel who originally developed this module and the materials I am building on here. Below, I detail a range of practical information about the module.</p>
-<section id="moodle" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="moodle">Moodle</h2>
-<p>Supporting resources for this module will be uploaded to Moodle on a week-by-week basis. I will try to upload resources well ahead of the lectures, but this is an ambition rather than a promise. The moodle page (where you probably found this!) is <a href="https://moodle.warwick.ac.uk/course/view.php?id=73466">here</a>.</p>
+<div class="hidden">
+
+</div>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>In this half of the module our focus switches to solids, and the modelling of shape change and motion of solid materials under the action of applied forces. An important fundamental difference between fluids and solids is that solids do not ‘flow’ in the same way. As a consequence, points in a solid material that are nearby at one time tend to remain very close to one another at later times.</p>
+<p>As a thought experiment, consider performing an experiment to observe the physical properties of a fluid, pouring it into a beaker, stirring it up and then doing the same experiment again. The fluid has been completely deformed and distorted by this process, but we expect the mechanical properties to remain the same. In contrast, we are not able to do the same to a solid; instead, they tend to want to return to their original shape between experiments. This shows that a solid ‘remembers’ its shape in a way a fluid does not. A common approach is therefore to introduce a reference shape for a solid and measure change relative to this reference. As we will see, this means it is more convenient to use a Lagrangian formulation (rather than an Eulerian formulation, as we used in the fluids part) of the appropriate equations.</p>
 </section>
-<section id="lectures" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="lectures">Lectures</h2>
-<p>These lecture notes form one of the main resources for the module, and there will very likely be updates to them as we go through the module. You can find the date of publication for the version you are reading on the title page,, and the online version will always be up-to-date.</p>
-<p>During lectures I will be going through the notes (not just copying them out, but rather focussing on concepts, derivations, etc) and it is my intention to use both slides, videos, and handwritten notes in combination to present. Many supporting materials are linked from the online notes, with videos embedded in the online version.</p>
-</section>
-<section id="delivery" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="delivery">Delivery</h2>
-<p>I will be delivering the entire course face to face in MAS2.05/06. If you miss the lecture, Lecture Capture should be available. I do very much encourage you to attend the lectures and workshops regularly: educational research indicates that sustained lecture attendance is very strongly correlated with good performance in assessment, and they give you both invaluable access to me and your classmates, and time and space to focus on the material.</p>
-</section>
-<section id="workshops" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="workshops">Workshops</h2>
-<p>The focus of the workshops will be on the development of computational approaches to solving continuum mechanics problems. As this module runs alongside PX913, it is my intention to provide basic code for you to work with, manipulate and extend. However, if you prefer, you can develop your own from scratch (in Fortran or Python). Supporting materials for the Workshops will be provided in the form of Jupyter notebooks, which can be accessed via the Moodle page for the module; we’ll discuss this in the first workshop.</p>
-<p>There will also be some Examples Sheets for you to complete in order to test your knowledge of the core material, and I encourage you to work through these as practice; these can also be discussed in the workshops.</p>
-</section>
-<section id="assessment" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="assessment">Assessment</h2>
-<p>The assessment for the entire module is based on:</p>
+<section id="outline" class="level2">
+<h2 class="anchored" data-anchor-id="outline">Outline</h2>
+<p>During the lectures in this second part, we will cover the following topics:</p>
 <ul>
-<li><p>a computational project on fluids worth 30% of the overall mark,</p></li>
-<li><p>a computational project on solids worth 30% of the overall mark, and</p></li>
-<li><p>a final viva worth 40% of the overall mark.</p></li>
+<li><p><strong>Linear Elasticity Theory</strong>: more on the Lagrangian formalism, deformations and displacements, strain, stress, Hooke’s law, and the equations of linear elastostatics.</p></li>
+<li><p><strong>The Finite Element Method</strong>: weak vs strong forms of partial differential equations and the basics of the finite element method (FEM), including the notion of elements, shape functions and numerical integration. We also discuss boundary conditions and practical implementation.</p></li>
+<li><p><strong>Beam Theory</strong>: the Bernoulli-Euler beam equation, FEM for the reduced problem, and discussion of other reduced theories.</p></li>
+<li><p><strong>Elasticity for Crystal Defects</strong>: the elastic Green’s function, the connection between atomistic and continuum theory, and how defects are modelled using linear elasticity theory. Point defects as elastic inclusions.</p></li>
 </ul>
-<p>I will provide further guidance on the particular parts of the content which the viva will focus on later in the module, and I will confirm the dates and location after the Christmas break. Success in the computational coursework projects will require you to do three things:</p>
-<ol type="1">
-<li><p>Develop code,</p></li>
-<li><p>Benchmark your code by using known analytic results and exact solutions, and</p></li>
-<li><p>Engage with existing literature.</p></li>
-</ol>
-<p>All of these aspects are important skills to practice and develop for success in your own individual research projects.</p>
+<p>In the workshops you will develop your own codes to solve real-world problems.</p>
+<ul>
+<li><strong>Computational Solid Mechanics</strong>: the finite element method (both from scratch and using packages), basis functions, numerical integration, linear algebra, error, meshing and refinement.</li>
+</ul>
 
 
 </section>
@@ -831,13 +815,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./index.html" class="pagination-link" aria-label="Welcome">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Welcome</span>
+      <a href="./1-5-thin-films.html" class="pagination-link" aria-label="Lubrication and Thin Film Dynamics">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Lubrication and Thin Film Dynamics</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./1-0-fluids.html" class="pagination-link" aria-label="Fluids">
-        <span class="nav-page-text">Fluids</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./2-1-macro-solids.html" class="pagination-link" aria-label="Linear Elasticity Theory">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear Elasticity Theory</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -209,6 +209,29 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./2-0-solids.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Solids</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2-1-macro-solids.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear Elasticity Theory</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2-2-finite-elements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">The Finite Element Method</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -502,35 +525,33 @@ The Incompressible Navier–Stokes Equations
 \mathrm{Re}=\frac{U^2/L}{\nu U/L} = \frac {UL}{\nu}.
 </span></p>
 <p>Therefore, it appears one can neglect the influence of viscosity if <span class="math inline">\mathrm{Re}\gg 1</span> (inviscid flow), whereas the fluid particle acceleration term can be ignored if <span class="math inline">\mathrm{Re}\ll 1</span> (Stokes flow or ‘creeping flow’). The latter is associated with laminar flow, and is critical for small-scale flows (small <span class="math inline">L</span>) such as those occurring in microfluidics (e.g.&nbsp;look up ‘lab-on-a-chip’ devices), whilst the former can create laminar or turbulent flows and are commonly observed all around us (e.g.&nbsp;weather). If <span class="math inline">\mathrm{Re}\sim 1</span>, then both effects are approximately in balance, and it is much harder to simplify the equations as a result.</p>
-<p>In fact, things are more complex: even if <span class="math inline">\mathrm{Re}\gg 1</span> when estimated based on the size <span class="math inline">L</span> of the flow, the local length-scale in some parts of the flow may get much smaller and, therefore, the local <span class="math inline">\mathrm{Re}</span> may get strongly reduced, so that the flow is no longer inviscid. This situation is typical for thin layers close to the solid boundaries—the so-called <em>boundary layers</em> and in wakes behind moving bodies; see <a href="#fig-flowpastcylinder" class="quarto-xref">Figure&nbsp;<span>2.4</span></a>.</p>
-<div id="fig-flowpastcylinder" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-flowpastcylinder-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/circular_cylinder.jpg" class="img-fluid figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-flowpastcylinder-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.4: Flow past cylinder at <span class="math inline">\mathrm{Re}=3900 \gg 1</span>. Upstream of the cylinder (on the left) the flow is laminar, large-scale and almost inviscid except for a thin boundary layer close to the cylinder. Downstream (to the right), the flow contains small scales and its viscosity is important.
-</figcaption>
-</figure>
-</div>
-<p>This number is named after Osborne Reynolds (1842-1912) who realised that this combination of dimensional parameters controls the transition from a laminar to turbulent flow in a pipe. The apparatus used to conduct these experiments, conducted in Manchester, is shown in <a href="#fig-reynolds" class="quarto-xref">Figure&nbsp;<span>2.5</span></a>.</p>
-<div id="fig-reynolds" class="quarto-layout-panel">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-reynolds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row quarto-layout-valign-bottom">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="images/reynolds.jpg" class="img-fluid figure-img"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="images/transition.png" class="img-fluid figure-img"></p>
-</div>
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-reynolds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.5: Reynolds’ experiments on flow through a pipe showing that as you increase <span class="math inline">\mathrm{Re}</span> (e.g.&nbsp;by increasing the flow rate and hence <span class="math inline">U</span>) you transition from a laminar state to a turbulent one in which dye injected into the fluid at the entrance is mixed with the surrounding fluid.
-</figcaption>
-</figure>
-</div>
+<p>In fact, things are more complex: even if <span class="math inline">\mathrm{Re}\gg 1</span> when estimated based on the size <span class="math inline">L</span> of the flow, the local length-scale in some parts of the flow may get much smaller and, therefore, the local <span class="math inline">\mathrm{Re}</span> may get strongly reduced, so that the flow is no longer inviscid. This situation is typical for thin layers close to the solid boundaries—the so-called <em>boundary layers</em> and in wakes behind moving bodies.</p>
+<!-- ::: {#fig-flowpastcylinder}
+![](images/circular_cylinder.jpg){#fig-Flow past cylinder}
+
+Flow past cylinder at $\mathrm{Re}=3900 \gg 1$. Upstream of the
+cylinder (on the left) the flow is laminar, large-scale and almost
+inviscid except for a thin boundary layer close to the cylinder.
+Downstream (to the right), the flow contains small scales and its
+viscosity is important.
+::: -->
+<p>This number is named after Osborne Reynolds (1842-1912) who realised that this combination of dimensional parameters controls the transition from a laminar to turbulent flow in a pipe. <!-- The apparatus used to
+conduct these experiments, conducted in Manchester, is shown in
+@fig-reynolds.
+
+::: {#fig-reynolds layout-ncol=2 layout-valign="bottom"}
+
+![](images/reynolds.jpg){height=5cm}
+
+![](images/transition.png){height=5cm}
+
+Reynolds’ experiments on flow through a pipe showing that as
+you increase $\mathrm{Re}$ (e.g. by increasing the
+flow rate and hence $U$) you
+transition from a laminar state to a turbulent one in which dye injected
+into the fluid at the entrance is mixed with the surrounding
+fluid.
+::: --></p>
 <section id="stokes-flow" class="level4">
 <h4 class="anchored" data-anchor-id="stokes-flow">Stokes Flow</h4>
 <p>When the Reynolds number is small, <span class="math inline">\mathrm{Re}\ll1</span>, viscous (frictional) forces dominate inertial effects captured by the acceleration term on the left-hand side of the Navier–Stokes equations. Neglecting the acceleration terms, we obtain the model <span id="eq-incSto"><span class="math display">
@@ -556,7 +577,7 @@ Figure&nbsp;2.5: Reynolds’ experiments on flow through a pipe showing that as 
 </section>
 <section id="boundary-conditions-at-walls" class="level3">
 <h3 class="anchored" data-anchor-id="boundary-conditions-at-walls">Boundary conditions at walls</h3>
-<p>The number of boundary conditions required depends on the bulk equations and their form is determined by the properties of the boundaries (i.e. the physics at the boundary). The two choices discussed below are illustrated in <a href="#fig-BCs" class="quarto-xref">Figure&nbsp;<span>2.6</span></a>.</p>
+<p>The number of boundary conditions required depends on the bulk equations and their form is determined by the properties of the boundaries (i.e. the physics at the boundary). The two choices discussed below are illustrated in <a href="#fig-BCs" class="quarto-xref">Figure&nbsp;<span>2.4</span></a>.</p>
 <div id="fig-BCs" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-BCs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -570,7 +591,7 @@ Figure&nbsp;2.5: Reynolds’ experiments on flow through a pipe showing that as 
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-BCs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.6: An illustration of the no slip boundary condition (left) and the free slip boundary conditions (right). In the no slip case, all components of velocity at the boundary must match, so the velocities are identical. In the free slip case, only the normal components of velocity must match, as the fluid can ‘slip’ along the boundary.
+Figure&nbsp;2.4: An illustration of the no slip boundary condition (left) and the free slip boundary conditions (right). In the no slip case, all components of velocity at the boundary must match, so the velocities are identical. In the free slip case, only the normal components of velocity must match, as the fluid can ‘slip’ along the boundary.
 </figcaption>
 </figure>
 </div>
@@ -597,23 +618,17 @@ Figure&nbsp;2.6: An illustration of the no slip boundary condition (left) and th
 <p>One option is molecular dynamics, where individual molecules are evolved via Newton’s laws of motion under the action of a potential, that is typically short range repulsive (so molecules don’t overlap) and long-range attractive (creating cohesion in the fluid). Such techniques can offer us great insight when flows are on molecular scales (e.g.&nbsp;nm), but to do so we must have accurate potentials to describe the motion. Typically, in the fluid dynamics community relatively simple potentials are used (e.g.&nbsp;Lennard Jones, or some water models) and the focus is usually not on the chemical nature of the fluid, but rather its flow properties (viscosity, density, etc). The following video shows the coalescence of water nanodrops.</p>
 <div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/iFPzHdSkIwc" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
 <p>For the case of gases, one can also use molecular dynamics, but due to its often dilute nature one can develop statistical approaches that rely on the fact that binary collisions between molecules are their most likely form of interaction (i.e.&nbsp;there is no attractive force considered). The result is the Boltzmann equation (in the field of rarefied gas flows or kinetic theory) which provides a partial differential equation for the particle distribution function <span class="math inline">f=f({\boldsymbol{x}},{\boldsymbol{c}},t)</span> which gives the probability of a molecule having velocity <span class="math inline">{\boldsymbol{c}}</span> at position <span class="math inline">{\boldsymbol{x}}</span> and time <span class="math inline">t</span>. Notably, the Boltzmann equation sits in a seven-dimensional space (3 spatial, 3 velocity, 1 time), in contrast to continuum mechanics where is 4-dimensional (3 spatial, 1 time), meaning that computational solutions become far more costly. The usual solution method is so-called direct simulation Monte-Carlo (DSMC) although other approaches are also used.</p>
-<div id="fig-molecular" class="quarto-layout-panel">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-molecular-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row quarto-layout-valign-center">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="images/md_drops.png" class="img-fluid figure-img"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="images/dsmc.png" class="img-fluid figure-img"></p>
-</div>
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-molecular-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.7: Left: water nanodrops (courtesy of Sree Hari Perumanath, Edinburgh) observed in molecular dynamics simulations.. Right: a DSMC simulation of rarefied gas flow around a re-entrant shuttle.
-</figcaption>
-</figure>
-</div>
+<!-- ::: {#fig-molecular layout-ncol=2 layout-valign="center"}
+
+![](images/md_drops.png){height=5cm}
+
+![](images/dsmc.png){height=4cm}
+
+Left: water nanodrops (courtesy of Sree Hari Perumanath,
+Edinburgh) observed in molecular dynamics simulations.. Right: a DSMC
+simulation of rarefied gas flow around a re-entrant
+shuttle.
+::: -->
 <p>There is a huge rich variety of other modelling frameworks including density functional theory (acting below molecular dynamics), coarse grained molecular models (e.g.&nbsp;dissipative particle dynamics), extensions of the Boltzmann equation (e.g.&nbsp;the Enskog equation for less dilute gases), fluctuating hydrodynamics (that puts thermal fluctuations into continuum mechanics) and models that themselves can be considered averages of the Navier–Stokes equations (e.g.&nbsp;Brinkmann or Darcy’s equation of flow through porous media).</p>
 <p>A significant strand of fluids research at Warwick is concerned with models that go ‘beyond’ the Navier–Stokes (–Fourier) paradigm and yet remain broadly within the same PDE framework. An instructive example comes from the kinetic theory of gases where the Navier–Stokes equations can be derived from the Boltzmann equation. However, what one can see clearly in this derivation, e.g.&nbsp;using Grad’s method of moments to derive macroscopic equations from the Boltzmann equation, is that the Navier–Stokes equations are just the start of the story. At higher orders one can have slip between a gas and a solid and more complex constitutive laws appear (leading to larger systems of equations) - more of the story is covered in PX921 <em>Micro &amp; Nano Flows across Scales</em>. Notably, however, as one may expect, many of the conservation laws remain unchanged.</p>
 </section>

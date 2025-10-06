@@ -209,6 +209,29 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./2-0-solids.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Solids</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2-1-macro-solids.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear Elasticity Theory</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2-2-finite-elements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">The Finite Element Method</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -407,20 +430,15 @@ Q=\int_{-W}^{W} u \,dy = \left[\frac{ G}{2\nu} (W^2y -y^3/3)\right]_{-W}^{W} = \
 <li><p>Computational results for Poiseuille flow through channels and pipes for a variety of different boundary conditions; and</p></li>
 <li><p>Validation of code against your own analytic results as well as experimental and/or theoretical results from the published literature.</p></li>
 </ul>
-<div id="fig-carbon-nanotube" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-carbon-nanotube-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/cnts.png" style="height:8cm" class="figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-carbon-nanotube-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3.4: An illustration of flow through a carbon nanotube.
-</figcaption>
-</figure>
-</div>
+<!-- ::: {#fig-carbon-nanotube}
+![](images/cnts.png){height=8cm}
+
+An illustration of flow through a carbon nanotube.
+::: -->
 </section>
 <section id="pipe-flow" class="level3">
 <h3 class="anchored" data-anchor-id="pipe-flow">Pipe flow</h3>
-<p>A more common pressure-driven flow than channel flow is the flow of liquids and gases through pipes/tubes. For pipe flow, the natural coordinate system to consider is the cylindrical coordinates <span class="math inline">(r,\theta,z)</span>, with the <span class="math inline">z</span>-coordinate along the centre-line of the pipe and the boundary located at a constant radius <span class="math inline">r=R</span> (see <a href="#fig-pipe" class="quarto-xref">Figure&nbsp;<span>3.5</span></a>) - in this case the domain will be <span class="math inline">0\le r\le R</span>. We can assume that the velocity takes the form <span class="math inline">{\boldsymbol{v}}= v_z(r){\boldsymbol{e}}_z</span>, so that, using the Navier–Stokes in cylindrical coordinates (see Appendix) and in the absence of gravity, we have: <span class="math display">
+<p>A more common pressure-driven flow than channel flow is the flow of liquids and gases through pipes/tubes. For pipe flow, the natural coordinate system to consider is the cylindrical coordinates <span class="math inline">(r,\theta,z)</span>, with the <span class="math inline">z</span>-coordinate along the centre-line of the pipe and the boundary located at a constant radius <span class="math inline">r=R</span> (see <a href="#fig-pipe" class="quarto-xref">Figure&nbsp;<span>3.4</span></a>) - in this case the domain will be <span class="math inline">0\le r\le R</span>. We can assume that the velocity takes the form <span class="math inline">{\boldsymbol{v}}= v_z(r){\boldsymbol{e}}_z</span>, so that, using the Navier–Stokes in cylindrical coordinates (see Appendix) and in the absence of gravity, we have: <span class="math display">
 0 =  -\frac{1}{\rho}\frac{\partial p}{\partial z} +\nu\frac{1}{r}\frac{\partial}{\partial r}\left(r\frac{\partial v_z}{\partial r}\right)
 </span> where we have applied the boundary condition of no slip <span class="math inline">u(R)=0</span> and smoothness at <span class="math inline">r=0</span>, i.e.&nbsp;<span class="math inline">\frac{\partial v_z}{\partial r}=0</span> there.</p>
 <div id="fig-pipe" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -429,7 +447,7 @@ Figure&nbsp;3.4: An illustration of flow through a carbon nanotube.
 <img src="tikz/Pipe.svg" style="height:5cm" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pipe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3.5: Pipe flow geometry.
+Figure&nbsp;3.4: Pipe flow geometry.
 </figcaption>
 </figure>
 </div>
@@ -507,14 +525,14 @@ A model using no-slip but accounting for nano-effects via a thin layer of fluid 
 <p>We consider cylindrical polar coordinates <span class="math inline">(r,\theta,z)</span> with 2D flow in the <span class="math inline">(r,\theta)</span>-plane. Here, the power of using vector calculus becomes apparent, as the vector equations are valid in all coordinate systems and the relevant operators can quickly be looked up when required (they are in the Appendix)</p>
 <section id="sec-circular-flows" class="level3">
 <h3 class="anchored" data-anchor-id="sec-circular-flows">Circular flows</h3>
-<p>Let us consider a steady 2D flow, <span class="math inline">{\boldsymbol{\omega}}= (0,0,\omega)</span>, such that in polar coordinates the velocity depends only on the radius and not on the polar angle, <span class="math inline">{\boldsymbol{v}}= {\boldsymbol{v}}(r)</span> where <span class="math inline">r =\sqrt{x^2+y^2}</span>. An example of such a flow is shown in <a href="#fig-circular" class="quarto-xref">Figure&nbsp;<span>3.6</span></a>.</p>
+<p>Let us consider a steady 2D flow, <span class="math inline">{\boldsymbol{\omega}}= (0,0,\omega)</span>, such that in polar coordinates the velocity depends only on the radius and not on the polar angle, <span class="math inline">{\boldsymbol{v}}= {\boldsymbol{v}}(r)</span> where <span class="math inline">r =\sqrt{x^2+y^2}</span>. An example of such a flow is shown in <a href="#fig-circular" class="quarto-xref">Figure&nbsp;<span>3.5</span></a>.</p>
 <div id="fig-circular" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-circular-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="tikz/Circular.svg" style="height:6cm" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-circular-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3.6: A generic circular flow; streamlines are dashed, velocity vectors shown in red.
+Figure&nbsp;3.5: A generic circular flow; streamlines are dashed, velocity vectors shown in red.
 </figcaption>
 </figure>
 </div>
@@ -539,7 +557,7 @@ Figure&nbsp;3.6: A generic circular flow; streamlines are dashed, velocity vecto
 <p>Consider the circular streamlines generated by the velocity field <span class="math display">
 v_{\theta}(r) = \Omega r.
 </span></p>
-<p>With this velocity, the fluid moves as a rigid body, so that there is local rotation, i.e.&nbsp;the vorticity is non-zero: <span class="math inline">\omega = 2\Omega</span> and is twice the angular velocity <span class="math inline">\Omega</span>, as expected. Therefore, there is local rotation, see <a href="#fig-vortextypes" class="quarto-xref">Figure&nbsp;<span>3.7</span></a>, and fluid particles on the circular streamlines rotate.</p>
+<p>With this velocity, the fluid moves as a rigid body, so that there is local rotation, i.e.&nbsp;the vorticity is non-zero: <span class="math inline">\omega = 2\Omega</span> and is twice the angular velocity <span class="math inline">\Omega</span>, as expected. Therefore, there is local rotation, see <a href="#fig-vortextypes" class="quarto-xref">Figure&nbsp;<span>3.6</span></a>, and fluid particles on the circular streamlines rotate.</p>
 <p>The pressure distribution can then be calculated as <span class="math display">
 \frac{\partial p}{\partial r} = \rho v_{\theta}^2/r= \rho \Omega^2 r \qquad\rightarrow\qquad p = \rho \Omega^2 r^2/2 + C
 </span> where <span class="math inline">C</span> is a constant.</p>
@@ -553,7 +571,7 @@ v_{\theta}(r) = \frac{a}{r}.
 </span></p>
 <p>Interestingly, we see that with this velocity field, the flow outside the singularity at the origin is irrotational <span class="math display">
 \omega = \frac{1}{r}\frac{\partial (r v_{\theta})}{\partial r} - \frac{1}{r}\xcancel{\frac{\partial v_r}{\partial \theta}} = 0,
-</span> i.e.&nbsp;there is no local rotation in the flow field. The velocity field then looks as shown in the first panel of <a href="#fig-vortextypes" class="quarto-xref">Figure&nbsp;<span>3.7</span></a>, with fluid particles on the circular streamlines retaining a fixed orientation.</p>
+</span> i.e.&nbsp;there is no local rotation in the flow field. The velocity field then looks as shown in the first panel of <a href="#fig-vortextypes" class="quarto-xref">Figure&nbsp;<span>3.6</span></a>, with fluid particles on the circular streamlines retaining a fixed orientation.</p>
 <p>However, if we can use Stokes’ theorem to show that a point vortex has a singular vorticity which is located at the origin. Taking a circular contour of radius <span class="math inline">R</span> around the origin we have that the circulation <span class="math inline">\Gamma</span> is given by: <span class="math display">
 \Gamma = \oint_{C} {\boldsymbol{v}}\cdot d\boldsymbol{\ell} = 2\pi R v_{\theta} = 2\pi a
 </span> so that using Stokes’ theorem, we find <span class="math display">
@@ -574,7 +592,7 @@ v_{\theta}(r) = \frac{a}{r}.
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vortextypes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3.7: Examples of round vortices. First panel: a solid-body rotation, in which fluid particles (smiley faces) rotate. Second panel: a point vortex flow, in which the motion is irrotational. A simple analogy is that the solid body rotation is to think of a person on a merry-go-round for the solid body rotation (where the rotate with the motion) and a Ferris wheel for the point vortex (where you always remain orientated in an upright position, hopefully!).
+Figure&nbsp;3.6: Examples of round vortices. First panel: a solid-body rotation, in which fluid particles (smiley faces) rotate. Second panel: a point vortex flow, in which the motion is irrotational. A simple analogy is that the solid body rotation is to think of a person on a merry-go-round for the solid body rotation (where the rotate with the motion) and a Ferris wheel for the point vortex (where you always remain orientated in an upright position, hopefully!).
 </figcaption>
 </figure>
 </div>

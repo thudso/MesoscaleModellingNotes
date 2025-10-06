@@ -209,6 +209,29 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./2-0-solids.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Solids</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2-1-macro-solids.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear Elasticity Theory</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2-2-finite-elements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">The Finite Element Method</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -328,27 +351,21 @@ Example
 <h3 class="anchored" data-anchor-id="dynamic-boundary-condition">Dynamic Boundary Condition</h3>
 <p>To obtain a dynamic boundary condition, we apply Newton’s second law to the surface separating the two fluids. As the surface has no inherent mass, the forces acting on the surface from either side must balance. As we know from our discussion in <a href="1-2-equations.html" class="quarto-xref"><span>Chapter 2</span></a>, the forces acting on the surface are expressible as stresses acting.</p>
 <p>Of particular interest to us will be the influence of surface tension, which is a property of the surface which appears due to the asymmetry of intermolecular forces acting in the interfacial region (typically of nanometric width). As one goes to smaller length scales, surface forces (<span class="math inline">\sim L^2</span>) begin to dominate volume forces (<span class="math inline">\sim L^3</span>). In particular, the surface tension force typically begins to dominate gravity when the length scale goes below the millimetre scale.</p>
-<p>Surface tension acts like an elastic membrane sitting on the interface, forcing it to attempt to minimise its area. Crudely, this is because it is energetically favourable for molecules to be in the bulk of the liquid, rather than at its surface. Surface tension is responsible for a whole host of effects ranging from the suspension of small objects (e.g. water striders) through to the breakup of liquid jets (e.g.&nbsp;from a tap in a kitchen), which occurs when the liquid can reduce its surface area by forming a series of spheres (drops) rather than one cylinder (the jet), see <a href="#fig-waterstrider" class="quarto-xref">Figure&nbsp;<span>4.2</span></a>. Problems in which surface tension is a significant factor are known as capillary flows.</p>
-<div id="fig-waterstrider" class="quarto-layout-panel">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-waterstrider-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row quarto-layout-valign-center">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="images/waterstrider.jpg" class="img-fluid figure-img" style="height:5cm; width:auto; display:block; margin:0 auto;"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="images/capillaryrise.jpg" class="img-fluid figure-img" style="height:5cm; width:auto; display:block; margin:0 auto;"></p>
-</div>
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-waterstrider-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.2: The tension of a liquid’s surface allows water striders to ‘walk on water’ and causes liquids to rise up narrow gaps, through capillary action (here there is a liquid-solid surface tension also).
-</figcaption>
-</figure>
-</div>
+<p>Surface tension acts like an elastic membrane sitting on the interface, forcing it to attempt to minimise its area. Crudely, this is because it is energetically favourable for molecules to be in the bulk of the liquid, rather than at its surface. Surface tension is responsible for a whole host of effects ranging from the suspension of small objects (e.g. water striders) through to the breakup of liquid jets (e.g.&nbsp;from a tap in a kitchen), which occurs when the liquid can reduce its surface area by forming a series of spheres (drops) rather than one cylinder (the jet). Problems in which surface tension is a significant factor are known as capillary flows.</p>
+<!-- ::: {#fig-waterstrider layout-ncol=2 layout-valign="center"}
+
+![](images/waterstrider.jpg){height=5cm style="height:5cm; width:auto; display:block; margin:0 auto;"}
+
+![](images/capillaryrise.jpg){height=5cm style="height:5cm; width:auto; display:block; margin:0 auto;"}
+
+The tension of a liquid’s surface allows water striders to
+‘walk on water’ and causes liquids to rise up narrow gaps, through
+capillary action (here there is a liquid-solid surface tension
+also).
+::: -->
 <p>We will assume that the surface tension force <span class="math inline">\sigma</span> per unit length of line is constant along the surface, and is directed tangentially along the surface. Parametrising the surface by coordinates <span class="math inline">(x,y)</span> so that the surface is <span class="math inline">z = h(x,y)</span>, the tangent vectors in the coordinate directions are <span class="math inline">{\boldsymbol{t}}_i</span> for <span class="math inline">i=1,2</span>, where <span class="math display">
 {\boldsymbol{t}}_1 = \frac{1}{\sqrt{1+\big(\frac{\partial h}{\partial x}\big)^2}}\left(1,0,\frac{\partial h}{\partial x}\right)\qquad\text{and}\qquad{\boldsymbol{t}}_2 = \frac{1}{\sqrt{1+\big(\frac{\partial h}{\partial y}\big)^2}}\left(0,1,\frac{\partial h}{\partial y}\right).
-</span> Consider an approximately rectangular section of surface with side length <span class="math inline">\delta</span> centred at the point <span class="math inline">(x_0,y_0,h(x_0,y_0))</span>, as illustrated in <a href="#fig-surfacetension" class="quarto-xref">Figure&nbsp;<span>4.3</span></a>. The net force acting on the top surface is approximately <span class="math inline">\delta^2{\boldsymbol{S}}^+{\boldsymbol{n}}</span>, and likewise on the bottom surface is <span class="math inline">\delta^2{\boldsymbol{S}}^-(-{\boldsymbol{n}})</span>. On the edges of the rectangle, surface tension pulls outwards, so that the net forces on the right edge are <span class="math display">
+</span> Consider an approximately rectangular section of surface with side length <span class="math inline">\delta</span> centred at the point <span class="math inline">(x_0,y_0,h(x_0,y_0))</span>, as illustrated in <a href="#fig-surfacetension" class="quarto-xref">Figure&nbsp;<span>4.2</span></a>. The net force acting on the top surface is approximately <span class="math inline">\delta^2{\boldsymbol{S}}^+{\boldsymbol{n}}</span>, and likewise on the bottom surface is <span class="math inline">\delta^2{\boldsymbol{S}}^-(-{\boldsymbol{n}})</span>. On the edges of the rectangle, surface tension pulls outwards, so that the net forces on the right edge are <span class="math display">
 \sigma \delta{\boldsymbol{t}}_1(x_0+\tfrac12\delta,y_0),
 </span> with similar expressions for the other edges. Since these forces must balance, summing these contributions up we obtain: <span class="math display">
 \delta^2({\boldsymbol{S}}^+-{\boldsymbol{S}}^-){\boldsymbol{n}}+\sigma\delta\Big({\boldsymbol{t}}_1(x_0+\tfrac12\delta,y_0)
@@ -370,7 +387,7 @@ p^{-} - p^{+} = \sigma\kappa
 <img src="tikz/SurfaceTension.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-surfacetension-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.3: Forces acting at the interface. The stress from the two fluids act on the faces of the volume, which have area <span class="math inline">\frac{\delta}{2}</span> and the surface tension, which acts on acts on a line, tugs on the four ends of length <span class="math inline">\delta</span> (the height of the control volume is considered negligible). The interface is parameterised by coordinates <span class="math inline">(x,y)</span> and the control volume’s centre is at <span class="math inline">(x_0, y_0, h(x_0,y_0))</span>.
+Figure&nbsp;4.2: Forces acting at the interface. The stress from the two fluids act on the faces of the volume, which have area <span class="math inline">\frac{\delta}{2}</span> and the surface tension, which acts on acts on a line, tugs on the four ends of length <span class="math inline">\delta</span> (the height of the control volume is considered negligible). The interface is parameterised by coordinates <span class="math inline">(x,y)</span> and the control volume’s centre is at <span class="math inline">(x_0, y_0, h(x_0,y_0))</span>.
 </figcaption>
 </figure>
 </div>
@@ -378,23 +395,16 @@ Figure&nbsp;4.3: Forces acting at the interface. The stress from the two fluids 
 </section>
 <section id="bubbles" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="bubbles"><span class="header-section-number">4.2</span> Bubbles</h2>
-<p>Consider a gas bubble in a liquid, see <a href="#fig-bubble" class="quarto-xref">Figure&nbsp;<span>4.4</span></a>. If the bubble is spherical with radius <span class="math inline">R</span>, then in spherical polar coordinates <span class="math inline">(r,\theta,\phi)</span> centred in the middle of the bubble, the normal at the interface is <span class="math inline">{\boldsymbol{n}}= (-1,0,0)</span> (we define the liquid as the <span class="math inline">-</span> phase, so that the normal points into the gas, the <span class="math inline">+</span> phase). In this case, it can be shown that the curvature of the spherical surface is <span class="math inline">\kappa = -\frac{2}{R}.</span> Using our argument above, the pressure just inside the gas bubble <span class="math inline">p^{+}</span> is related to that in the liquid just outside <span class="math inline">p^{-}</span> by the relationship <span class="math display">
+<p>Consider a gas bubble in a liquid, see <a href="#fig-bubble" class="quarto-xref">Figure&nbsp;<span>4.3</span></a>. If the bubble is spherical with radius <span class="math inline">R</span>, then in spherical polar coordinates <span class="math inline">(r,\theta,\phi)</span> centred in the middle of the bubble, the normal at the interface is <span class="math inline">{\boldsymbol{n}}= (-1,0,0)</span> (we define the liquid as the <span class="math inline">-</span> phase, so that the normal points into the gas, the <span class="math inline">+</span> phase). In this case, it can be shown that the curvature of the spherical surface is <span class="math inline">\kappa = -\frac{2}{R}.</span> Using our argument above, the pressure just inside the gas bubble <span class="math inline">p^{+}</span> is related to that in the liquid just outside <span class="math inline">p^{-}</span> by the relationship <span class="math display">
 p^{-} - p^{+} = - \frac{2\sigma}{R}\qquad\hbox{i.e.}\qquad p^{+}  = p^{-} + \frac{2\sigma}{R}.
 </span> This means the pressure in the gas is increased by <span class="math inline">2\sigma/R</span>. This makes intuitive sense: if the surface tension acts to pull inwards on the bubble like an elastic membrane, the pressure will rise in the bubble as it gets squeezed. Smaller bubbles have a larger pressure inside and this is why smaller bubbles are louder when they burst at a liquid’s surface – you can test this in the real world, as champagne is louder than beer!</p>
-<div id="fig-bubble" class="quarto-layout-panel">
+<div id="fig-bubble" class="quarto-float quarto-figure quarto-figure-center anchored" style="height:6cm; width:auto; display:block; margin:0 auto;">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-bubble-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="images/champagne.jpg" class="img-fluid figure-img" style="height:6cm; width:auto; display:block; margin:0 auto;"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="tikz/bubble.svg" class="img-fluid figure-img" style="height:6cm; width:auto; display:block; margin:0 auto;"></p>
-</div>
-</div>
+<img src="tikz/bubble.svg" style="height:6cm; width:auto; display:block; margin:0 auto;;height:6cm" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bubble-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.4: Surface tension forces increasing the pressure within a spherical gas bubble of radius <span class="math inline">R</span>.
+Figure&nbsp;4.3: Surface tension forces increasing the pressure within a spherical gas bubble of radius <span class="math inline">R</span>.
 </figcaption>
 </figure>
 </div>
@@ -416,14 +426,14 @@ L_{\sigma} = \sqrt{\frac{\sigma}{\rho g}}.
 <h3 class="anchored" data-anchor-id="young-laplace-equation">Young-Laplace Equation</h3>
 <p>When <span class="math inline">\mathrm{Ca}\ll 1</span> in the viscous case, we can neglect viscous effects and again obtain the Young-Laplace equation: <span class="math display">
 p^{-} - p^{+} = \sigma\kappa.
-</span> To make some progress we can simplify matters further. Let us consider a steady two-dimensional flow in Cartesian coordinates <span class="math inline">(x,y)</span> with gravity now pointing in the negative <span class="math inline">y</span>-direction, as shown in <a href="#fig-surface-parametrisation" class="quarto-xref">Figure&nbsp;<span>4.5</span></a>.</p>
+</span> To make some progress we can simplify matters further. Let us consider a steady two-dimensional flow in Cartesian coordinates <span class="math inline">(x,y)</span> with gravity now pointing in the negative <span class="math inline">y</span>-direction, as shown in <a href="#fig-surface-parametrisation" class="quarto-xref">Figure&nbsp;<span>4.4</span></a>.</p>
 <div id="fig-surface-parametrisation" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-surface-parametrisation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="tikz/SurfaceParametrisation.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-surface-parametrisation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.5: Parametrisation of the free surface.
+Figure&nbsp;4.4: Parametrisation of the free surface.
 </figcaption>
 </figure>
 </div>
@@ -441,65 +451,53 @@ Figure&nbsp;4.5: Parametrisation of the free surface.
 <section id="contact-lines" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="contact-lines"><span class="header-section-number">4.3</span> Contact Lines</h2>
 <p>As we have seen, free surfaces are located where two phases meet each other (e.g.&nbsp;water-air) but these surfaces often come into contact with a third surface (e.g.&nbsp;a solid wall). The three surfaces join along a ‘three phase’ contact line. Common examples of contact lines are liquid–liquid–gas, e.g.&nbsp;an oil drop resting on a water-air interface, and liquid–solid–gas, e.g.&nbsp;a raindrop on a windscreen. Our focus will be on the latter case.</p>
-<p>We will be modelling only the liquid and will assume that the solid is rigid, so that is does not deform. A current ‘hot topic’ is contact lines that are formed at soft solids, but this is beyond our scope — <a href="https://www.annualreviews.org/doi/abs/10.1146/annurev-fluid-010719-060147">see here</a> for a recent review article. As our free surface equations are themselves differential equations, with a <span class="math inline">\kappa</span> term that becomes <span class="math inline">\propto h''</span> in the parameterisation above, typically we need a boundary condition at either end of the free surface where it meets the solid (<a href="#fig-surface-parametrisation" class="quarto-xref">Figure&nbsp;<span>4.5</span></a>). The two most common choices are:</p>
+<p>We will be modelling only the liquid and will assume that the solid is rigid, so that is does not deform. A current ‘hot topic’ is contact lines that are formed at soft solids, but this is beyond our scope — <a href="https://www.annualreviews.org/doi/abs/10.1146/annurev-fluid-010719-060147">see here</a> for a recent review article. As our free surface equations are themselves differential equations, with a <span class="math inline">\kappa</span> term that becomes <span class="math inline">\propto h''</span> in the parameterisation above, typically we need a boundary condition at either end of the free surface where it meets the solid (<a href="#fig-surface-parametrisation" class="quarto-xref">Figure&nbsp;<span>4.4</span></a>). The two most common choices are:</p>
 <ul>
 <li><p><em>A pinned contact line</em>, where the position of the contact line is prescribed at a fixed coordinate. For example, one may insist that a contact line is at <span class="math inline">x=R</span>, in which case if the solid is at <span class="math inline">y=0</span> in our 2D Cartesian example then the boundary condition would simply be <span class="math inline">h(R)=0</span> which ensures the free surface meets the solid at <span class="math inline">x=R</span>.</p></li>
 <li><p><em>A prescribed contact angle</em> - in this case the position of the contact line is found as part of the solution, and instead we impose the angle <span class="math inline">\theta</span> at which the free surface meets the solid, so in our 2D Cartesian example we would have <span class="math inline">\frac{\partial h}{\partial x}=\pm \tan\theta</span> at <span class="math inline">x=\mp R</span> (note <span class="math inline">R</span> is now an unknown) with the <span class="math inline">\pm</span> depending on which side of the drop we are considering.</p></li>
 </ul>
-<p>Physically, both of these cases are possible and reasonable, and a typical drop spreading event may include both behaviours. If we were to consider a perfectly smooth homogeneous solid surface, we would expect a drop landing on it to spread with its prescribed contact angle (a significant oversimplification!) until it reaches an equilibrium state. The prescribed contact angle will depend on the liquid-solid-gas combination in question: if the solid is ‘wettable’ (i.e.&nbsp;hydrophilic for water) this angle will be close to zero, so the drop will spread out a lot; this is the case for water on glass. If the angle is high (close to <span class="math inline">180^\circ</span>) then the solid is non-wettable (aka hydrophobic) and the drop beads up (e.g.&nbsp;water on a lotus leaf), see <a href="#fig-wettability" class="quarto-xref">Figure&nbsp;<span>4.6</span></a>.</p>
-<div id="fig-wettability" class="quarto-layout-panel">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-wettability-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="images/glass.jpg" class="img-fluid figure-img" style="height:5cm; width:auto; display:block; margin:0 auto;"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="images/lotus.jpg" class="img-fluid figure-img" style="height:5cm; width:auto; display:block; margin:0 auto;"></p>
-</div>
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wettability-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.6: Raindrops (i.e.&nbsp;water drops) on a wettable substrate glass (left) and non-wettable lotus leaf (right). Notice the drops on the glass have not returned to their static shapes (spherical caps) due to the contact line becoming pinned and preventing any more motion.
-</figcaption>
-</figure>
-</div>
-<p>The problem is that most ‘real’ solids are not chemically heterogeneous or smooth and the result is that the contact line becomes pinned on these features before it can reach its equilibrium state. This is the reason we usually don’t see spherical cap shapes (the false equilibrium state) when we look at raindrops on typical solids (<a href="#fig-wettability" class="quarto-xref">Figure&nbsp;<span>4.6</span></a>, left). In what follows, we will consider these cases separately, but one should keep in mind that in reality both behaviours often occur in the same event.</p>
+<p>Physically, both of these cases are possible and reasonable, and a typical drop spreading event may include both behaviours. If we were to consider a perfectly smooth homogeneous solid surface, we would expect a drop landing on it to spread with its prescribed contact angle (a significant oversimplification!) until it reaches an equilibrium state. The prescribed contact angle will depend on the liquid-solid-gas combination in question: if the solid is ‘wettable’ (i.e.&nbsp;hydrophilic for water) this angle will be close to zero, so the drop will spread out a lot; this is the case for water on glass. If the angle is high (close to <span class="math inline">180^\circ</span>) then the solid is non-wettable (aka hydrophobic) and the drop beads up (e.g.&nbsp;water on a lotus leaf).</p>
+<!-- ::: {#fig-wettability layout-ncol=2}
+![](images/glass.jpg){style="height:5cm; width:auto; display:block; margin:0 auto;"}
+
+![](images/lotus.jpg){style="height:5cm; width:auto; display:block; margin:0 auto;"}
+
+Raindrops (i.e. water drops) on a wettable substrate glass
+(left) and non-wettable lotus leaf (right). Notice the drops on the
+glass have not returned to their static shapes (spherical caps) due to
+the contact line becoming pinned and preventing any more
+motion.
+::: -->
+<p>The problem is that most ‘real’ solids are not chemically heterogeneous or smooth and the result is that the contact line becomes pinned on these features before it can reach its equilibrium state. This is the reason we usually don’t see spherical cap shapes (the false equilibrium state) when we look at raindrops on typical solids. In what follows, we will consider these cases separately, but one should keep in mind that in reality both behaviours often occur in the same event.</p>
 <section id="example-shape-of-a-liquid-drop-on-a-solid" class="level3">
 <h3 class="anchored" data-anchor-id="example-shape-of-a-liquid-drop-on-a-solid">Example: shape of a liquid drop on a solid</h3>
-<p>Consider a liquid drop sat on a solid surface. There are a number of different configurations we could think of, but the simplest is to consider a ‘2D drop’ with contact lines ‘pinned’ at <span class="math inline">x=\pm R</span> so that <span class="math inline">h(x=\pm R)=0</span>, see <a href="#fig-drop-xt" class="quarto-xref">Figure&nbsp;<span>4.7</span></a> (one of the Project tasks is to extend this to a cylindrical coordinate system geometry, which is the more practically relevant case). To further simplify matters, we can prescribe <span class="math inline">P</span> and find the shape (and hence the volume).</p>
+<p>Consider a liquid drop sat on a solid surface. There are a number of different configurations we could think of, but the simplest is to consider a ‘2D drop’ with contact lines ‘pinned’ at <span class="math inline">x=\pm R</span> so that <span class="math inline">h(x=\pm R)=0</span>, see <a href="#fig-drop-xt" class="quarto-xref">Figure&nbsp;<span>4.5</span></a> (one of the Project tasks is to extend this to a cylindrical coordinate system geometry, which is the more practically relevant case). To further simplify matters, we can prescribe <span class="math inline">P</span> and find the shape (and hence the volume).</p>
 <div id="fig-drop-xt" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-drop-xt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="tikz/Droplet.svg" style="height:5cm" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-drop-xt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.7: A two-dimensional drop with contact lines at <span class="math inline">x=\pm R</span> and contact angle <span class="math inline">\theta</span>.
+Figure&nbsp;4.5: A two-dimensional drop with contact lines at <span class="math inline">x=\pm R</span> and contact angle <span class="math inline">\theta</span>.
 </figcaption>
 </figure>
 </div>
 <p>In this case, our problem formulation is the Young-Laplace equation <span class="math display">
 - P \mp \rho g h =  -\frac{\sigma \frac{d^2 h}{dx^2}}{(1+\left(\frac{dh}{dx}\right)^2)^{3/2}}
-</span> combined with boundary conditions <span class="math inline">h(x=\pm R)=0</span>. Our aim is to find the function <span class="math inline">h</span>. Note that we include <span class="math inline">\mp g</span> as <span class="math inline">-g</span> corresponds to a drop on top of a surface perpendicular to the gravitaitonal field and <span class="math inline">+g</span> corresponds to a drop hanging beneath a surface (see <a href="#fig-shapes" class="quarto-xref">Figure&nbsp;<span>4.8</span></a>).</p>
+</span> combined with boundary conditions <span class="math inline">h(x=\pm R)=0</span>. Our aim is to find the function <span class="math inline">h</span>. Note that we include <span class="math inline">\mp g</span> as <span class="math inline">-g</span> corresponds to a drop on top of a surface perpendicular to the gravitaitonal field and <span class="math inline">+g</span> corresponds to a drop hanging beneath a surface.</p>
 <p>Therefore, to find the drop shape in this case, one solves the Young-Laplace equation, with <span class="math inline">P</span> prescribed alongside boundary conditions <span class="math inline">h(x=\pm R)=0</span>. This is the starting point for <strong>Project 2</strong>.</p>
-<p>If we want a physical example, we may consider <span class="math inline">\rho=1000</span>kg m<span class="math inline">^{-3}</span>, <span class="math inline">g=9.8</span> m s<span class="math inline">^{-2}</span> and <span class="math inline">\sigma=0.07</span>N m<span class="math inline">^{-1}</span> which are values for water. Then a typical drop size (e.g.&nbsp;a raindrop) may be in the range <span class="math inline">R=1-20</span>mm<span class="math inline">=1-20\times10^{-3}</span>m. Recalling that <span class="math inline">\mathrm{Bo}=\frac{\rho g R^2}{\sigma}</span> (where we have used <span class="math inline">R</span> as a characteristic length scale) will enable us to establish what is dominant out of gravity and capillarity. For <span class="math inline">\mathrm{Bo}\gg1</span> we will see pancake shapes, whereas for <span class="math inline">\mathrm{Bo}\ll1</span> we will see spherical caps. For the range considered above, we will encounter both large and small <span class="math inline">\mathrm{Bo}</span> which is why we can observe both pancakes and spherical caps when it rains (see <a href="#fig-shapes" class="quarto-xref">Figure&nbsp;<span>4.8</span></a>).</p>
-<div id="fig-shapes" class="quarto-layout-panel">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-shapes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="images/drop_shapes_vs_size.jpg" class="img-fluid figure-img" style="height:5cm; width:auto; display:block; margin:0 auto;"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="images/water_on_ceiling.jpg" class="img-fluid figure-img" style="height:5cm; width:auto; display:block; margin:0 auto;"></p>
-</div>
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shapes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.8: First image: influence of drop size on ‘sphericity’, with larger drops being more pancake like (<a href="https://www.maxpixel.net/Raindrop-Structure-Water-Drip-Lotus-Effect-1452666">image source</a> ). Second image: hanging drops, showing the influence of considering <span class="math inline">g\to-g</span> (<a href="https://pixabay.com/photos/drop-of-water-drip-wet-water-3831867">image source</a>).
-</figcaption>
-</figure>
-</div>
+<p>If we want a physical example, we may consider <span class="math inline">\rho=1000</span>kg m<span class="math inline">^{-3}</span>, <span class="math inline">g=9.8</span> m s<span class="math inline">^{-2}</span> and <span class="math inline">\sigma=0.07</span>N m<span class="math inline">^{-1}</span> which are values for water. Then a typical drop size (e.g.&nbsp;a raindrop) may be in the range <span class="math inline">R=1-20</span>mm<span class="math inline">=1-20\times10^{-3}</span>m. Recalling that <span class="math inline">\mathrm{Bo}=\frac{\rho g R^2}{\sigma}</span> (where we have used <span class="math inline">R</span> as a characteristic length scale) will enable us to establish what is dominant out of gravity and capillarity. For <span class="math inline">\mathrm{Bo}\gg1</span> we will see pancake shapes, whereas for <span class="math inline">\mathrm{Bo}\ll1</span> we will see spherical caps. For the range considered above, we will encounter both large and small <span class="math inline">\mathrm{Bo}</span> which is why we can observe both pancakes and spherical caps when it rains.</p>
+<!-- ::: {#fig-shapes layout-ncol=2}
+![](images/drop_shapes_vs_size.jpg){style="height:5cm; width:auto; display:block; margin:0 auto;"}
+
+![](images/water_on_ceiling.jpg){style="height:5cm; width:auto; display:block; margin:0 auto;"}
+
+First image: influence of drop size on ‘sphericity’, with larger
+drops being more pancake like ([image source](https://www.maxpixel.net/Raindrop-Structure-Water-Drip-Lotus-Effect-1452666)
+).
+Second image: hanging drops, showing the influence of considering
+$g\to-g$ ([image source](https://pixabay.com/photos/drop-of-water-drip-wet-water-3831867)).
+::: -->
 <p>A useful starting point is to see if we can find any analytic solutions in special cases. Two immediately come to mind and both involve neglecting the gravitational field, which we know is valid when <span class="math inline">\mathrm{Bo}\ll 1</span>. These solutions will provide both tests for our computational codes (which will solve the full problem) as well as initial guesses for iterative solution methods.</p>
 <section id="solution-for-small-heights-with-g0" class="level4">
 <h4 class="anchored" data-anchor-id="solution-for-small-heights-with-g0">Solution for small heights with <span class="math inline">g=0</span></h4>
@@ -534,23 +532,14 @@ x^2 + \left(h+\sqrt{\sigma^2/P^2-R^2}\right)^2 = \frac{\sigma^2}{P^2}.
 <li><p>Computational results for the shapes of drops in different contexts; and</p></li>
 <li><p>Validation of code against your own analytic results as well as experimental and/or theoretical results from the published literature.</p></li>
 </ul>
-<div id="fig-thoroddsen" class="quarto-layout-panel">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-thoroddsen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="images/thoroddsen.png" class="img-fluid figure-img" style="height:5cm; width:auto; display:block; margin:0 auto;"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="images/thoroddsen2.png" class="img-fluid figure-img" style="height:5cm; width:auto; display:block; margin:0 auto;"></p>
-</div>
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-thoroddsen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.9: Images from Thoroddsen et al’s article (see Reading List) showing drops on top of and underneath solid posts experimentally (first panel), and computed using the Young-Laplace equation (second panel).
-</figcaption>
-</figure>
-</div>
+<!-- ::: {#fig-thoroddsen layout-ncol=2}
+
+![](images/thoroddsen.png){height=5cm style="height:5cm; width:auto; display:block; margin:0 auto;"}
+
+![](images/thoroddsen2.png){height=5cm style="height:5cm; width:auto; display:block; margin:0 auto;"}
+
+Images from Thoroddsen et al's article (see Reading List) showing drops on top of and underneath solid posts experimentally (first panel), and computed using the Young-Laplace equation (second panel).
+::: -->
 </section>
 <section id="the-young-laplace-equation-in-cylindrical-polar-coordinates" class="level3">
 <h3 class="anchored" data-anchor-id="the-young-laplace-equation-in-cylindrical-polar-coordinates">The Young-Laplace equation in cylindrical polar coordinates</h3>
@@ -585,7 +574,7 @@ J_{ij}\triangle h_i = - E_j (h_i^{k})
 <section id="moving-contact-lines" class="level4">
 <h4 class="anchored" data-anchor-id="moving-contact-lines">Moving contact lines</h4>
 <ul>
-<li>Consider a free (unpinned) contact line, so that <span class="math inline">R</span> is now an unknown of the problem and a condition is applied on the angle <span class="math inline">\theta</span> at which the free surface meets the solid (see <a href="#fig-drop-xt" class="quarto-xref">Figure&nbsp;<span>4.7</span></a>) which can be varied (<span class="math inline">h'(x=\pm R)=\mp \tan\theta</span>). This ‘contact angle’ can vary from <span class="math inline">\theta=0</span>, where the drop will completely wet the solid with a thin liquid film, through to <span class="math inline">\theta \approx 180^\circ</span> where there is almost no contact between the drop and solid (these are ‘superhydrophobic surfaces’). Again, you can consider both prescribing <span class="math inline">P</span> and finding <span class="math inline">V</span> or vice versa.</li>
+<li>Consider a free (unpinned) contact line, so that <span class="math inline">R</span> is now an unknown of the problem and a condition is applied on the angle <span class="math inline">\theta</span> at which the free surface meets the solid (see <a href="#fig-drop-xt" class="quarto-xref">Figure&nbsp;<span>4.5</span></a>) which can be varied (<span class="math inline">h'(x=\pm R)=\mp \tan\theta</span>). This ‘contact angle’ can vary from <span class="math inline">\theta=0</span>, where the drop will completely wet the solid with a thin liquid film, through to <span class="math inline">\theta \approx 180^\circ</span> where there is almost no contact between the drop and solid (these are ‘superhydrophobic surfaces’). Again, you can consider both prescribing <span class="math inline">P</span> and finding <span class="math inline">V</span> or vice versa.</li>
 </ul>
 </section>
 <section id="axisymmetric-real-drops" class="level4">
@@ -599,7 +588,7 @@ J_{ij}\triangle h_i = - E_j (h_i^{k})
 <section id="fat-drops" class="level4">
 <h4 class="anchored" data-anchor-id="fat-drops">Fat drops</h4>
 <ul>
-<li><p>Parametrise the free surface so that shapes are not restricted to single valued functions of <span class="math inline">h=h(x)</span> - i.e.&nbsp;one can consider ‘fat drops’ like those in <a href="#fig-thoroddsen" class="quarto-xref">Figure&nbsp;<span>4.9</span></a>. To do so, one option is to switch to the parameterisation <span class="math inline">x=f(y)</span>, where the <span class="math inline">f</span> is now the unknown function (perhaps everywhere, or maybe only in regions where this parameterisation suits better). To utilise this approach one need to know the curvature in this representation, which will be easy to obtain in Cartesian coordinates and in cylindrical polar coordinates where <span class="math inline">r=f(z)</span> will be given by <span class="math display">
+<li><p>Parametrise the free surface so that shapes are not restricted to single valued functions of <span class="math inline">h=h(x)</span> - i.e.&nbsp;one can consider ‘fat drops’. To do so, one option is to switch to the parameterisation <span class="math inline">x=f(y)</span>, where the <span class="math inline">f</span> is now the unknown function (perhaps everywhere, or maybe only in regions where this parameterisation suits better). To utilise this approach one need to know the curvature in this representation, which will be easy to obtain in Cartesian coordinates and in cylindrical polar coordinates where <span class="math inline">r=f(z)</span> will be given by <span class="math display">
 \kappa = \frac{-\frac{d^2 f}{d z^2}}{\left(1+(\frac{df}{dz})^2\right)^{3/2}} + \frac{1}{f\left(1+(\frac{df}{dz})^2\right)^{1/2}}.
 </span> One needs to be careful near <span class="math inline">r=0</span> with this setup.</p>
 <p>An alternative popular approach is to use the arclength coordinate <span class="math inline">s</span> to find the free surface coordinates as <span class="math inline">(r(s),z(s))</span>. A common way to achieve this was first described by Adams and Bashforth (see Reading List) and can be found more recently in Thoroddsen et al 2005 and Extrand &amp; Moon 2010 as well as no doubt countless other papers. Note that to use this approach one will need to discretise <span class="math inline">s</span> rather than <span class="math inline">x</span> and that the ‘shooting method’ described in papers is similar to treating <span class="math inline">s</span> as time and using an explicit stepping method. Note also that here you will have more than one equation at each nodes, but the principles we have developed can still be applied to this new setting (i.e.&nbsp;3 equations at each node means we will have a <span class="math inline">3n\times 3n</span> system of equations).</p></li>

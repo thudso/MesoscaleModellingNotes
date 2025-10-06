@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>6&nbsp; Linear Elasticity Theory – PX912 Continuum and Mesoscale Modelling</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./2-2-finite-elements.html" rel="next">
+<link href="./2-0-solids.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d166b450ba5a8e9f7a0ab969bf6592c1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-b7c2d8834e08b04a63bb76a724ffbcac.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-c1966a8c70583a3816b1e3a216c1caf1.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./2-0-solids.html">Solids</a></li><li class="breadcrumb-item"><a href="./2-1-macro-solids.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear Elasticity Theory</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">PX912 Continuum and Mesoscale Modelling</a> 
+        <div class="sidebar-tools-main">
+    <a href="./PX912-Continuum-and-Mesoscale-Modelling.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./0-preface.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Module overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./1-0-fluids.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fluids</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-1-macro-fluids.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Macroscopic Modelling of Fluids</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-2-equations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Governing Equations of Fluid Dynamics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-3-canonical.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Canonical Flows</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-4-free-surfaces.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Free Surface Flows</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-5-thin-films.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Lubrication and Thin Film Dynamics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./2-0-solids.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Solids</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2-1-macro-solids.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear Elasticity Theory</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2-2-finite-elements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">The Finite Element Method</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#motion-and-deformation" id="toc-motion-and-deformation" class="nav-link active" data-scroll-target="#motion-and-deformation"><span class="header-section-number">6.1</span> Motion and deformation</a></li>
+  <li><a href="#strain" id="toc-strain" class="nav-link" data-scroll-target="#strain"><span class="header-section-number">6.2</span> Strain</a></li>
+  <li><a href="#stress-in-solids" id="toc-stress-in-solids" class="nav-link" data-scroll-target="#stress-in-solids"><span class="header-section-number">6.3</span> Stress in solids</a>
+  <ul class="collapse">
+  <li><a href="#types-of-stress" id="toc-types-of-stress" class="nav-link" data-scroll-target="#types-of-stress">Types of stress</a></li>
+  </ul></li>
+  <li><a href="#hookes-law-revisited" id="toc-hookes-law-revisited" class="nav-link" data-scroll-target="#hookes-law-revisited"><span class="header-section-number">6.4</span> Hooke’s law revisited</a></li>
+  <li><a href="#linear-elasticity" id="toc-linear-elasticity" class="nav-link" data-scroll-target="#linear-elasticity"><span class="header-section-number">6.5</span> Linear elasticity</a>
+  <ul class="collapse">
+  <li><a href="#the-bulk-modulus" id="toc-the-bulk-modulus" class="nav-link" data-scroll-target="#the-bulk-modulus">The bulk modulus</a></li>
+  <li><a href="#the-shear-modulus" id="toc-the-shear-modulus" class="nav-link" data-scroll-target="#the-shear-modulus">The shear modulus</a></li>
+  <li><a href="#youngs-modulus-and-the-poisson-ratio" id="toc-youngs-modulus-and-the-poisson-ratio" class="nav-link" data-scroll-target="#youngs-modulus-and-the-poisson-ratio">Young’s modulus and the Poisson ratio</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  </ul></li>
+  <li><a href="#the-equations-of-linear-elastostatics" id="toc-the-equations-of-linear-elastostatics" class="nav-link" data-scroll-target="#the-equations-of-linear-elastostatics"><span class="header-section-number">6.6</span> The equations of linear elastostatics</a>
+  <ul class="collapse">
+  <li><a href="#boundary-conditions" id="toc-boundary-conditions" class="nav-link" data-scroll-target="#boundary-conditions">Boundary conditions</a></li>
+  <li><a href="#full-problem" id="toc-full-problem" class="nav-link" data-scroll-target="#full-problem">Full problem</a></li>
+  <li><a href="#special-cases" id="toc-special-cases" class="nav-link" data-scroll-target="#special-cases">Special cases</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./2-0-solids.html">Solids</a></li><li class="breadcrumb-item"><a href="./2-1-macro-solids.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear Elasticity Theory</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-sol-basics" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear Elasticity Theory</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="hidden">
+
+</div>
+<p>As mentioned in the introduction to this part of the module, we typically focus on a <em>Lagrangian</em> description in solid mechanics. Whereas in fluids we solve for the <em>velocity</em> and <em>pressure</em> fields <span class="math inline">{\boldsymbol{v}}</span> and <span class="math inline">p</span>, in solids we solve for either the <em>deformation</em> map or <em>displacement</em> field, which we discuss in detail here. We also formulate the equations of linear elasticity, which describe the simplest equilibrium equations we can use to model a solid.</p>
+<section id="motion-and-deformation" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="motion-and-deformation"><span class="header-section-number">6.1</span> Motion and deformation</h2>
+<p>Consider a continuum body <span class="math inline">B</span> at time <span class="math inline">t=0</span>, which will be the <em>reference configuration</em>. At later times, we describe the new shape of the body <span class="math inline">B_t</span> and the position of the points within it by introducing a <em>motion</em> or <em>deformation map</em>, <span class="math inline">{\boldsymbol{\varphi}}({\boldsymbol{X}},t)</span>, taking points <span class="math inline">{\boldsymbol{X}}\in B</span> to their positions <span class="math inline">{\boldsymbol{x}}</span> at time <span class="math inline">t</span>. The new shape of the body at time <span class="math inline">t</span> is denoted <span class="math inline">B_t</span>, defined to be all points <span class="math inline">{\boldsymbol{x}}</span> with <span class="math display">
+{\boldsymbol{x}}= {\boldsymbol{\varphi}}({\boldsymbol{X}},t)\qquad\text{for some point }{\boldsymbol{X}}\in B.
+</span> In mathematical notation, we can write <span class="math inline">B_t = {\boldsymbol{\varphi}}(B,t)</span>, and the set of points <span class="math inline">B_t</span> is referred to as the <em>deformed configuration</em>. An illustration of the various coordinate systems is given in <a href="#fig-deformation" class="quarto-xref">Figure&nbsp;<span>6.1</span></a>.</p>
+<div id="fig-deformation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-deformation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="tikz/Deformation.svg" style="height:5cm" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-deformation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.1: The reference configuration (left) and the deformed configuration (right).
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-caution no-icon callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose the reference configuration is a cube of material with sides of unit length with <span class="math inline">0\leq X_i \leq 1</span>. What happens to the cube when it undergoes the motion <span class="math display">
+{\boldsymbol{\varphi}}({\boldsymbol{X}},t) = (3Xt+Y+t,Y,Z)?
+</span></p>
+</div>
+</div>
+<p>An alternative way to describe the shape change of a solid body is to use a <em>displacement</em> function. Instead of describing the new positions of points in the body in full as the deformation map does, the displacement measures relative motion. The displacement of a reference point <span class="math inline">{\boldsymbol{X}}</span> at time <span class="math inline">t</span> is defined to be <span class="math display">
+{\boldsymbol{u}}({\boldsymbol{X}},t) = {\boldsymbol{\varphi}}({\boldsymbol{X}},t)-{\boldsymbol{X}}.
+</span> Whereas the deformation map tells us exactly where in space a reference point has moved to, the displacement map tells us how much the point has moved.</p>
+</section>
+<section id="strain" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="strain"><span class="header-section-number">6.2</span> Strain</h2>
+<p>The term <em>strain</em> is used to refer to a variety of measures of shape change which are important in describing solids, and there are quite a few different choices available for different reasons. Strain measures are usually dimensionless, since they involve first spatial derivatives of some sort of postion variable.</p>
+<p>The first measure we introduce is the deformation gradient <span class="math inline">{\boldsymbol{F}}</span>. This is a tensor field, defined to be <span class="math display">
+{\boldsymbol{F}}= \nabla{\boldsymbol{\varphi}},\qquad\text{or in components:}\quad F_{ij} = \frac{\partial\varphi_i}{\partial X_j}.</span> To see why this measures strain, consider a small segment of material in the reference configuration connecting the point <span class="math inline">{\boldsymbol{X}}</span> to the nearby point <span class="math inline">{\boldsymbol{X}}+\delta {\boldsymbol{X}}</span>. After the deformation is applied, we can Taylor expand the differences in the <span class="math inline">i</span>th coordinate to see that <span class="math display">
+\varphi_i({\boldsymbol{X}}+\delta {\boldsymbol{X}})-\varphi_i({\boldsymbol{X}}) = \frac{\partial \varphi_i}{\partial X_j}({\boldsymbol{X}})\delta X_j+O\left(|\delta{\boldsymbol{X}}|^2\right) \approx F_{ij}({\boldsymbol{X}})\delta X_j,
+</span> and we see that <span class="math inline">{\boldsymbol{F}}</span> encodes the local transformation of the initial displacement <span class="math inline">\delta{\boldsymbol{X}}</span>. A simple class of deformation we can consider are those where <span class="math inline">{\boldsymbol{F}}</span> is constant in the body (but possibly time-dependent). This means that the corresponding motion must take the form <span class="math display">
+{\boldsymbol{\varphi}}({\boldsymbol{X}},t) = {\boldsymbol{F}}(t){\boldsymbol{X}}+{\boldsymbol{c}}(t),
+</span> where <span class="math inline">{\boldsymbol{c}}</span> is a translation vector. Motions of this type are called <em>homogeneous deformations</em>, and provide us with a simple class to test our theories with.</p>
+<div class="callout callout-style-default callout-caution no-icon callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Consider the two-dimensional deformation in which <span class="math display">
+\begin{aligned}
+    x &amp;= \tfrac14(18+4X+6Y)\\
+    y &amp;= \tfrac14(14+6Y).
+\end{aligned}
+</span> What is the <span class="math inline">(2\times 2)</span> deformation gradient tensor <span class="math inline">{\boldsymbol{F}}</span> in this case? Sketch the deformation of a reference square of material centred at <span class="math inline">(0,0)</span>.</p>
+</div>
+</div>
+<p>Let’s consider how lengths change under a deformation. Again consider two nearby points <span class="math inline">{\boldsymbol{X}}</span> and <span class="math inline">{\boldsymbol{X}}+\delta{\boldsymbol{X}}</span>. After deformation, the distance between these points can be approximated using the deformation gradient as follows: <span class="math display">
+|{\boldsymbol{\varphi}}({\boldsymbol{X}}+\delta{\boldsymbol{X}})-{\boldsymbol{\varphi}}({\boldsymbol{X}})|^2 \approx |{\boldsymbol{F}}\,\delta{\boldsymbol{X}}|^2 = ({\boldsymbol{F}}\delta{\boldsymbol{X}})\cdot({\boldsymbol{F}}\delta{\boldsymbol{X}}) = \delta{\boldsymbol{X}}\cdot\left(({\boldsymbol{F}}^T{\boldsymbol{F}})\delta{\boldsymbol{X}}\right)
+</span> where <span class="math inline">{\boldsymbol{F}}^T</span> is the transpose, obtained by swapping components across the diagonal so <span class="math inline">(F^T)_{ij} = F_{ji}</span>. The tensor <span class="math inline">{\boldsymbol{C}}:= {\boldsymbol{F}}^T{\boldsymbol{F}}</span> is called the right Cauchy-Green strain, and it provide a way to encode infinitesimal length change. <span class="math inline">{\boldsymbol{C}}</span> is not sensitive to rotations, whereas <span class="math inline">{\boldsymbol{F}}</span> is, and it is always symmetric.</p>
+<p>The case where there is no length change (and so no shape change) occurs when <span class="math inline">{\boldsymbol{C}}</span> is the identity tensor <span class="math inline">{\boldsymbol{I}}</span>. If we shift by removing the identity tensor (and by convention dividing by <span class="math inline">2</span>), we get another form of strain, called the <em>Lagrange strain</em>: <span class="math display">
+{\boldsymbol{E}}:= \tfrac12({\boldsymbol{C}}-{\boldsymbol{I}}) = \tfrac12({\boldsymbol{F}}^T{\boldsymbol{F}}-{\boldsymbol{I}}).
+</span> Another way to measure strain is to use the <em>displacement gradient</em>, denoted <span class="math display">
+\nabla{\boldsymbol{u}}= {\boldsymbol{F}}-{\boldsymbol{I}},\quad\text{with components}\quad (\nabla {\boldsymbol{u}})_{ij} = \frac{\partial u_i}{\partial X_j}.
+</span> If we write the Lagrange strain in terms of <span class="math inline">\nabla {\boldsymbol{u}}</span>, we find <span class="math display">
+{\boldsymbol{E}}= \frac12\Big(({\boldsymbol{I}}+\nabla{\boldsymbol{u}})^T({\boldsymbol{I}}+\nabla{\boldsymbol{u}})-{\boldsymbol{I}}\Big) = \frac12\Big(\nabla{\boldsymbol{u}}+\nabla{\boldsymbol{u}}^T+\nabla{\boldsymbol{u}}^T\nabla{\boldsymbol{u}}\Big).
+</span> If <span class="math inline">\nabla{\boldsymbol{u}}</span> is small, then we can linearise this definition by neglecting the <span class="math inline">\nabla{\boldsymbol{u}}^T\nabla{\boldsymbol{u}}</span> term, which gives us the definition of the <em>infinitesimal strain</em>, denoted <span class="math display">
+{\boldsymbol{\varepsilon}}= \frac12\Big(\nabla{\boldsymbol{u}}+\nabla{\boldsymbol{u}}^T\Big)\quad\text{with}\quad \varepsilon_{ij} = \frac12\left(\frac{\partial u_i}{\partial X_j}+\frac{\partial u_j}{\partial X_i}\right).
+</span> Notice that <span class="math inline">{\boldsymbol{C}}</span>, <span class="math inline">{\boldsymbol{E}}</span> and <span class="math inline">{\boldsymbol{\varepsilon}}</span> are symmetric tensors, while the direct derivatives <span class="math inline">{\boldsymbol{F}}= \nabla{\boldsymbol{\varphi}}</span> and <span class="math inline">\nabla{\boldsymbol{u}}</span> are not. For much of what we do in this part of the module, our main focus will be on models where we use the linearised strain <span class="math inline">{\boldsymbol{\varepsilon}}</span>, as this is the measure of strain which is used in linear elasticity theory.</p>
+<div class="callout callout-style-default callout-caution no-icon callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Again, consider the two-dimensional deformation in which <span class="math display">
+\begin{aligned}
+    x &amp;= \tfrac14(18+4X+6Y)\\
+    y &amp;= \tfrac14(14+6Y).  
+\end{aligned}
+</span> What are the different measures of strain <span class="math inline">{\boldsymbol{C}}</span>, <span class="math inline">{\boldsymbol{E}}</span>, <span class="math inline">{\boldsymbol{\varepsilon}}</span> in this case?</p>
+</div>
+</div>
+</section>
+<section id="stress-in-solids" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="stress-in-solids"><span class="header-section-number">6.3</span> Stress in solids</h2>
+<p>Recall that in <a href="1-2-equations.html" class="quarto-xref"><span>Chapter 2</span></a>, we showed Newton’s second law implies that <span class="math display">
+\rho\frac{D{\boldsymbol{v}}}{Dt} = \nabla\cdot{\boldsymbol{S}}-\rho g{\boldsymbol{e}}_3,
+</span> where we now use <span class="math inline">{\boldsymbol{v}}</span> to denote the velocity field, and <span class="math inline">{\boldsymbol{S}}</span> is the <em>Cauchy stress tensor</em>. Recall that <span class="math inline">{\boldsymbol{S}}{\boldsymbol{n}}</span> expresses the forces per unit area acting across a surface with normal <span class="math inline">{\boldsymbol{n}}</span> in the deformed configuration (i.e.&nbsp;in the Eulerian setting). This equation holds for solids too, it’s just that to model these materials, we will need to change the constitutive equation for <span class="math inline">{\boldsymbol{S}}</span>.</p>
+<p>In particular, we are going to focus on the static form of this equation in which there is no motion. If <span class="math inline">{\boldsymbol{v}}={\boldsymbol{0}}</span>, we can rearrange to get the <em>force balance</em> equations: <span class="math display">
+\nabla\cdot{\boldsymbol{S}}= \rho g{\boldsymbol{e}}_3\quad\text{or}\quad \frac{\partial S_{ij}}{\partial X_j} = \rho g \delta_{i3}.</span> This gives us 3 equations for 6 unknowns (the components of the stress tensor), so to close the equations we need a constitutive relation. For solids, we typically assume <span class="math inline">{\boldsymbol{S}}</span> depends on some measure of strain. This is in constrast to fluids, where it tends to depend only strain rate.</p>
+<p>Before introducing the constitutive relation used in linear elasticity theory, we’ll discuss stress in general. Solids tend to exhibit a lot more variability in their response to applied stresses, essentially because they don’t flow. To allow us to discuss this response, we’ll introduce the following definitions, which are illustrated in <a href="#fig-stressstates" class="quarto-xref">Figure&nbsp;<span>6.2</span></a>:</p>
+<ul>
+<li><p>If the stress tensor <span class="math inline">{\boldsymbol{S}}</span> takes the form <span class="math display">
+{\boldsymbol{S}}= \left(
+\begin{array}{ccc}
+    -p &amp;  0 &amp; 0 \\
+     0 &amp; -p &amp; 0 \\
+     0 &amp;  0 &amp; -p
+\end{array}\right),
+</span> where <span class="math inline">p</span> is a scalar pressure, we say that a <em>spherical</em> state of stress exists at <span class="math inline">{\boldsymbol{x}}</span>.</p></li>
+<li><p>The stress is said to be <em>uniaxial</em> is there exists Cartesian coordinate system in which the stress tensor takes the form <span class="math display">
+{\boldsymbol{S}}=
+  \left(
+  \begin{array}{ccc}
+  \sigma &amp; 0 &amp; 0 \\
+  0      &amp; 0 &amp; 0 \\
+  0      &amp; 0 &amp; 0
+  \end{array}\right).
+</span> If <span class="math inline">\sigma&gt;0</span>, we call this state a <em>pure tension</em>, and if <span class="math inline">\sigma&lt;0</span>, a <em>pure compression</em>.</p></li>
+<li><p>If in some Cartesian coordinate system the stress tensor takes the form <span class="math display">
+{\boldsymbol{S}}=
+  \left(
+    \begin{array}{ccc}
+      0 &amp; \tau &amp; 0 \\
+      \tau &amp; 0 &amp; 0 \\
+      0    &amp; 0 &amp; 0
+    \end{array}
+  \right)
+</span> then we say that a state of <em>pure shear stress</em> exists.</p></li>
+<li><p>More generally, if in some Cartesian coordinate system <span class="math inline">{\boldsymbol{S}}</span> takes the form <span class="math display">
+{\boldsymbol{S}}=
+  \left(
+    \begin{array}{ccc}
+      S_{11} &amp; S_{12} &amp; 0 \\
+      S_{21} &amp; S_{22} &amp; 0 \\
+      0     &amp; 0     &amp; 0
+    \end{array}
+  \right),
+</span> we say that a state of <em>plane stress</em> exists.</p></li>
+</ul>
+<p>Most stress states are more general than these particular examples, but these tend to be the easiest to visualise and understand.</p>
+<div id="fig-stressstates" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-stressstates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-stressstates" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-stressstates-spherical" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-stressstates-spherical-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="tikz/StressStates-A.svg" style="height:6cm" data-ref-parent="fig-stressstates" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-stressstates-spherical-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) A spherical state of stress
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-stressstates" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-stressstates-uniaxial" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-stressstates-uniaxial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="tikz/StressStates-B.svg" style="height:6cm" data-ref-parent="fig-stressstates" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-stressstates-uniaxial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) A uniaxial state of stress
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-stressstates" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-stressstates-shear" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-stressstates-shear-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="tikz/StressStates-C.svg" style="height:6cm" data-ref-parent="fig-stressstates" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-stressstates-shear-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c) A pure shear state of stress
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-stressstates" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-stressstates-plane" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-stressstates-plane-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="tikz/StressStates-D.svg" style="height:6cm" data-ref-parent="fig-stressstates" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-stressstates-plane-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(d) A plane state of stress
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stressstates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.2: An illustration of some simple stress states acting on a 2D slice of a body.
+</figcaption>
+</figure>
+</div>
+<section id="types-of-stress" class="level3">
+<h3 class="anchored" data-anchor-id="types-of-stress">Types of stress</h3>
+<p>Consider a surface with unit normal <span class="math inline">{\boldsymbol{n}}</span>. The corresponding stress vector <span class="math inline">{\boldsymbol{t}}= {\boldsymbol{S}}{\boldsymbol{n}}</span> acting on this surface can be decomposed into two parts: <span class="math display">
+\begin{aligned}
+    \text{a \emph{normal stress}:}&amp;\qquad&amp;{\boldsymbol{t}}_n &amp;= ({\boldsymbol{t}}\cdot{\boldsymbol{n}}){\boldsymbol{n}},\\
+    \text{and a \emph{shear stress}:}&amp;\qquad&amp;{\boldsymbol{t}}_s&amp;= {\boldsymbol{t}}-({\boldsymbol{t}}\cdot{\boldsymbol{n}}){\boldsymbol{n}},
+\end{aligned}
+</span> In particular, we have <span class="math inline">{\boldsymbol{t}}={\boldsymbol{t}}_n+{\boldsymbol{t}}_s</span>, and we call <span class="math inline">\sigma_n=|{\boldsymbol{t}}_n|</span> the <em>normal stress</em> and <span class="math inline">\sigma_s=|{\boldsymbol{t}}_s|</span> the <em>shear stress</em> on the surface with normal <span class="math inline">{\boldsymbol{n}}</span> at <span class="math inline">{\boldsymbol{x}}</span>.</p>
+<p>It is often of interest to understand what sorts of surfaces experience the largest stresses of various types, because we want to be sure that the material does not fail. For example, both high levels of tension (a normal stress state) and high levels of shear stress can induce cracking. The threshold for these two different modes of failure is often different, and so the places which may be prone to issues can vary depending on the material and the shape of a design. <!-- 
+The eigenvalues of $\bfS$ evaluated are called the *principal
+stresses*. The corresponding eigenvectors are called the *principal
+stress directions*. We note that since the stress tensor is symmetric,
+there are three real principal stresses, and three orthogonal principal
+stress directions for each point.
+
+A nice fact is that we can work out the maximal stresses directly using
+the principal stresses. If the principal stresses $\sigma_i$ are
+distinct and ordered, with $\sigma_1>\sigma_2>\sigma_3$, then
+
+- The *maximum tensile stress* is $\sigma_1$ (assuming $\sigma_1>0$);
+
+- The *maximum compressive stress* is $\sigma_3$ (assuming
+  $\sigma_3<0$); and
+
+- The *maximum shear stress* $\sigma_s$ is $\frac12|\sigma_1-\sigma_3|$.
+
+In practice, this provides us with a nice way to post-process a
+computational prediction of stress to work out which regions we should
+be concerned about: all we need to do is find the stress tensor in the
+material, find the appropriate eigenvalues, compute these quantities
+relative to their critical values, and visualise the results. --></p>
+</section>
+</section>
+<section id="hookes-law-revisited" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="hookes-law-revisited"><span class="header-section-number">6.4</span> Hooke’s law revisited</h2>
+<p>Hooke’s law is a simple rule about the behaviour of springs which you probably first learned about in school. It states that the tensile force <span class="math inline">\tau</span> needed to increase the length of a spring is directly proportional to its extension. We can write this law as <span class="math display">
+\tau = ke\quad\text{with}\quad e = \ell-\ell_0,
+</span> where:</p>
+<ul>
+<li><p><span class="math inline">\tau</span> is the tension;</p></li>
+<li><p><span class="math inline">k</span> is the constant of proportionality, known as the spring constant;</p></li>
+<li><p><span class="math inline">e</span> is the extension of the spring;</p></li>
+<li><p><span class="math inline">\ell</span> is the current length; and</p></li>
+<li><p><span class="math inline">\ell_0</span> is the equilibrium or reference length of the spring.</p></li>
+</ul>
+<p>Clearly, the spring constant <span class="math inline">k</span> will depend on the exact spring being stretched. In fact, a simple model is that the spring constant of a spring made of a given material is approximately inversely proportional to its equilibrium length. This means that <span class="math inline">k = \mathbb{C}/\ell_0</span> for some material constant <span class="math inline">\mathbb{C}</span> which is independent of the length, and hence <span id="eq-springstrain"><span class="math display">
+  \tau = \mathbb{C}\frac{\ell-\ell_0}{\ell_0}.
+\tag{6.1}</span></span> Note that this hopefully makes intuitive sense to you: a spring which is twice as long stretches twice as far under the same force; see <a href="#fig-springs" class="quarto-xref">Figure&nbsp;<span>6.3</span></a>.</p>
+<div id="fig-springs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-springs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="tikz/Springs.svg" style="height:5cm" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-springs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.3: Two springs of different equilibrium lengths, expanding under the same force. The extension in the spring twice as long is twice as large under the same force.
+</figcaption>
+</figure>
+</div>
+<p>The ratio of extension over length that appears in <a href="#eq-springstrain" class="quarto-xref">Equation&nbsp;<span>6.1</span></a> is a first example of a measure of <em>strain</em>, describing the change in length relative to some reference length. In fact, it can be thought of as a component of the infinitesimal strain <span class="math inline">{\boldsymbol{\varepsilon}}</span>. To see the connection with our definitions in the previous chapter, if we introduce a reference domain <span class="math inline">[0,\ell_0]</span>, then we can define a deformation <span class="math display">
+\varphi(X) = \frac{\ell}{\ell_0}X\quad\text{for }0\leq X\leq \ell_0.
+</span> The deformation gradient in this one-dimensional example is <span class="math display">
+F = \varphi'(X) = \frac{\ell}{\ell_0},
+</span> and the displacement is <span class="math display">
+u(X) = \varphi(X)-X = \frac{\ell}{\ell_0}X-X = \frac{\ell-\ell_0}{\ell_0}X
+</span> so the displacement gradient is <span class="math display">
+u'(X) = \frac{\ell-\ell_0}{\ell_0}.
+</span> Since there is nothing to symmetrise in this case, the infinitesimal strain is <span class="math inline">\varepsilon = \frac{\ell-\ell_0}{\ell_0}</span>, and so we see that <span class="math display">
+\tau = \mathbb{C}\varepsilon.
+</span> Linear elasticity amounts to a generalisation of this relationship to the full three-dimensional setting.</p>
+</section>
+<section id="linear-elasticity" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="linear-elasticity"><span class="header-section-number">6.5</span> Linear elasticity</h2>
+<p>As we saw in the first part of the course, forces acting across surfaces inside and on the boundary of a continuum body can be encoded using the stress tensor. In linear elasticity theory, we generalise Hooke’s law by assuming that the stress tensor <span class="math inline">{\boldsymbol{S}}</span> can be expressed as a linear function of the infinitesimal strain tensor <span class="math inline">{\boldsymbol{\varepsilon}}</span>. In this case, the single coefficient <span class="math inline">\mathbb{C}</span> discussed above for a spring becomes a fourth-order elasticity tensor <span class="math inline">\mathbb{C}</span>, with <span class="math display">
+{\boldsymbol{S}}= \mathbb{C}{\boldsymbol{\varepsilon}}\qquad\text{with components}\qquad S_{ij} = \mathbb{C}_{ijkl}\varepsilon_{kl}.
+</span> In principle, <span class="math inline">\mathbb{C}</span> could contain 81 independent parameters (also sometimes called <em>moduli</em>) as it has this many different indices. However, since <span class="math inline">{\boldsymbol{S}}</span> and <span class="math inline">{\boldsymbol{\varepsilon}}</span> are both symmetric and the elasticity tensor satisfies <em>major symmetry</em>, meaning that <span class="math inline">\mathbb{C}_{ijkl} =\mathbb{C}_{klij}</span>, there are in fact only 21 possible unique parameters in general. In fact, one way to see this is to use <em>Voigt notation</em>, where we relate the vectors <span class="math display">
+\begin{aligned}
+  \widetilde{{\boldsymbol{S}}} &amp;= (S_{11},S_{22},S_{33},S_{23},S_{31},S_{12}) \\
+  \text{and}\quad\widetilde{{\boldsymbol{\varepsilon}}}&amp;= (\varepsilon_{11},\varepsilon_{22},\varepsilon_{33},2\varepsilon_{23},2\varepsilon_{31},2\varepsilon_{12})
+\end{aligned}
+</span> via a matrix multiplication. It is common to make the change of index notation <span class="math display">
+11\leftrightarrow 1,\,
+22\leftrightarrow 2,\,
+33\leftrightarrow 3,\,
+23=32\leftrightarrow 4,\,
+31=13\leftrightarrow 5,\,
+12=21\leftrightarrow 6,
+</span> and then we have <span class="math display">
+\left(
+\begin{array}{c}
+    S_1 \\ S_2 \\ S_3 \\ S_4 \\ S_5 \\ S_6
+\end{array}
+\right)
+=
+\left(
+\begin{array}{cccccc}
+    C_{11} &amp; C_{12} &amp; C_{13} &amp; C_{14} &amp; C_{15} &amp; C_{16} \\
+            &amp; C_{22} &amp; C_{23} &amp; C_{24} &amp; C_{25} &amp; C_{26} \\
+            &amp;        &amp; C_{33} &amp; C_{34} &amp; C_{35} &amp; C_{36} \\
+            &amp;        &amp;        &amp; C_{44} &amp; C_{45} &amp; C_{46} \\
+            &amp;        &amp;        &amp;       &amp; C_{55} &amp; C_{56} \\
+            &amp;        &amp;        &amp;       &amp;       &amp; C_{66}
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+    \varepsilon_1 \\ \varepsilon_2 \\ \varepsilon_3 \\ 2\varepsilon_4 \\ 2\varepsilon_5 \\ 2\varepsilon_6
+\end{array}
+\right),
+</span> where the part of the matrix below the diagonal is the reflection of that above the diagonal, i.e.&nbsp;<span class="math inline">C_{ij} = C_{ji}</span>. The mysterious factor of 2 appearing is there to ensure that <span class="math display">
+\tfrac12\widetilde{{\boldsymbol{S}}}\cdot\widetilde{{\boldsymbol{\varepsilon}}} = \tfrac12S_{ij}\varepsilon_{ij} = \tfrac12\mathbb{C}_{ijkl}\varepsilon_{ij}\varepsilon_{kl},
+</span> which encodes the elastic energy density in the material.</p>
+<p>Under more specific assumptions about the symmetries of the underlying material, the number of independent components reduces much further. A common simplifying assumption to assume that a material is <em>isotropic</em>: this entails that there are just two independent elasticity parameters, and the matrix above becomes <span class="math display">
+\left(
+\begin{array}{cccccc}
+    C_{11} &amp; C_{12} &amp; C_{12} &amp; 0 &amp; 0 &amp; 0 \\
+    C_{12} &amp; C_{11} &amp; C_{12} &amp; 0 &amp; 0 &amp; 0 \\
+    C_{12} &amp; C_{12} &amp; C_{11} &amp; 0 &amp; 0 &amp; 0 \\
+    0 &amp; 0 &amp; 0 &amp; C_{44} &amp; 0     &amp; 0 \\
+    0 &amp; 0 &amp; 0 &amp; 0     &amp; C_{44} &amp; 0 \\
+    0 &amp; 0 &amp; 0 &amp; 0     &amp; 0     &amp; C_{44}
+\end{array}
+\right),
+</span> with the additional restriction that <span class="math inline">C_{12} = C_{11}-2C_{44}</span>. Even in this simplest case, there are still twice as many parameters as are needed to describe a Newtonian fluid, where we have only one viscosity parameter! This is because common elastic materials are not incompressible (even approximately). Another common case is crystalline materials with cubic symmetry, where <span class="math inline">C_{11}</span>, <span class="math inline">C_{12}</span> and <span class="math inline">C_{44}</span> are independent parameters. We will focus in particular on the isotropic case, since this makes various aspects easier, but the theory can obviously be developed in general.</p>
+<p>In an isotropic linear elastic material, the elasticity tensor can be represented neatly as <span class="math display">
+\mathbb{C}_{ijkl} = \kappa\, \delta_{ij}\delta_{kl} + G\left(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}-\tfrac23\delta_{ij}\delta_{kl}\right),
+</span> or in Voigt notation, the matrix representation is <span class="math display">
+\left(
+    \begin{array}{cccccc}
+      \kappa+\frac43G &amp; \kappa-\frac23G &amp; \kappa-\frac23G &amp; 0 &amp; 0 &amp; 0 \\
+      \kappa-\frac23G &amp; \kappa+\frac43G &amp; \kappa-\frac23G &amp; 0 &amp; 0 &amp; 0 \\
+      \kappa-\frac23G &amp; \kappa-\frac23G &amp; \kappa+\frac43G &amp; 0 &amp; 0 &amp; 0 \\
+      0 &amp; 0 &amp; 0 &amp; G &amp; 0 &amp; 0 \\
+      0 &amp; 0 &amp; 0 &amp; 0 &amp; G &amp; 0 \\
+      0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; G
+    \end{array}
+  \right),
+</span> The parameters involved here are <span class="math inline">\kappa</span>, the <em>bulk modulus</em>; and <span class="math inline">G</span>, the <em>shear modulus</em>. To illustrate why these parameters have these names, we now consider a couple of simple thought experiments.</p>
+<section id="the-bulk-modulus" class="level3">
+<h3 class="anchored" data-anchor-id="the-bulk-modulus">The bulk modulus</h3>
+<div id="fig-bulkmodulus" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bulkmodulus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="tikz/BulkModulus.svg" style="height:5cm" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bulkmodulus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.4: An illustration of the uniform expansion considered in discussion of bulk modulus.
+</figcaption>
+</figure>
+</div>
+<p>Consider an isotropic linear elastic material undergoing a uniform compression or expansion, i.e.&nbsp;experiencing the deformation <span class="math inline">{\boldsymbol{\varphi}}({\boldsymbol{X}}) = (1+\tfrac13\alpha){\boldsymbol{X}}</span>. The volume of unit cube after this deformation can be expressed using the determinant of the deformation gradient, <span class="math display">
+J = \det{\boldsymbol{F}}= (1+\tfrac13\alpha)^3 = 1+\alpha+\tfrac13\alpha^2+\tfrac{1}{27}\alpha^3.
+</span> When <span class="math inline">\alpha</span> is small, we can neglect the quadratic and cubic terms to approximate the new volume as <span class="math inline">J \approx 1+\alpha</span>, so <span class="math inline">\alpha</span> tells us the approximate change in volume in this case.</p>
+<p>Let’s now see what the stress in the material, assuming it is an isotropic linear elastic solid. First, we translate from deformation into displacement, where <span class="math display">
+u_i = \tfrac13\alpha X_i\quad\text{so}\quad \frac{\partial u_i}{\partial X_j} = \tfrac13\alpha\delta_{ij}\quad\text{and}\quad \varepsilon_{ij} = \tfrac13\alpha\delta_{ij}.
+</span> Plugging in, we find <span class="math display">
+\varepsilon_{kk} = \tfrac13\alpha\delta_{kk} = \alpha,
+</span> so <span class="math display">
+\varepsilon_{ij} - \tfrac13\delta_{ij}\varepsilon_{kk} = \tfrac13\alpha\delta_{ij}-\tfrac13\alpha\delta_{ij} = 0.
+</span> The stress tensor is therefore <span class="math display">
+S_{ij} = \kappa\alpha\delta_{ij}\quad\text{or in tensor notation}\quad{\boldsymbol{S}}= \kappa\alpha{\boldsymbol{I}}.
+</span> Recalling our definition from above, this is a <em>spherical</em> state of stress, with pressure <span class="math inline">p = -\kappa\alpha</span>, and we see that <span class="math inline">\kappa</span> is the constant of proportionality between the approximate volume change <span class="math inline">\alpha</span> and the resulting pressure induced in the material.</p>
+</section>
+<section id="the-shear-modulus" class="level3">
+<h3 class="anchored" data-anchor-id="the-shear-modulus">The shear modulus</h3>
+<div id="fig-shearmodulus" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-shearmodulus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="tikz/ShearModulus.svg" style="height:5cm" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shearmodulus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.5: A simple shear.
+</figcaption>
+</figure>
+</div>
+<p>Consider an isotropic linear elastic material undergoing a simple shear in which <span class="math display">
+{\boldsymbol{\varphi}}({\boldsymbol{X}}) = (X+\alpha Y,Y,Z).
+</span> We have <span class="math display">
+{\boldsymbol{u}}= (\alpha Y,0,0)\quad\text{so}\quad
+  \nabla{\boldsymbol{u}}= \left(
+    \begin{array}{ccc}
+      0 &amp; \alpha &amp; 0 \\
+      0 &amp; 0 &amp; 0 \\
+      0 &amp; 0 &amp; 0
+    \end{array}
+  \right)\quad\text{and}\quad
+  {\boldsymbol{\varepsilon}}= \left(
+    \begin{array}{ccc}
+      0 &amp; \tfrac12\alpha &amp; 0 \\
+      \tfrac12\alpha &amp; 0 &amp; 0 \\
+      0 &amp; 0 &amp; 0
+    \end{array}
+  \right).
+</span> It is easy to check that <span class="math inline">\varepsilon_{kk} = 0</span>, and so plugging in, <span class="math display">
+{\boldsymbol{S}}=
+\left(
+    \begin{array}{ccc}
+        0 &amp; G\alpha &amp; 0 \\
+        G\alpha &amp; 0 &amp; 0 \\
+        0 &amp; 0 &amp; 0
+    \end{array}
+\right).
+</span> This is a state of pure shear stress, and we see that <span class="math inline">G</span> is the constant of proportionality relating the shear strain to the shear stress induced in the material.</p>
+</section>
+<section id="youngs-modulus-and-the-poisson-ratio" class="level3">
+<h3 class="anchored" data-anchor-id="youngs-modulus-and-the-poisson-ratio">Young’s modulus and the Poisson ratio</h3>
+<div id="fig-uniaxial" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-uniaxial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="tikz/Uniaxial.svg" style="height:5cm" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-uniaxial-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.6: A uniaxial stretch.
+</figcaption>
+</figure>
+</div>
+<p>Along with the bulk and shear moduli, there are other possible elastic coefficients we can use; another convenient pair are the <em>Young’s modulus</em>, <span class="math inline">E</span> and <em>Poisson ratio</em>, <span class="math inline">\nu</span>.</p>
+<p>To illustrate what these coefficents are, let’s consider stretching the material in one direction. In general, you may already be aware that material tends to thin in directions orthogonal to that in which it is stretched (think of an elastic band). This means it will be useful for us to consider the material simultaneously contracting in the other directions, so we consider the deformation <span class="math display">
+{\boldsymbol{\varphi}}({\boldsymbol{X}}) = \big((1+\alpha)X,(1-\beta)Y,(1-\beta)Z\big).
+</span> We have <span class="math display">
+{\boldsymbol{u}}= (\alpha X,-\beta Y,-\beta Z)\quad\text{so}\quad
+\nabla{\boldsymbol{u}}= \left(
+    \begin{array}{ccc}
+        \alpha &amp; 0 &amp; 0 \\
+        0 &amp; -\beta &amp; 0 \\
+        0 &amp; 0 &amp; -\beta
+    \end{array}
+\right)={\boldsymbol{\varepsilon}},
+</span> where the latter equality holds because <span class="math inline">\nabla{\boldsymbol{u}}</span> is symmetric. Plugging in, we find <span class="math display">
+{\boldsymbol{S}}=
+\left(
+    \begin{array}{ccc}
+        (\kappa-\tfrac23G)(\alpha-2\beta)+2G\alpha &amp; 0 &amp; 0 \\
+        0 &amp; (\kappa-\tfrac23G)(\alpha-2\beta)-2G\beta &amp; 0 \\
+        0 &amp; 0 &amp; (\kappa-\tfrac23G)(\alpha-2\beta)-2G\beta
+    \end{array}
+    \right).
+</span> Let us set <span class="math inline">\nu = \beta/\alpha</span>, and pull out a factor of <span class="math inline">\alpha</span>. Then, working through the algebra, we can write <span class="math display">
+{\boldsymbol{S}}= \alpha\left(
+    \begin{array}{ccc}
+        (\kappa+\tfrac43G)-2\nu(\kappa-\tfrac23G) &amp; 0 &amp; 0 \\
+        0 &amp; (\kappa-\tfrac23G)-2\nu(\kappa+\tfrac13G) &amp; 0 \\
+          0 &amp; 0 &amp; (\kappa-\tfrac23G)-2\nu(\kappa+\tfrac13G)
+    \end{array}
+\right).
+</span> Now recall that we are free to choose <span class="math inline">\beta</span>, or equivalently <span class="math inline">\nu</span>. If we choose the special value <span class="math display">
+\nu = \frac{\kappa-\tfrac23G}{2\kappa+\tfrac23G} = \frac{3\kappa-2G}{2(3\kappa+G)},
+</span> then <span class="math inline">S_{22}=S_{33}=0</span>, and so the stresses on the sides orthogonal to the direction of of our box vanish. This is exactly what we would expect to happen when we perform a simple stretching experiment, and the value of <span class="math inline">\nu</span> is known as the <em>Poisson ratio</em> of the material, since it describes the ratio by which the material thins in directions perpendicular to that which it is stretched.</p>
+<p>If we simply further in the case where we choose <span class="math inline">\nu</span> as above, we have <span class="math display">
+{\boldsymbol{S}}= \alpha\left(
+    \begin{array}{ccc}
+        \frac{9\kappa G}{3\kappa+G} &amp; 0 &amp; 0 \\
+        0 &amp; 0 &amp; 0 \\
+        0 &amp; 0 &amp; 0
+    \end{array}
+\right).
+</span> We can therefore express the only non-zero stress component as <span class="math inline">S_{11} = E\alpha</span>, where <span class="math inline">E = \frac{9\kappa G}{3\kappa+G}</span> is the <em>Young’s modulus</em> of the material. Note that the Young’s modulus is the equivalent of the coefficient <span class="math inline">\mathbb{C}</span> which was discussed in the motivation section on springs above.</p>
+</section>
+<section id="summary" class="level3">
+<h3 class="anchored" data-anchor-id="summary">Summary</h3>
+<p>The 4 parameters <span class="math inline">\kappa</span>, <span class="math inline">G</span>, <span class="math inline">\nu</span> and <span class="math inline">E</span> can be used to describe material behaviour, and we have seen how they are defined based on some simple thought experiments. In practice, these are the basic experiments that are used to identify the appropriate parameters in standard tests, and if the material is truly isotropic, then we can convert between any pair of the coefficients. You can find a table to do so on Wikipedia; see the bottom of <a href="https://en.wikipedia.org/wiki/Elastic_modulus">this page</a> for example. In particular, the inverse of the formulae we derived above for <span class="math inline">E</span> and <span class="math inline">\nu</span> are: <span class="math display">
+\kappa = \frac{E}{3(1-2\nu)}\quad \text{and}\quad G = \frac{E}{2(1+\nu)}.
+</span> Note that the cases where <span class="math inline">\nu=\tfrac12</span> and <span class="math inline">\nu=-1</span> are problematic, but most materials have <span class="math inline">\nu</span> in this range (and most have <span class="math inline">\nu\approx 0.3</span>).</p>
+<p>Some indicative values of the moduli are shown in Table&nbsp;<a href="#tab:moduli" data-reference-type="ref" data-reference="tab:moduli">2.1</a>. As the infinitesimal strain is dimensionless, we find that <span class="math inline">\kappa</span>, <span class="math inline">G</span> and <span class="math inline">E</span> all have the same units as stress. Since the Poisson ratio is really a special strain value, it is dimensionless. The SI unit of stress is the pascal, written <span class="math inline">1\text{Pa}</span>, which is equivalent to 1Nm<span class="math inline">^{-2}</span>. Given the typical values observed from materials, it is more common to express the stresses experienced in solids using megapascals (1MPa = <span class="math inline">10^6</span>Pa) or gigapascals (1GPa = <span class="math inline">10^9</span>Pa).</p>
+<div id="tab:moduli">
+<table class="caption-top table">
+<caption>Approximate elastic moduli for some materials at room temperature. The closer that <span class="math inline">\nu</span> is to the value of <span class="math inline">0.5</span>, the closer the material is to being incompressible; most materials have a Poisson ratio in the range <span class="math inline">0.2</span>–<span class="math inline">0.4</span>, so lead and rubber are outliers.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Material</th>
+<th style="text-align: center;"><span class="math inline">\kappa</span> (GPa)</th>
+<th style="text-align: center;"><span class="math inline">G</span> (GPa)</th>
+<th style="text-align: center;"><span class="math inline">\nu</span></th>
+<th style="text-align: center;"><span class="math inline">E</span> (GPa)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Aluminium</td>
+<td style="text-align: center;">75</td>
+<td style="text-align: center;">25</td>
+<td style="text-align: center;">0.36</td>
+<td style="text-align: center;">70</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Copper</td>
+<td style="text-align: center;">140</td>
+<td style="text-align: center;">47</td>
+<td style="text-align: center;">0.35</td>
+<td style="text-align: center;">125</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Diamond</td>
+<td style="text-align: center;">540</td>
+<td style="text-align: center;">460</td>
+<td style="text-align: center;">0.2</td>
+<td style="text-align: center;">1100</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Lead</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">0.44</td>
+<td style="text-align: center;">14</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Silicone Rubber</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">0.01</td>
+<td style="text-align: center;">0.48</td>
+<td style="text-align: center;">0.05</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Stainless Steel</td>
+<td style="text-align: center;">140</td>
+<td style="text-align: center;">78</td>
+<td style="text-align: center;">0.27</td>
+<td style="text-align: center;">195</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><span id="tab:moduli" data-label="tab:moduli"></span></p>
+</section>
+</section>
+<section id="the-equations-of-linear-elastostatics" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="the-equations-of-linear-elastostatics"><span class="header-section-number">6.6</span> The equations of linear elastostatics</h2>
+<p>Now we have developed some physical understanding of the elastic moduli, we focus on the equations of isotropic elasticity. If we use the constitutive assumption that <span class="math inline">{\boldsymbol{S}}= \mathbb{C}{\boldsymbol{\varepsilon}}</span>, the relationship that <span class="math inline">{\boldsymbol{\varepsilon}}= \frac12(\nabla{\boldsymbol{u}}+\nabla{\boldsymbol{u}}^T)</span> and substitute into the force balance equation, we get the system of equations <span class="math display">
+\frac{E}{(1+\nu)(1-2\nu)}\nabla(\nabla\cdot{\boldsymbol{u}}) + \frac{E}{2(1+\nu)}\nabla^2{\boldsymbol{u}}+ \rho g{\boldsymbol{e}}_3 = {\boldsymbol{0}}.
+</span> We have chosen to write the equations in terms of the Young’s modulus <span class="math inline">E</span> and Poisson ratio <span class="math inline">\nu</span>, but note that we could have written them in terms of any two of the elastic moduli described above. In component form, these equations are <span class="math display">
+\frac{E}{(1+\nu)(1-2\nu)}\frac{\partial^2 u_j}{\partial X_i\partial X_j}+\frac{E}{2(1+\nu)}\frac{\partial^2u_i}{\partial X_j\partial X_j}+\rho g\delta_{i3} = 0.
+</span></p>
+<section id="boundary-conditions" class="level3">
+<h3 class="anchored" data-anchor-id="boundary-conditions">Boundary conditions</h3>
+<p>These equations must be accompanied by appropriate boundary conditions. In simple problems, these are often <em>displacement</em> boundary conditions where <span class="math inline">{\boldsymbol{u}}</span> is prescribed on part of the boundary, or <em>traction</em> boundary conditions where <span class="math inline">{\boldsymbol{S}}{\boldsymbol{n}}</span> is prescribed on part of the boundary. In general, a mixture of these condition will be used; see for example <a href="#fig-elasticityBCs" class="quarto-xref">Figure&nbsp;<span>6.7</span></a>.</p>
+<div id="fig-elasticityBCs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-elasticityBCs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="tikz/ElasticityBCs.svg" style="height:5cm" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-elasticityBCs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.7: Displacement and traction boundary conditions used to simulate a tensile test. Regions where traction boundary conditions are applied are shown in blue, while displacement boundary conditions apply on the surfaces shown in red.
+</figcaption>
+</figure>
+</div>
+<p>Physically, we can think of displacement boundary conditions as being hard constraints, so the body is clamped, welded or glued at a chosen position. Free boundaries can be represented using ‘traction-free’ boundary conditions <span class="math inline">{\boldsymbol{S}}{\boldsymbol{n}}= {\boldsymbol{0}}</span>; this condition states that there is no stress on this part of the boundary, and so the boundary will tend to take a shape that is ‘convenient’ for it. If we wish to impose a force on the boundary, so that we require <span class="math inline">{\boldsymbol{S}}{\boldsymbol{n}}={\boldsymbol{t}}</span> on the boundary, we often think of this as having <em>normal</em> and <em>shear components</em>, as discussed above. Recall that the normal component is <span class="math inline">{\boldsymbol{t}}_n = ({\boldsymbol{t}}\cdot{\boldsymbol{n}}){\boldsymbol{n}}</span> and the shear component <span class="math inline">{\boldsymbol{t}}_s ={\boldsymbol{t}}-{\boldsymbol{t}}_n</span>. These different components are represented in <a href="#fig-boundary-loading" class="quarto-xref">Figure&nbsp;<span>6.8</span></a>. Shear components in the applied stress can for example model frictional contact with another solid body, while normal components can model something pressing against the body, e.g.&nbsp;a fluid or other solid object.</p>
+<div id="fig-boundary-loading" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boundary-loading-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="tikz/Loading.svg" style="height:5cm" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boundary-loading-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.8: An illustration of a boundary traction <span class="math inline">{\boldsymbol{t}}</span> acting on a surface with normal <span class="math inline">{\boldsymbol{n}}</span>. The traction can be split into normal and shear components, <span class="math inline">{\boldsymbol{t}}_n = ({\boldsymbol{t}}\cdot{\boldsymbol{n}}){\boldsymbol{n}}</span> and <span class="math inline">{\boldsymbol{t}}_s = {\boldsymbol{t}}-{\boldsymbol{t}}_n</span>.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="full-problem" class="level3">
+<h3 class="anchored" data-anchor-id="full-problem">Full problem</h3>
+<p>The full linear elastic problem requires us to solve the system of partial differential equations: <span id="eq-isotropic_elast_forcebalance"><span class="math display">
+\begin{aligned}
+    \frac{E}{(1+\nu)(1-2\nu)}\nabla(\nabla\cdot{\boldsymbol{u}}) + \frac{E}{2(1+\nu)}\nabla^2{\boldsymbol{u}}+ \rho g{\boldsymbol{e}}_3 &amp;= {\boldsymbol{0}}&amp;&amp; \text{in }B,\\
+    {\boldsymbol{S}}{\boldsymbol{n}}&amp;= {\boldsymbol{t}}&amp;&amp; \text{on }\Gamma_N,\\
+    {\boldsymbol{u}}&amp;= {\boldsymbol{u}}_0 &amp;&amp; \text{on }\Gamma_D.
+\end{aligned}
+\tag{6.2}</span></span> Note there are in general 3 partial differential equations for 3 components of the displacement at points inside the domain, and 3 conditions at each boundary point. This is therefore a closed set of equations, and in general it has smooth solutions (away from corners and other nasty boundary points). Unlike the Navier-Stokes equations, these equations are linear so are somewhat simpler. Even so, this is still a system of 3 coupled partial differential equations, so exact solutions are still challenging to write down in general, and numerical methods are therefore used, as we will explore.</p>
+</section>
+<section id="special-cases" class="level3">
+<h3 class="anchored" data-anchor-id="special-cases">Special cases</h3>
+<p>It is sometimes convenient to make modelling approximations to reduce the three-dimensional system of equations. Three important cases of this are:</p>
+<ol type="1">
+<li><p><strong>Plane strain</strong>, in which we assume that displacements take place only in <span class="math inline">X,Y</span> plane, and hence <span class="math inline">{\boldsymbol{u}}= (u(X,Y),v(X,Y),0)</span>. This is used to model the interior of a specimen which is very <em>thick</em> in the <span class="math inline">Z</span> direction, so that the <span class="math inline">u_3=w</span> component doesn’t change very much in any slice of the body. In this case, we just need to consider the reduced matrix <span class="math display">
+\left(
+    \begin{array}{c}
+        S_{11} \\ S_{22} \\ S_{12}
+    \end{array}
+\right)
+=
+\frac{E}{(1+\nu)(1-2\nu)}
+\left(
+    \begin{array}{ccc}
+        1-\nu &amp; \nu &amp; 0 \\
+        \nu &amp; 1-\nu &amp; 0 \\
+        0 &amp; 0 &amp; \frac{1-2\nu}{2}
+    \end{array}
+\right)
+\left(
+    \begin{array}{c}
+        \varepsilon_{11} \\ \varepsilon_{22} \\ 2\varepsilon_{12}
+    \end{array}
+\right)
+</span></p></li>
+<li><p><strong>Plane stress</strong>, in which we assume that <span class="math inline">S_{13}</span>, <span class="math inline">S_{23}</span> and <span class="math inline">S_{33}</span> are zero. This is usually used to model a specimen that is very <em>thin</em> in the <span class="math inline">Z</span> direction. In this case, if the top and bottom of a sheet are free, then zero traction boundary conditions mean that these components are likely to be very small. In this case, we just need to consider the reduced matrix <span class="math display">
+\left(
+    \begin{array}{c}
+        S_{11} \\ S_{22} \\ S_{12}
+    \end{array}
+\right)
+=
+\frac{E}{1-\nu^2}
+\left(
+    \begin{array}{ccc}
+        1 &amp; \nu &amp; 0 \\
+        \nu &amp; 1 &amp; 0 \\
+        0 &amp; 0 &amp; \frac{1-\nu}{2}
+    \end{array}
+\right)
+\left(
+    \begin{array}{c}
+        \varepsilon_{11} \\ \varepsilon_{22} \\ 2\varepsilon_{12}
+    \end{array}
+\right).
+</span></p></li>
+<li><p><strong>Anti-plane stress</strong>, in which we assume that the displacement only occurs in the <span class="math inline">x_3</span> direction, so that <span class="math inline">{\boldsymbol{u}}=(0,0,w(X,Y))</span>. This is typically used to model the cross-section of a long thin component, where loads are applied along the axis, such as a tube or bar. In this case, we get In this case, we just need to consider the reduced matrix <span class="math display">
+\left(
+    \begin{array}{c}
+        S_{12} \\ S_{13}
+    \end{array}
+\right)
+=
+G
+\left(
+    \begin{array}{cc}
+        1 &amp; 0 \\
+        0 &amp; 1
+    \end{array}
+\right)
+\left(
+    \begin{array}{c}
+        2\varepsilon_{12} \\ 2\varepsilon_{13}
+    \end{array}
+\right).
+</span></p></li>
+</ol>
+<p>There are also further ways to reduce the equations of elasticity based on the fact that we may be considering an elastic body which is <em>thin</em> in some dimensions; this is something we will explore further later in the module.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./2-0-solids.html" class="pagination-link" aria-label="Solids">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Solids</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./2-2-finite-elements.html" class="pagination-link" aria-label="The Finite Element Method">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">The Finite Element Method</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
