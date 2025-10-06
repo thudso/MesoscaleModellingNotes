@@ -180,8 +180,8 @@ include not only liquids (water, oil, etc) but also gaseous media
 
 Fluid flow occurs across huge variations in scale: from the very small
 (e.g. microdrops from a 3D printer) to the huge (tornados) and from
-the incredibly slow (motion of glaciers) to the very fast
-(aeronautics). Examples of flows at these different scales are found in @fig-examples.
+the incredibly slow (motion of glaciers) to the very fast (aeronautics).
+<!-- Examples of flows at these different scales are found in @fig-examples.
 
 ::: {#fig-examples layout-ncol=2 fig-align=center}
 ![](resized/inkdrop.png){height=5cm}
@@ -192,8 +192,8 @@ the incredibly slow (motion of glaciers) to the very fast
 
 Flow at different scales: small (inkjet microdrops) to large (tornado);
 slow (glacial flow) to fast (aeronautics).
-:::
-
+::: -->
+<!-- 
 Moreover, fluid flow phenomena can be seen (and heard!) all around us; some more examples are shown
 in @fig-everyday.
 
@@ -205,7 +205,7 @@ in @fig-everyday.
 ![](resized/weather.png){height=5cm}
 
 Everyday fluid phenomena - water waves, sound, flight and weather.
-:::
+::: -->
 
 While we have good intuition about how water behaves at human scales,
 fluid motion at extreme scales can often appear counter-intuitive.
@@ -271,12 +271,12 @@ coordinates which 'follow the fluid'. The following video discusses this concept
 {{< video https://www.youtube.com/watch?v=mdN8OOkx2ko >}}
 
 ::: {#fig-lagrangian}
-![](resized/coordinates.png){width=100%}
+![](tikz/Coordinates.svg){width=100%}
 
 The motion of a material fluid element $M$ whose properties (e.g.
 velocity) can be described by Eulerian coordinates $(x,y,z)$ or
 Lagrangian ones $(X,Y,Z)$. The Lagrangian coordinates remain frozen
-inside $M$ as it evolves and deforms in time (from $t_0$ to $t_1$), i.e.
+inside $M$ as it evolves and deforms in time (from $0$ to $1$ in this case), i.e.
 they follow material points as advected by the fluid
 velocity.
 :::
@@ -368,7 +368,7 @@ $$
 ### Experimental Visualisation
 
 To visualise a flow field one usually places illuminated passive tracers
-(e.g. dye, bubbles or beads that don't alter the flow) into the flow (@fig-expstreamlines). Then, to obtain particle paths one
+(e.g. dye, bubbles or beads that don't alter the flow) into the flow. Then, to obtain particle paths one
 simply tracks the position of these tracers as a function of time,
 whilst to obtain the streamlines one could take a short exposure photo
 so that the illuminated tracers show short streak lines (whose length
@@ -377,13 +377,13 @@ streamline pattern will be fixed for all times and a fluid particle
 starting on a streamline will remain on it, whereas for unsteady flow
 the particle paths and streamlines will not coincide.
 
-::: {#fig-expstreamlines}
+<!-- ::: {#fig-expstreamlines}
 ![](images/cylinderimage.jpg){width=100%}
 
 Steady laminar flow (from left to right) around a solid cylinder with
 streamlines/particle paths showing the trajectories of fluid
 elements
-:::
+::: -->
 
 Notably, even in a steady flow, as fluid particles travel along the
 streamlines their velocity will change, i.e. they will accelerate and

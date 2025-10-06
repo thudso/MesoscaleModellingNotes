@@ -111,10 +111,10 @@ whole host of effects ranging from the suspension of small objects (e.g.
 water striders) through to the breakup of liquid jets (e.g. from a tap
 in a kitchen), which occurs when the liquid can reduce its surface area
 by forming a series of spheres (drops) rather than one cylinder (the
-jet), see @fig-waterstrider. Problems in which surface tension is a
+jet). Problems in which surface tension is a
 significant factor are known as capillary flows.
 
-::: {#fig-waterstrider layout-ncol=2 layout-valign="center"}
+<!-- ::: {#fig-waterstrider layout-ncol=2 layout-valign="center"}
 
 ![](images/waterstrider.jpg){height=5cm style="height:5cm; width:auto; display:block; margin:0 auto;"}
 
@@ -124,7 +124,7 @@ The tension of a liquid’s surface allows water striders to
 ‘walk on water’ and causes liquids to rise up narrow gaps, through
 capillary action (here there is a liquid-solid surface tension
 also).
-:::
+::: -->
 
 We will assume that the surface tension force $\sigma$ per unit length
 of line is constant along the surface, and is directed tangentially
@@ -219,8 +219,7 @@ inside and this is why smaller bubbles are louder when they burst at a
 liquid's surface -- you can test this in the real world, as champagne is
 louder than beer!
 
-::: {#fig-bubble layout-ncol=2}
-![](images/champagne.jpg){height=6cm style="height:6cm; width:auto; display:block; margin:0 auto;"}
+::: {#fig-bubble}
 
 ![](tikz/bubble.svg){height=6cm style="height:6cm; width:auto; display:block; margin:0 auto;"}
 
@@ -362,9 +361,9 @@ combination in question: if the solid is 'wettable' (i.e. hydrophilic
 for water) this angle will be close to zero, so the drop will spread out
 a lot; this is the case for water on glass. If the angle is high (close
 to $180^\circ$) then the solid is non-wettable (aka hydrophobic) and the
-drop beads up (e.g. water on a lotus leaf), see @fig-wettability.
+drop beads up (e.g. water on a lotus leaf).
 
-::: {#fig-wettability layout-ncol=2}
+<!-- ::: {#fig-wettability layout-ncol=2}
 ![](images/glass.jpg){style="height:5cm; width:auto; display:block; margin:0 auto;"}
 
 ![](images/lotus.jpg){style="height:5cm; width:auto; display:block; margin:0 auto;"}
@@ -374,14 +373,13 @@ Raindrops (i.e. water drops) on a wettable substrate glass
 glass have not returned to their static shapes (spherical caps) due to
 the contact line becoming pinned and preventing any more
 motion.
-:::
+::: -->
 
 The problem is that most 'real' solids are not chemically heterogeneous
 or smooth and the result is that the contact line becomes pinned on
 these features before it can reach its equilibrium state. This is the
 reason we usually don't see spherical cap shapes (the false equilibrium
-state) when we look at raindrops on typical solids
-(@fig-wettability, left). In what follows, we will consider
+state) when we look at raindrops on typical solids. In what follows, we will consider
 these cases separately, but one should keep in mind that in reality both
 behaviours often occur in the same event.
 
@@ -410,7 +408,7 @@ $$
 combined with boundary conditions $h(x=\pm R)=0$. Our aim is to find the
 function $h$. Note that we include $\mp g$ as $-g$ corresponds to a drop
 on top of a surface perpendicular to the gravitaitonal field and $+g$
-corresponds to a drop hanging beneath a surface (see @fig-shapes).
+corresponds to a drop hanging beneath a surface.
 
 Therefore, to find the drop shape in this case, one solves the
 Young-Laplace equation, with $P$ prescribed alongside boundary
@@ -426,10 +424,9 @@ dominant out of gravity and capillarity. For $\mathrm{Bo}\gg1$ we will
 see pancake shapes, whereas for $\mathrm{Bo}\ll1$ we will see spherical
 caps. For the range considered above, we will encounter both large and
 small $\mathrm{Bo}$ which is why we can observe both pancakes and
-spherical caps when it rains (see
-@fig-shapes).
+spherical caps when it rains.
 
-::: {#fig-shapes layout-ncol=2}
+<!-- ::: {#fig-shapes layout-ncol=2}
 ![](images/drop_shapes_vs_size.jpg){style="height:5cm; width:auto; display:block; margin:0 auto;"}
 
 ![](images/water_on_ceiling.jpg){style="height:5cm; width:auto; display:block; margin:0 auto;"}
@@ -439,7 +436,7 @@ drops being more pancake like ([image source](https://www.maxpixel.net/Raindrop-
 ).
 Second image: hanging drops, showing the influence of considering
 $g\to-g$ ([image source](https://pixabay.com/photos/drop-of-water-drip-wet-water-3831867)).
-:::
+::: -->
 
 A useful starting point is to see if we can find any analytic solutions
 in special cases. Two immediately come to mind and both involve
@@ -502,14 +499,14 @@ You should write an approximately 10 page report that demonstrates:
 - Validation of code against your own analytic results as well as
   experimental and/or theoretical results from the published literature.
 
-::: {#fig-thoroddsen layout-ncol=2}
+<!-- ::: {#fig-thoroddsen layout-ncol=2}
 
 ![](images/thoroddsen.png){height=5cm style="height:5cm; width:auto; display:block; margin:0 auto;"}
 
 ![](images/thoroddsen2.png){height=5cm style="height:5cm; width:auto; display:block; margin:0 auto;"}
 
 Images from Thoroddsen et al's article (see Reading List) showing drops on top of and underneath solid posts experimentally (first panel), and computed using the Young-Laplace equation (second panel).
-:::
+::: -->
 
 ### The Young-Laplace equation in cylindrical polar coordinates
 A more realistic drop is obtained if we consider an
@@ -622,7 +619,7 @@ interests you.
 
 - Parametrise the free surface so that shapes are not restricted to
   single valued functions of $h=h(x)$ - i.e. one can consider 'fat
-  drops' like those in @fig-thoroddsen. To do so, one option is to switch to the
+  drops'. To do so, one option is to switch to the
   parameterisation $x=f(y)$, where the $f$ is now the unknown function
   (perhaps everywhere, or maybe only in regions where this
   parameterisation suits better). To utilise this approach one need to

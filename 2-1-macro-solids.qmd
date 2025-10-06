@@ -1,4 +1,10 @@
+{{< include macros.qmd >}}
+
 # Linear Elasticity Theory {#sec-sol-basics}
+
+As mentioned in the introduction to this part of the module, we typically focus on a
+*Lagrangian* description in solid mechanics. Whereas in fluids we solve for the   *velocity* and *pressure* fields $\bfv$ and $p$, in solids we solve for either the *deformation* map or *displacement* field, which we discuss in detail here. We also formulate the equations of linear elasticity, which describe the simplest equilibrium
+equations we can use to model a solid.
 
 ## Motion and deformation
 
@@ -6,23 +12,30 @@ Consider a continuum body $B$ at time $t=0$, which will be the
 *reference configuration*. At later times, we describe the new shape of
 the body $B_t$ and the position of the points within it by introducing a
 *motion* or *deformation map*,
-${\boldsymbol \varphi}({\boldsymbol X},t)$, taking points
-${\boldsymbol X}\in B$ to their positions ${\boldsymbol x}$ at time $t$.
+$\bfphi(\bfX,t)$, taking points
+$\bfX\in B$ to their positions $\bfx$ at time $t$.
 The new shape of the body at time $t$ is denoted $B_t$, defined to be
-all points ${\boldsymbol x}$ with
+all points $\bfx$ with
 $$
-{\boldsymbol x}= {\boldsymbol \varphi}({\boldsymbol X},t)\qquad\text{for some point }{\boldsymbol X}\in B.
+\bfx= \bfphi(\bfX,t)\qquad\text{for some point }\bfX\in B.
 $$
 In mathematical notation, we can write
-$B_t = {\boldsymbol \varphi}(B,t)$, and the set of points $B_t$ is
-referred to as the *deformed configuration*.
+$B_t = \bfphi(B,t)$, and the set of points $B_t$ is
+referred to as the *deformed configuration*. An illustration of the various
+coordinate systems is given in @fig-deformation.
+
+::: {#fig-deformation}
+![](tikz/Deformation.svg){height=5cm}
+
+The reference configuration (left) and the deformed configuration (right).
+:::
 
 ::: {.callout-caution title="Example"}
 Suppose the reference configuration is a cube of material
 with sides of unit length with $0\leq X_i \leq 1$. What happens to the
 cube when it undergoes the motion
 $$
-{\boldsymbol \varphi}({\boldsymbol X},t) = (3X_1t+X_1+t,X_2,X_3)?
+\bfphi(\bfX,t) = (3Xt+Y+t,Y,Z)?
 $$
 :::
 
@@ -30,16 +43,12 @@ An alternative way to describe the shape change of a solid body is to
 use a *displacement* function. Instead of describing the new positions
 of points in the body in full as the deformation map does, the
 displacement measures relative motion. The displacement of a reference
-point ${\boldsymbol X}$ at time $t$ is defined to be
+point $\bfX$ at time $t$ is defined to be
 $$
-{\boldsymbol u}({\boldsymbol X},t) = {\boldsymbol \varphi}({\boldsymbol X},t)-{\boldsymbol X}.
+\bfu(\bfX,t) = \bfphi(\bfX,t)-\bfX.
 $$
-Unfortunately, it is standard in solid mechanics to use
-${\boldsymbol u}$ to express the displacement (which is the same as the
-notation we used for the Eulerian velocity field in fluids!). Even
-though the concepts are distinct, we will stick with this notation
-because it is so widely used. In this part, the Eulerian velocity field
-will be denoted ${\boldsymbol v}$ instead.
+Whereas the deformation map tells us exactly where in space a reference point has 
+moved to, the displacement map tells us how much the point has moved.
 
 ## Strain
 
@@ -50,26 +59,26 @@ are usually dimensionless, since they involve first spatial derivatives
 of some sort of postion variable.
 
 The first measure we introduce is the deformation gradient
-${\boldsymbol F}$. This is a tensor field, defined to be
+$\bfF$. This is a tensor field, defined to be
 $$
-{\boldsymbol F}= \nabla{\boldsymbol \varphi},\qquad\text{or in components:}\quad F_{ij} = \frac{\partial\varphi_i}{\partial X_j}.$$
+\bfF= \nabla\bfphi,\qquad\text{or in components:}\quad F_{ij} = \frac{\partial\varphi_i}{\partial X_j}.$$
 To see why this measures strain, consider a small segment of material in
-the reference configuration connecting the point ${\boldsymbol X}$ to
-the nearby point ${\boldsymbol X}+\delta {\boldsymbol X}$. After the
+the reference configuration connecting the point $\bfX$ to
+the nearby point $\bfX+\delta \bfX$. After the
 deformation is applied, we can Taylor expand the differences in the
 $i$th coordinate to see that
 $$
-\varphi_i({\boldsymbol X}+\delta {\boldsymbol X})-\varphi_i({\boldsymbol X}) = \frac{\partial \varphi_i}{\partial X_j}({\boldsymbol X})\delta X_j+O\left(|\delta{\boldsymbol X}|^2\right) \approx F_{ij}({\boldsymbol X})\delta X_j,
+\varphi_i(\bfX+\delta \bfX)-\varphi_i(\bfX) = \frac{\partial \varphi_i}{\partial X_j}(\bfX)\delta X_j+O\left(|\delta\bfX|^2\right) \approx F_{ij}(\bfX)\delta X_j,
 $$
-and we see that ${\boldsymbol F}$ encodes the local transformation of
-the initial displacement $\delta{\boldsymbol X}$. A simple class of
-deformation we can consider are those where ${\boldsymbol F}$ is
+and we see that $\bfF$ encodes the local transformation of
+the initial displacement $\delta\bfX$. A simple class of
+deformation we can consider are those where $\bfF$ is
 constant in the body (but possibly time-dependent). This means that the
 corresponding motion must take the form
 $$
-{\boldsymbol \varphi}({\boldsymbol X},t) = {\boldsymbol F}(t){\boldsymbol X}+{\boldsymbol c}(t),
+\bfphi(\bfX,t) = \bfF(t)\bfX+\bfc(t),
 $$
-where ${\boldsymbol c}$ is a translation vector. Motions of this type
+where $\bfc$ is a translation vector. Motions of this type
 are called *homogeneous deformations*, and provide us with a simple
 class to test our theories with.
 
@@ -77,72 +86,72 @@ class to test our theories with.
 Consider the two-dimensional deformation in which
 $$
 \begin{aligned}
-    x_1 &= \tfrac14(18+4X_1+6X_2)\\
-    x_2 &= \tfrac14(14+6X_2).
+    x &= \tfrac14(18+4X+6Y)\\
+    y &= \tfrac14(14+6Y).
 \end{aligned}
 $$
 What is the $(2\times 2)$ deformation gradient tensor
-${\boldsymbol F}$ in this case? Sketch the deformation of a reference
+$\bfF$ in this case? Sketch the deformation of a reference
 square of material centred at $(0,0)$.
 :::
 
 Let's consider how lengths change under a deformation. Again consider
-two nearby points ${\boldsymbol X}$ and
-${\boldsymbol X}+\delta{\boldsymbol X}$. After deformation, the distance
+two nearby points $\bfX$ and
+$\bfX+\delta\bfX$. After deformation, the distance
 between these points can be approximated using the deformation gradient
 as follows:
 $$
-|{\boldsymbol \varphi}({\boldsymbol X}+\delta{\boldsymbol X})-{\boldsymbol \varphi}({\boldsymbol X})|^2 \approx |{\boldsymbol F}\,\delta{\boldsymbol X}|^2 = ({\boldsymbol F}\delta{\boldsymbol X})\cdot({\boldsymbol F}\delta{\boldsymbol X}) = \delta{\boldsymbol X}\cdot\left(({\boldsymbol F}^T{\boldsymbol F})\delta{\boldsymbol X}\right)
+|\bfphi(\bfX+\delta\bfX)-\bfphi(\bfX)|^2 \approx |\bfF\,\delta\bfX|^2 = (\bfF\delta\bfX)\cdot(\bfF\delta\bfX) = \delta\bfX\cdot\left((\bfF^T\bfF)\delta\bfX\right)
 $$
-where ${\boldsymbol F}^T$ is the transpose, obtained by swapping
+where $\bfF^T$ is the transpose, obtained by swapping
 components across the diagonal so $(F^T)_{ij} = F_{ji}$. The tensor
-${\boldsymbol C}:= {\boldsymbol F}^T{\boldsymbol F}$ is called the right
+$\bfC:= \bfF^T\bfF$ is called the right
 Cauchy-Green strain, and it provide a way to encode infinitesimal length
-change. ${\boldsymbol C}$ is not sensitive to rotations, whereas
-${\boldsymbol F}$ is, and it is always symmetric.
+change. $\bfC$ is not sensitive to rotations, whereas
+$\bfF$ is, and it is always symmetric.
 
 The case where there is no length change (and so no shape change) occurs
-when ${\boldsymbol C}$ is the identity tensor ${\boldsymbol I}$. If we
+when $\bfC$ is the identity tensor $\bfI$. If we
 shift by removing the identity tensor (and by convention dividing by
 $2$), we get another form of strain, called the *Lagrange strain*:
 $$
-{\boldsymbol E}:= \tfrac12({\boldsymbol C}-{\boldsymbol I}) = \tfrac12({\boldsymbol F}^T{\boldsymbol F}-{\boldsymbol I}).
+\bfE:= \tfrac12(\bfC-\bfI) = \tfrac12(\bfF^T\bfF-\bfI).
 $$
 Another way to measure strain is to use the *displacement gradient*,
 denoted
 $$
-\nabla{\boldsymbol u}= {\boldsymbol F}-{\boldsymbol I},\quad\text{with components}\quad (\nabla {\boldsymbol u})_{ij} = \frac{\partial u_i}{\partial X_j}.
+\nabla\bfu= \bfF-\bfI,\quad\text{with components}\quad (\nabla \bfu)_{ij} = \frac{\partial u_i}{\partial X_j}.
 $$
-If we write the Lagrange strain in terms of $\nabla {\boldsymbol u}$, we
+If we write the Lagrange strain in terms of $\nabla \bfu$, we
 find
 $$
-{\boldsymbol E}= \frac12\Big(({\boldsymbol I}+\nabla{\boldsymbol u})^T({\boldsymbol I}+\nabla{\boldsymbol u})-{\boldsymbol I}\Big) = \frac12\Big(\nabla{\boldsymbol u}+\nabla{\boldsymbol u}^T+\nabla{\boldsymbol u}^T\nabla{\boldsymbol u}\Big).
+\bfE= \frac12\Big((\bfI+\nabla\bfu)^T(\bfI+\nabla\bfu)-\bfI\Big) = \frac12\Big(\nabla\bfu+\nabla\bfu^T+\nabla\bfu^T\nabla\bfu\Big).
 $$
-If $\nabla{\boldsymbol u}$ is small, then we can linearise this
+If $\nabla\bfu$ is small, then we can linearise this
 definition by neglecting the
-$\nabla{\boldsymbol u}^T\nabla{\boldsymbol u}$ term, which gives us the
+$\nabla\bfu^T\nabla\bfu$ term, which gives us the
 definition of the *infinitesimal strain*, denoted
 $$
-{\boldsymbol \varepsilon}= \frac12\Big(\nabla{\boldsymbol u}+\nabla{\boldsymbol u}^T\Big)\quad\text{with}\quad \varepsilon_{ij} = \frac12\left(\frac{\partial u_i}{\partial X_j}+\frac{\partial u_j}{\partial X_i}\right).
+\bfeps= \frac12\Big(\nabla\bfu+\nabla\bfu^T\Big)\quad\text{with}\quad \varepsilon_{ij} = \frac12\left(\frac{\partial u_i}{\partial X_j}+\frac{\partial u_j}{\partial X_i}\right).
 $$
-Notice that ${\boldsymbol C}$, ${\boldsymbol E}$ and
-${\boldsymbol \varepsilon}$ are symmetric tensors, while the direct
-derivatives ${\boldsymbol F}= \nabla{\boldsymbol \varphi}$ and
-$\nabla{\boldsymbol u}$ are not. For much of what we do in this part of
+Notice that $\bfC$, $\bfE$ and
+$\bfeps$ are symmetric tensors, while the direct
+derivatives $\bfF= \nabla\bfphi$ and
+$\nabla\bfu$ are not. For much of what we do in this part of
 the module, our main focus will be on models where we use the linearised
-strain ${\boldsymbol \varepsilon}$, as this is the measure of strain
+strain $\bfeps$, as this is the measure of strain
 which is used in linear elasticity theory.
 
 ::: {.callout-caution title="Example"}
 Again, consider the two-dimensional deformation in which
 $$
 \begin{aligned}
-    x_1 &= \tfrac14(18+4X_1+6X_2)\\
-    x_2 &= \tfrac14(14+6X_2).  
+    x &= \tfrac14(18+4X+6Y)\\
+    y &= \tfrac14(14+6Y).  
 \end{aligned}
 $$
 What are the different measures of strain
-${\boldsymbol C}$, ${\boldsymbol E}$, ${\boldsymbol \varepsilon}$ in
+$\bfC$, $\bfE$, $\bfeps$ in
 this case?
 :::
 
@@ -151,24 +160,24 @@ this case?
 Recall that in @sec-flu-equations, we showed Newton's second
 law implies that
 $$
-\rho\frac{D{\boldsymbol v}}{Dt} = \nabla\cdot{\boldsymbol S}-\rho g{\boldsymbol e}_3,
+\rho\frac{D\bfv}{Dt} = \nabla\cdot\bfS-\rho g\bfe_3,
 $$
-where we now use ${\boldsymbol v}$ to denote the velocity field, and
-${\boldsymbol S}$ is the *Cauchy stress tensor*. Recall that
-${\boldsymbol S}{\boldsymbol n}$ expresses the forces per unit area
-acting across a surface with normal ${\boldsymbol n}$ in the deformed
+where we now use $\bfv$ to denote the velocity field, and
+$\bfS$ is the *Cauchy stress tensor*. Recall that
+$\bfS\bfn$ expresses the forces per unit area
+acting across a surface with normal $\bfn$ in the deformed
 configuration (i.e. in the Eulerian setting). This equation holds for
 solids too, it's just that to model these materials, we will need to
-change the constitutive equation for ${\boldsymbol S}$.
+change the constitutive equation for $\bfS$.
 
 In particular, we are going to focus on the static form of this equation
-in which there is no motion. If ${\boldsymbol v}={\boldsymbol 0}$, we
+in which there is no motion. If $\bfv=\bfzero$, we
 can rearrange to get the *force balance* equations:
 $$
-\nabla\cdot{\boldsymbol S}= \rho g{\boldsymbol e}_3\quad\text{or}\quad \frac{\partial S_{ij}}{\partial X_j} = \rho g \delta_{i3}.$$
+\nabla\cdot\bfS= \rho g\bfe_3\quad\text{or}\quad \frac{\partial S_{ij}}{\partial X_j} = \rho g \delta_{i3}.$$
 This gives us 3 equations for 6 unknowns (the components of the stress
 tensor), so to close the equations we need a constitutive relation. For
-solids, we typically assume ${\boldsymbol S}$ depends on some measure of
+solids, we typically assume $\bfS$ depends on some measure of
 strain. This is in constrast to fluids, where it tends to depend only
 strain rate.
 
@@ -179,9 +188,9 @@ because they don't flow. To allow us to discuss this response, we'll
 introduce the following definitions, which are illustrated in
 @fig-stressstates:
 
-- If the stress tensor ${\boldsymbol S}$ takes the form
+- If the stress tensor $\bfS$ takes the form
   $$
-  {\boldsymbol S}= \left(
+  \bfS= \left(
   \begin{array}{ccc}
       -p &  0 & 0 \\
        0 & -p & 0 \\
@@ -189,12 +198,12 @@ introduce the following definitions, which are illustrated in
   \end{array}\right),
   $$
   where $p$ is a scalar pressure, we say that
-  a *spherical* state of stress exists at ${\boldsymbol x}$.
+  a *spherical* state of stress exists at $\bfx$.
 
 - The stress is said to be *uniaxial* is there exists Cartesian
   coordinate system in which the stress tensor takes the form
   $$
-  {\boldsymbol S}= 
+  \bfS= 
     \left(
     \begin{array}{ccc}
     \sigma & 0 & 0 \\
@@ -207,7 +216,7 @@ introduce the following definitions, which are illustrated in
 - If in some Cartesian coordinate system the stress tensor takes the
   form
   $$
-  {\boldsymbol S}=
+  \bfS=
     \left(
       \begin{array}{ccc}
         0 & \tau & 0 \\
@@ -219,9 +228,9 @@ introduce the following definitions, which are illustrated in
   then we say that a state of *pure shear stress* exists.
 
 - More generally, if in some Cartesian coordinate system
-  ${\boldsymbol S}$ takes the form
+  $\bfS$ takes the form
   $$
-  {\boldsymbol S}=
+  \bfS=
     \left(
       \begin{array}{ccc}
         S_{11} & S_{12} & 0 \\
@@ -248,27 +257,21 @@ An illustration of some simple stress states acting on a 2D
 slice of a body.
 :::
 
-### Principal stresses
+### Types of stress
 
-The eigenvalues of ${\boldsymbol S}$ evaluated are called the *principal
-stresses*. The corresponding eigenvectors are called the *principal
-stress directions*. We note that since the stress tensor is symmetric,
-there are three real principal stresses, and three orthogonal principal
-stress directions for each point.
-
-Consider a surface with unit normal ${\boldsymbol n}$. The corresponding
-stress vector ${\boldsymbol t}= {\boldsymbol S}{\boldsymbol n}$ acting
+Consider a surface with unit normal $\bfn$. The corresponding
+stress vector $\bft= \bfS\bfn$ acting
 on this surface can be decomposed into two parts:
 $$
 \begin{aligned}
-    \text{a \emph{normal stress}:}&\qquad&{\boldsymbol t}_n &= ({\boldsymbol t}\cdot{\boldsymbol n}){\boldsymbol n},\\
-    \text{and a \emph{shear stress}:}&\qquad&{\boldsymbol t}_s&= {\boldsymbol t}-({\boldsymbol t}\cdot{\boldsymbol n}){\boldsymbol n},
+    \text{a \emph{normal stress}:}&\qquad&\bft_n &= (\bft\cdot\bfn)\bfn,\\
+    \text{and a \emph{shear stress}:}&\qquad&\bft_s&= \bft-(\bft\cdot\bfn)\bfn,
 \end{aligned}
 $$
-In particular, we have ${\boldsymbol t}={\boldsymbol t}_n+{\boldsymbol t}_s$, and we call
-$\sigma_n=|{\boldsymbol t}_n|$ the *normal stress* and
-$\sigma_s=|{\boldsymbol t}_s|$ the *shear stress* on the surface with
-normal ${\boldsymbol n}$ at ${\boldsymbol x}$.
+In particular, we have $\bft=\bft_n+\bft_s$, and we call
+$\sigma_n=|\bft_n|$ the *normal stress* and
+$\sigma_s=|\bft_s|$ the *shear stress* on the surface with
+normal $\bfn$ at $\bfx$.
 
 It is often of interest to understand what sorts of surfaces experience
 the largest stresses of various types, because we want to be sure that
@@ -277,6 +280,12 @@ normal stress state) and high levels of shear stress can induce
 cracking. The threshold for these two different modes of failure is
 often different, and so the places which may be prone to issues can vary
 depending on the material and the shape of a design.
+<!-- 
+The eigenvalues of $\bfS$ evaluated are called the *principal
+stresses*. The corresponding eigenvectors are called the *principal
+stress directions*. We note that since the stress tensor is symmetric,
+there are three real principal stresses, and three orthogonal principal
+stress directions for each point.
 
 A nice fact is that we can work out the maximal stresses directly using
 the principal stresses. If the principal stresses $\sigma_i$ are
@@ -293,9 +302,9 @@ In practice, this provides us with a nice way to post-process a
 computational prediction of stress to work out which regions we should
 be concerned about: all we need to do is find the stress tensor in the
 material, find the appropriate eigenvalues, compute these quantities
-relative to their critical values, and visualise the results.
+relative to their critical values, and visualise the results. -->
 
-## Hooke's law
+## Hooke's law revisited
 
 Hooke's law is a simple rule about the behaviour of springs which you
 probably first learned about in school. It states that the tensile force
@@ -342,7 +351,7 @@ The ratio of extension over length that appears in
 @eq-springstrain is a first example of a measure of
 *strain*, describing the change in length relative to some reference
 length. In fact, it can be thought of as a component of the
-infinitesimal strain ${\boldsymbol \varepsilon}$. To see the connection
+infinitesimal strain $\bfeps$. To see the connection
 with our definitions in the previous chapter, if we introduce a
 reference domain $[0,\ell_0]$, then we can define a deformation
 $$
@@ -373,25 +382,25 @@ setting.
 As we saw in the first part of the course, forces acting across surfaces
 inside and on the boundary of a continuum body can be encoded using the
 stress tensor. In linear elasticity theory, we generalise Hooke's law by
-assuming that the stress tensor ${\boldsymbol S}$ can be expressed as a
+assuming that the stress tensor $\bfS$ can be expressed as a
 linear function of the infinitesimal strain tensor
-${\boldsymbol \varepsilon}$. In this case, the single coefficient
+$\bfeps$. In this case, the single coefficient
 $\mathbb{C}$ discussed above for a spring becomes a fourth-order
 elasticity tensor $\mathbb{C}$, with
 $$
-{\boldsymbol S}= \mathbb{C}{\boldsymbol \varepsilon}\qquad\text{with components}\qquad S_{ij} = \mathbb{C}_{ijkl}\varepsilon_{kl}.
+\bfS= \mathbb{C}\bfeps\qquad\text{with components}\qquad S_{ij} = \mathbb{C}_{ijkl}\varepsilon_{kl}.
 $$
 In principle, $\mathbb{C}$ could contain 81 independent parameters (also
 sometimes called *moduli*) as it has this many different indices.
-However, since ${\boldsymbol S}$ and ${\boldsymbol \varepsilon}$ are
+However, since $\bfS$ and $\bfeps$ are
 both symmetric and the elasticity tensor satisfies *major symmetry*,
 meaning that $\mathbb{C}_{ijkl} =\mathbb{C}_{klij}$, there are in fact
 only 21 possible unique parameters in general. In fact, one way to see
 this is to use *Voigt notation*, where we relate the vectors
 $$
 \begin{aligned}
-  \widetilde{{\boldsymbol S}} &= (S_{11},S_{22},S_{33},S_{23},S_{31},S_{12}) \\
-  \text{and}\quad\widetilde{{\boldsymbol \varepsilon}}&= (\varepsilon_{11},\varepsilon_{22},\varepsilon_{33},2\varepsilon_{23},2\varepsilon_{31},2\varepsilon_{12})
+  \widetilde{\bfS} &= (S_{11},S_{22},S_{33},S_{23},S_{31},S_{12}) \\
+  \text{and}\quad\widetilde{\bfeps}&= (\varepsilon_{11},\varepsilon_{22},\varepsilon_{33},2\varepsilon_{23},2\varepsilon_{31},2\varepsilon_{12})
 \end{aligned}
 $$
 via a matrix multiplication. It is common to make the
@@ -432,7 +441,7 @@ where the part of the matrix below the diagonal is the
 reflection of that above the diagonal, i.e. $C_{ij} = C_{ji}$. The
 mysterious factor of 2 appearing is there to ensure that
 $$
-\tfrac12\widetilde{{\boldsymbol S}}\cdot\widetilde{{\boldsymbol \varepsilon}} = \tfrac12S_{ij}\varepsilon_{ij} = \tfrac12\mathbb{C}_{ijkl}\varepsilon_{ij}\varepsilon_{kl},
+\tfrac12\widetilde{\bfS}\cdot\widetilde{\bfeps} = \tfrac12S_{ij}\varepsilon_{ij} = \tfrac12\mathbb{C}_{ijkl}\varepsilon_{ij}\varepsilon_{kl},
 $$
 which encodes the elastic energy density in the material.
 
@@ -496,11 +505,11 @@ discussion of bulk modulus.
 
 Consider an isotropic linear elastic material undergoing a uniform
 compression or expansion, i.e. experiencing the deformation
-${\boldsymbol \varphi}({\boldsymbol X}) = (1+\tfrac13\alpha){\boldsymbol X}$.
+$\bfphi(\bfX) = (1+\tfrac13\alpha)\bfX$.
 The volume of unit cube after this deformation can be expressed using
 the determinant of the deformation gradient,
 $$
-J = \det{\boldsymbol F}= (1+\tfrac13\alpha)^3 = 1+\alpha+\tfrac13\alpha^2+\tfrac{1}{27}\alpha^3.
+J = \det\bfF= (1+\tfrac13\alpha)^3 = 1+\alpha+\tfrac13\alpha^2+\tfrac{1}{27}\alpha^3.
 $$
 When $\alpha$ is small, we can neglect the quadratic and cubic terms to
 approximate the new volume as $J \approx 1+\alpha$, so $\alpha$ tells us
@@ -522,7 +531,7 @@ $$
 $$
 The stress tensor is therefore
 $$
-S_{ij} = \kappa\alpha\delta_{ij}\quad\text{or in tensor notation}\quad{\boldsymbol S}= \kappa\alpha{\boldsymbol I}.
+S_{ij} = \kappa\alpha\delta_{ij}\quad\text{or in tensor notation}\quad\bfS= \kappa\alpha\bfI.
 $$
 Recalling our definition from above, this is a *spherical* state of
 stress, with pressure $p = -\kappa\alpha$, and we see that $\kappa$ is
@@ -540,19 +549,19 @@ A simple shear.
 Consider an isotropic linear elastic material undergoing a simple shear
 in which
 $$
-{\boldsymbol \varphi}({\boldsymbol X}) = (X+\alpha Y,Y,Z).
+\bfphi(\bfX) = (X+\alpha Y,Y,Z).
 $$
 We have
 $$
-{\boldsymbol u}= (\alpha Y,0,0)\quad\text{so}\quad
-  \nabla{\boldsymbol u}= \left(
+\bfu= (\alpha Y,0,0)\quad\text{so}\quad
+  \nabla\bfu= \left(
     \begin{array}{ccc}
       0 & \alpha & 0 \\
       0 & 0 & 0 \\
       0 & 0 & 0
     \end{array}
   \right)\quad\text{and}\quad
-  {\boldsymbol \varepsilon}= \left(
+  \bfeps= \left(
     \begin{array}{ccc}
       0 & \tfrac12\alpha & 0 \\
       \tfrac12\alpha & 0 & 0 \\
@@ -562,7 +571,7 @@ $$
 $$
 It is easy to check that $\varepsilon_{kk} = 0$, and so plugging in,
 $$
-{\boldsymbol S}=
+\bfS=
 \left(
     \begin{array}{ccc}
         0 & G\alpha & 0 \\
@@ -594,22 +603,22 @@ stretched (think of an elastic band). This means it will be useful for
 us to consider the material simultaneously contracting in the other
 directions, so we consider the deformation
 $$
-{\boldsymbol \varphi}({\boldsymbol X}) = \big((1+\alpha)X,(1-\beta)Y,(1-\beta)Z\big).
+\bfphi(\bfX) = \big((1+\alpha)X,(1-\beta)Y,(1-\beta)Z\big).
 $$
 We have
 $$
-{\boldsymbol u}= (\alpha X,-\beta Y,-\beta Z)\quad\text{so}\quad
-\nabla{\boldsymbol u}= \left(
+\bfu= (\alpha X,-\beta Y,-\beta Z)\quad\text{so}\quad
+\nabla\bfu= \left(
     \begin{array}{ccc}
         \alpha & 0 & 0 \\
         0 & -\beta & 0 \\
         0 & 0 & -\beta
     \end{array}
-\right)={\boldsymbol \varepsilon},
+\right)=\bfeps,
 $$
-where the latter equality holds because $\nabla{\boldsymbol u}$ is symmetric. Plugging in, we find
+where the latter equality holds because $\nabla\bfu$ is symmetric. Plugging in, we find
 $$
-{\boldsymbol S}=
+\bfS=
 \left(
     \begin{array}{ccc}
         (\kappa-\tfrac23G)(\alpha-2\beta)+2G\alpha & 0 & 0 \\
@@ -621,7 +630,7 @@ $$
 Let us set $\nu = \beta/\alpha$, and pull out a factor of
 $\alpha$. Then, working through the algebra, we can write
 $$
-{\boldsymbol S}= \alpha\left(
+\bfS= \alpha\left(
     \begin{array}{ccc}
         (\kappa+\tfrac43G)-2\nu(\kappa-\tfrac23G) & 0 & 0 \\
         0 & (\kappa-\tfrac23G)-2\nu(\kappa+\tfrac13G) & 0 \\
@@ -643,7 +652,7 @@ perpendicular to that which it is stretched.
 
 If we simply further in the case where we choose $\nu$ as above, we have
 $$
-{\boldsymbol S}= \alpha\left(
+\bfS= \alpha\left(
     \begin{array}{ccc}
         \frac{9\kappa G}{3\kappa+G} & 0 & 0 \\
         0 & 0 & 0 \\
@@ -709,29 +718,64 @@ common to express the stresses experienced in solids using megapascals
 Now we have developed some physical understanding of the elastic moduli,
 we focus on the equations of isotropic elasticity. If we use the
 constitutive assumption that
-${\boldsymbol S}= \mathbb{C}{\boldsymbol \varepsilon}$, the relationship
+$\bfS= \mathbb{C}\bfeps$, the relationship
 that
-${\boldsymbol \varepsilon}= \frac12(\nabla{\boldsymbol u}+\nabla{\boldsymbol u}^T)$
+$\bfeps= \frac12(\nabla\bfu+\nabla\bfu^T)$
 and substitute into the force balance equation, we get the system of
 equations
 $$
-(\kappa+\tfrac13G)\nabla(\nabla\cdot{\boldsymbol u}) + G\nabla^2{\boldsymbol u}+ \rho g{\boldsymbol e}_3 = {\boldsymbol 0}.
+\frac{E}{(1+\nu)(1-2\nu)}\nabla(\nabla\cdot\bfu) + \frac{E}{2(1+\nu)}\nabla^2\bfu+ \rho g\bfe_3 = \bfzero.
 $$
-This can be written in component form as
+We have chosen to write the equations in terms of the Young's modulus $E$ and 
+Poisson ratio $\nu$, but note that we could have written them in terms of any two of 
+the elastic moduli described above.
+In component form, these equations are
 $$
-(\kappa+\tfrac13 G)\frac{\partial^2 u_j}{\partial X_i\partial X_j}+G\frac{\partial^2u_i}{\partial X_j\partial X_j}+\rho g\delta_{i3} = 0.
+\frac{E}{(1+\nu)(1-2\nu)}\frac{\partial^2 u_j}{\partial X_i\partial X_j}+\frac{E}{2(1+\nu)}\frac{\partial^2u_i}{\partial X_j\partial X_j}+\rho g\delta_{i3} = 0.
 $$
+
+### Boundary conditions
 These equations must be accompanied by appropriate boundary conditions.
 In simple problems, these are often *displacement* boundary conditions
-where ${\boldsymbol u}$ is prescribed on part of the boundary, or
-*traction* boundary conditions where ${\boldsymbol S}{\boldsymbol n}$ is
+where $\bfu$ is prescribed on part of the boundary, or
+*traction* boundary conditions where $\bfS\bfn$ is
 prescribed on part of the boundary. In general, a mixture of these
-condition will be used; see for example @fig-elasticityBCs. The full linear elastic problem becomes:
+condition will be used; see for example @fig-elasticityBCs.
+
+::: {#fig-elasticityBCs}
+
+![](tikz/ElasticityBCs.svg){height=5cm}
+
+Displacement and traction boundary conditions used to
+simulate a tensile test. Regions where traction boundary conditions are
+applied are shown in blue, while displacement boundary conditions apply
+on the surfaces shown in red.
+:::
+
+Physically, we can
+think of displacement boundary conditions as being hard constraints, so the
+body is clamped, welded or glued at a chosen position. Free boundaries can be 
+represented using 'traction-free' boundary conditions $\bfS\bfn = \bfzero$; this 
+condition states that there is no stress on this part of the boundary, and so the 
+boundary will tend to take a shape that is 'convenient' for it. If we wish to impose
+a force on the boundary, so that we require $\bfS\bfn=\bft$ on the boundary, we often
+think of this as having *normal* and *shear components*, as discussed above. Recall that the normal component is $\bft_n = (\bft\cdot\bfn)\bfn$ and the shear component $\bft_s =\bft-\bft_n$. These different components are represented in @fig-boundary-loading. Shear components in the applied stress can for example model frictional contact with another solid body, while normal components can model something pressing against the body, e.g. a fluid or other solid object.
+
+::: {#fig-boundary-loading}
+![](tikz/Loading.svg){height=5cm}
+
+An illustration of a boundary traction $\bft$ acting on a surface with normal 
+$\bfn$. The traction can be split into normal and shear components, $\bft_n = (\bft\cdot\bfn)\bfn$ and 
+$\bft_s = \bft-\bft_n$.
+:::
+
+### Full problem
+The full linear elastic problem requires us to solve the system of partial differential equations:
 $$
 \begin{aligned}
-    (\kappa+\tfrac13 G)\nabla(\nabla\cdot{\boldsymbol u}) + G\nabla^2{\boldsymbol u}+ \rho g{\boldsymbol e}_3 &= {\boldsymbol 0} && \text{in }B,\\
-    {\boldsymbol S}{\boldsymbol n}&= {\boldsymbol t}&& \text{on }\Gamma_N,\\
-    {\boldsymbol u}&= {\boldsymbol u}_0 && \text{on }\Gamma_D.
+    \frac{E}{(1+\nu)(1-2\nu)}\nabla(\nabla\cdot\bfu) + \frac{E}{2(1+\nu)}\nabla^2\bfu+ \rho g\bfe_3 &= \bfzero && \text{in }B,\\
+    \bfS\bfn&= \bft&& \text{on }\Gamma_N,\\
+    \bfu&= \bfu_0 && \text{on }\Gamma_D.
 \end{aligned}
 $$ {#eq-isotropic_elast_forcebalance}
 Note there are
@@ -739,7 +783,10 @@ in general 3 partial differential equations for 3 components of the
 displacement at points inside the domain, and 3 conditions at each
 boundary point. This is therefore a closed set of equations, and in
 general it has smooth solutions (away from corners and other nasty
-boundary points).
+boundary points). Unlike the Navier-Stokes equations, these equations are linear so 
+are somewhat simpler. Even so, this is still a system of 3 coupled partial 
+differential equations, so exact solutions are still challenging to write down in 
+general, and numerical methods are therefore used, as we will explore.
 
 ### Special cases
 
@@ -748,10 +795,10 @@ the three-dimensional system of equations. Three important cases of this
 are:
 
 1.  **Plane strain**, in which we assume that displacements take place
-    only in $x_1,x_2$ plane, and hence
-    ${\boldsymbol u}= (u_1(x_1,x_2),u_2(x_1,x_2),0)$. This is used to
-    model the interior of a specimen which is very *thick* in the $x_3$
-    direction, so that the $u_3$ component doesn't change very much in
+    only in $X,Y$ plane, and hence
+    $\bfu= (u(X,Y),v(X,Y),0)$. This is used to
+    model the interior of a specimen which is very *thick* in the $Z$
+    direction, so that the $u_3=w$ component doesn't change very much in
     any slice of the body. In this case, we just need to consider the
     reduced matrix
     $$
@@ -778,7 +825,7 @@ are:
 
 2.  **Plane stress**, in which we assume that $S_{13}$, $S_{23}$ and
     $S_{33}$ are zero. This is usually used to model a specimen that is
-    very *thin* in the $x_3$ direction. In this case, if the top and
+    very *thin* in the $Z$ direction. In this case, if the top and
     bottom of a sheet are free, then zero traction boundary conditions
     mean that these components are likely to be very small. In this
     case, we just need to consider the reduced matrix
@@ -806,7 +853,7 @@ are:
 
 3.  **Anti-plane stress**, in which we assume that the displacement only
     occurs in the $x_3$ direction, so that
-    ${\boldsymbol u}=(0,0,u_3(x_1,x_2))$. This is typically used to
+    $\bfu=(0,0,w(X,Y))$. This is typically used to
     model the cross-section of a long thin component, where loads are
     applied along the axis, such as a tube or bar. In this case, we get
     In this case, we just need to consider the reduced matrix 
@@ -831,12 +878,6 @@ are:
     \right).
     $$
 
-::: {#fig-elasticityBCs}
-
-![](tikz/ElasticityBCs.svg){height=5cm}
-
-Displacement and traction boundary conditions used to
-simulate a tensile test. Regions where traction boundary conditions are
-applied are shown in blue, while displacement boundary conditions apply
-on the surfaces shown in red.
-:::
+There are also further ways to reduce the equations of elasticity based on the fact
+that we may be considering an elastic body which is *thin* in some dimensions; this
+is something we will explore further later in the module.

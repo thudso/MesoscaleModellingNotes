@@ -1,3 +1,5 @@
+{{< include macros.qmd >}}
+
 # Elasticity theory for crystal defects
 
 There are various possible sources of error when using any computational

@@ -46,7 +46,7 @@ for texfile in $FIGS; do
 done
 
 echo "Cleaning up LaTeX temporary files..."
-rm -f tikz/*.aux tikz/*.log tikz/*.out tikz/*.toc
+rm -f tikz/*.aux tikz/*.log tikz/*.out tikz/*.toc tikz/*.tex~ tikz/*.fls tikz/*.fdb_latexmk tikz/*.synctex.gz
 echo "Cleanup complete."
 
 echo "All TikZ figures built successfully!"

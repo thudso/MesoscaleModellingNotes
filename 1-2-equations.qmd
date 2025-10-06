@@ -378,10 +378,9 @@ some parts of the flow may get much smaller and, therefore, the local
 $\mathrm{Re}$ may get strongly reduced, so that the flow is no longer
 inviscid. This situation is typical for thin layers close to the solid
 boundaries---the so-called *boundary layers* and in wakes behind moving
-bodies; see @fig-flowpastcylinder.
+bodies.
 
-::: {#fig-flowpastcylinder}
-
+<!-- ::: {#fig-flowpastcylinder}
 ![](images/circular_cylinder.jpg){#fig-Flow past cylinder}
 
 Flow past cylinder at $\mathrm{Re}=3900 \gg 1$. Upstream of the
@@ -389,12 +388,12 @@ cylinder (on the left) the flow is laminar, large-scale and almost
 inviscid except for a thin boundary layer close to the cylinder.
 Downstream (to the right), the flow contains small scales and its
 viscosity is important.
-
-:::
+::: -->
 
 This number is named after Osborne Reynolds (1842-1912) who realised
 that this combination of dimensional parameters controls the transition
-from a laminar to turbulent flow in a pipe. The apparatus used to
+from a laminar to turbulent flow in a pipe.
+<!-- The apparatus used to
 conduct these experiments, conducted in Manchester, is shown in
 @fig-reynolds.
 
@@ -410,7 +409,7 @@ flow rate and hence $U$) you
 transition from a laminar state to a turbulent one in which dye injected
 into the fluid at the entrance is mixed with the surrounding
 fluid.
-:::
+::: -->
 
 #### Stokes Flow
 
@@ -578,7 +577,7 @@ computational solutions become far more costly. The usual solution
 method is so-called direct simulation Monte-Carlo (DSMC) although other
 approaches are also used.
 
-::: {#fig-molecular layout-ncol=2 layout-valign="center"}
+<!-- ::: {#fig-molecular layout-ncol=2 layout-valign="center"}
 
 ![](images/md_drops.png){height=5cm}
 
@@ -588,7 +587,7 @@ Left: water nanodrops (courtesy of Sree Hari Perumanath,
 Edinburgh) observed in molecular dynamics simulations.. Right: a DSMC
 simulation of rarefied gas flow around a re-entrant
 shuttle.
-:::
+::: -->
 
 There is a huge rich variety of other modelling frameworks including
 density functional theory (acting below molecular dynamics), coarse

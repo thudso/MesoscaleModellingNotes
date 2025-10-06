@@ -1,3 +1,4 @@
+{{< include macros.qmd >}}
 
 # Solids
 
@@ -5,40 +6,43 @@
 In this half of the module our focus switches to solids, and the
 modelling of shape change and motion of solid materials under the action
 of applied forces. An important fundamental difference between fluids
-and solids is that the latter form of matter does not 'flow'. As a
+and solids is that solids do not 'flow' in the same way. As a
 consequence, points in a solid material that are nearby at one time tend
-to remain so at later times.
+to remain very close to one another at later times.
 
 As a thought experiment, consider performing an experiment to observe
 the physical properties of a fluid, pouring it into a beaker, stirring
 it up and then doing the same experiment again. The fluid has been
 completely deformed and distorted by this process, but we expect the
 mechanical properties to remain the same. In contrast, we are not able
-to do the same to a solid, as solids tend to want to return to its
-original shape between experiments: This shows that a solid 'remembers'
-its shape in a way a fluid does not. A common approach is to introduce a
-reference shape for a solid and measure its shape change relative to
-this reference. As we will see, this means it is most convenient to use
+to do the same to a solid; instead, they tend to want to return to their
+original shape between experiments. This shows that a solid 'remembers'
+its shape in a way a fluid does not. A common approach is therefore to
+introduce a reference shape for a solid and measure change relative to
+this reference. As we will see, this means it is more convenient to use
 a Lagrangian formulation (rather than an Eulerian formulation, as we
 used in the fluids part) of the appropriate equations.
 
+## Outline
 During the lectures in this second part, we will cover the following
 topics:
 
-- **Linear Elasticity Theory**: strain, Hooke's law, the Lagrangian formalism,
-  stress, the equations of elastostatics
+- **Linear Elasticity Theory**: more on the Lagrangian formalism, deformations
+  and displacements, strain, stress, Hooke's law, and the equations of 
+  linear elastostatics.
 
-- **The Finite Element Method**: weak and strong form of partial differential
-  equations, discretisation, basis functions, boundary conditions, implementation
+- **The Finite Element Method**: weak vs strong forms of partial differential
+  equations and the basics of the finite element method (FEM), including the notion of elements, shape functions and numerical integration. We also discuss boundary conditions and practical implementation.
 
-- **Beam Theory**: Bernoulli-Euler beam equation, Finite Elements for the
-  reduced problem, other reduced theories
+- **Beam Theory**: the Bernoulli-Euler beam equation, FEM for the
+  reduced problem, and discussion of other reduced theories.
 
-- **Elasticity for Crystal Defects**: point defects as elastic inclusions, the elastic
-  Green's function, linking atomistic and continuum theory
+- **Elasticity for Crystal Defects**: the elastic Green's function, the connection
+  between atomistic and continuum theory, and how defects are modelled using linear elasticity theory. Point defects as elastic inclusions.
 
 In the workshops you will develop your own codes to solve real-world
 problems.
 
-- **Computational Solid Mechanics**: the finite element method, basis functions, numerical
-  integration, linear algebra, error, meshing and refinement.
+- **Computational Solid Mechanics**: the finite element method (both from scratch
+  and using packages), basis functions, numerical integration, linear algebra, 
+  error, meshing and refinement.

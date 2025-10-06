@@ -1,0 +1,195 @@
+\documentclass[tikz, border=2pt]{standalone}
+\usepackage{tikz,pgfplots}
+\usepgfplotslibrary{colormaps}
+\usepackage{tikz-3dplot}
+\usepackage{amsmath,bm,array}
+\usepackage{amsfonts,amsthm,titlesec}
+\pgfplotsset{compat=1.17}
+
+\newcommand{\bbA}{\mathbb{A}}
+\newcommand{\bbB}{\mathbb{B}}
+\newcommand{\bbC}{\mathbb{C}}
+\newcommand{\bbD}{\mathbb{D}}
+\newcommand{\bbE}{\mathbb{E}}
+\newcommand{\bbF}{\mathbbF}
+\newcommand{\bbG}{\mathbb{G}}
+\newcommand{\bbH}{\mathbb{H}}
+\newcommand{\bbI}{\mathbb{I}}
+\newcommand{\bbJ}{\mathbb{J}}
+\newcommand{\bbK}{\mathbb{K}}
+\newcommand{\bbL}{\mathbb{L}}
+\newcommand{\bbM}{\mathbb{M}}
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbO}{\mathbb{O}}
+\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\bbQ}{\mathbb{Q}}
+\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbS}{\mathbb{S}}
+\newcommand{\bbT}{\mathbb{T}}
+\newcommand{\bbU}{\mathbb{U}}
+\newcommand{\bbV}{\mathbb{V}}
+\newcommand{\bbW}{\mathbb{W}}
+\newcommand{\bbX}{\mathbb{X}}
+\newcommand{\bbY}{\mathbb{Y}}
+\newcommand{\bbZ}{\mathbb{Z}}
+
+\def\bfa{{\boldsymbol a}}
+\def\bfb{{\boldsymbol b}}
+\def\bfc{{\boldsymbol c}}
+\def\bfd{{\boldsymbol d}}
+\def\bfe{{\boldsymbol e}}
+\def\bff{{\boldsymbol f}}
+\def\bfg{{\boldsymbol g}}
+\def\bfh{{\boldsymbol h}}
+\def\bfi{{\boldsymbol i}}
+\def\bfj{{\boldsymbol j}}
+\def\bfk{{\boldsymbol k}}
+\def\bfl{{\boldsymbol l}}
+\def\bfm{{\boldsymbol m}}
+\def\bfn{{\boldsymbol n}}
+\def\bfo{{\boldsymbol o}}
+\def\bfp{{\boldsymbol p}}
+\def\bfq{{\boldsymbol q}}
+\def\bfr{{\boldsymbol r}}
+\def\bfs{{\boldsymbol s}}
+\def\bft{{\boldsymbol t}}
+\def\bfu{{\boldsymbol u}}
+\def\bfv{{\boldsymbol v}}
+\def\bfw{{\boldsymbol w}}
+\def\bfx{{\boldsymbol x}}
+\def\bfy{{\boldsymbol y}}
+\def\bfz{{\boldsymbol z}}
+
+\def\bfA{{\boldsymbol A}}
+\def\bfB{{\boldsymbol B}}
+\def\bfC{{\boldsymbol C}}
+\def\bfD{{\boldsymbol D}}
+\def\bfE{{\boldsymbol E}}
+\def\bfF{{\boldsymbol F}}
+\def\bfG{{\boldsymbol G}}
+\def\bfH{{\boldsymbol H}}
+\def\bfI{{\boldsymbol I}}
+\def\bfJ{{\boldsymbol J}}
+\def\bfK{{\boldsymbol K}}
+\def\bfL{{\boldsymbol L}}
+\def\bfM{{\boldsymbol M}}
+\def\bfN{{\boldsymbol N}}
+\def\bfO{{\boldsymbol O}}
+\def\bfP{{\boldsymbol P}}
+\def\bfQ{{\boldsymbol Q}}
+\def\bfR{{\boldsymbol R}}
+\def\bfS{{\boldsymbol S}}
+\def\bfT{{\boldsymbol T}}
+\def\bfU{{\boldsymbol U}}
+\def\bfV{{\boldsymbol V}}
+\def\bfW{{\boldsymbol W}}
+\def\bfX{{\boldsymbol X}}
+\def\bfY{{\boldsymbol Y}}
+\def\bfZ{{\boldsymbol Z}}
+
+\def\bf0{{\boldsymbol 0}}
+\def\bfxi{{\boldsymbol \xi}}
+\def\bfkappa{{\boldsymbol \kappa}}
+\def\bfeps{{\boldsymbol \varepsilon}}
+\def\bfeta{{\boldsymbol \eta}}
+\def\bfphi{{\boldsymbol \varphi}}
+\def\bfnu{{\boldsymbol \nu}}
+\def\bfomega{{\boldsymbol \omega}}
+\def\bfOmega{{\boldsymbol \Omega}}
+\def\bfpsi{{\boldsymbol \psi}}
+\def\bfchi{{\boldsymbol \chi}}
+\def\bftau{{\boldsymbol \tau}}
+\def\bfsigma{{\boldsymbol \sigma}}
+\def\bfSigma{{\boldsymbol \Sigma}}
+
+\def\Reyn{\mathrm{Re}}
+\def\Bond{\mathrm{Bo}}
+\def\Cap{\mathrm{Ca}}
+\def\Sto{\mathrm{St}}
+
+
+\begin{document}
+
+\begin{tikzpicture}
+
+  
+  % Define cuboid dimensions
+  \def\x{1} % width
+  \def\y{1} % depth
+  \def\z{1} % height
+  \def\shift{0.3}
+
+  \begin{scope}
+  % Define vertices
+  \coordinate (O) at (0,0,0);
+  \coordinate (A) at (\x,0,0);
+  \coordinate (B) at (\x,\y,0);
+  \coordinate (C) at (0,\y,0);
+  \coordinate (D) at (0,0,\z);
+  \coordinate (E) at (\x,0,\z);
+  \coordinate (F) at (\x,\y,\z);
+  \coordinate (G) at (0,\y,\z);
+
+  \node at (\x/2,\y+0.3,0) {$B$};
+
+  \draw[->] (O) -- (2,0,0) node[right] {$X$};
+  \draw[->] (O) -- (0,2,0) node[left] {$Y$};
+  \draw[->] (O) -- (0,0,2) node[left] {$Z$};
+
+  % Fill the three visible faces
+  % Top face
+  \fill[gray!30] (B) -- (C) -- (G) -- (F) -- cycle;
+  % Front face
+  \fill[gray!20] (D) -- (E) -- (F) -- (G) -- cycle;
+  % % Side face
+  \fill[gray!40] (A) -- (B) -- (F) -- (E) -- cycle;
+
+  % Draw edges
+  \draw (B) -- (C) -- (G) -- (F) -- cycle;
+  \draw (D) -- (E) -- (F) -- (G) -- cycle;
+  \draw (A) -- (B) -- (F) -- (E) -- cycle;
+  \draw[dashed] (O) -- (A);
+  \draw[dashed] (O) -- (C);
+  \draw[dashed] (O) -- (D);
+\end{scope}
+
+\draw[->] (2,0.5) .. controls (2.75,1) and (3.25,1) .. node[above] {$\bfphi(\cdot,t)$} (4,0.5);
+
+\begin{scope}[shift={(5,0)}]
+  % Define vertices
+  \coordinate (O) at (0,0,0);
+  \coordinate (A) at (\x,0,0);
+  \coordinate (B) at (\x+\shift,\y,0);
+  \coordinate (C) at (\shift,\y,0);
+  \coordinate (D) at (0,0,\z);
+  \coordinate (E) at (\x,0,\z);
+  \coordinate (F) at (\x+\shift,\y,\z);
+  \coordinate (G) at (\shift,\y,\z);
+  
+  \node at (\x/2+\shift,\y+0.3,0) {$B_t$};
+  
+  % Draw axes
+  \draw[->] (O) -- (2,0,0) node[right] {$x$};
+  \draw[->] (O) -- (0,2,0) node[left] {$y$};
+  \draw[->] (O) -- (0,0,2) node[left] {$z$};
+  
+  % Fill the three visible faces
+  % Top face
+  \fill[gray!30] (B) -- (C) -- (G) -- (F) -- cycle;
+  % Front face
+  \fill[gray!20] (D) -- (E) -- (F) -- (G) -- cycle;
+  % % Side face
+  \fill[gray!40] (A) -- (B) -- (F) -- (E) -- cycle;
+
+  % Draw edges
+  \draw (B) -- (C) -- (G) -- (F) -- cycle;
+  \draw (D) -- (E) -- (F) -- (G) -- cycle;
+  \draw (A) -- (B) -- (F) -- (E) -- cycle;
+  \draw[dashed] (O) -- (A);
+  \draw[dashed] (O) -- (C);
+  \draw[dashed] (O) -- (D);
+  
+  \draw[dashed] (O) -- (0,0.7,0);
+\end{scope}
+\end{tikzpicture}
+\end{document}

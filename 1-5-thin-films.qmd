@@ -22,7 +22,7 @@ and a brief look at asymptotic techniques.
 
 ## The Lubrication Equation
 
-We begin by considerind the two-dimensional incompressible Navier-Stokes
+We begin by considering the two-dimensional incompressible Navier-Stokes
 equations in Cartesian coordinates, with gravitational acceleration
 pointing in the negative $y$-direction:
 $$

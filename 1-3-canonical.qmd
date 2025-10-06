@@ -206,11 +206,11 @@ You should write an approximately 10 page report that demonstrates:
   experimental and/or theoretical results from the published literature.
   
 
-::: {#fig-carbon-nanotube}
+<!-- ::: {#fig-carbon-nanotube}
 ![](images/cnts.png){height=8cm}
 
 An illustration of flow through a carbon nanotube.
-:::
+::: -->
 
 ### Pipe flow
 
