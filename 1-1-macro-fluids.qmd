@@ -181,18 +181,18 @@ include not only liquids (water, oil, etc) but also gaseous media
 Fluid flow occurs across huge variations in scale: from the very small
 (e.g. microdrops from a 3D printer) to the huge (tornados) and from
 the incredibly slow (motion of glaciers) to the very fast (aeronautics).
-<!-- Examples of flows at these different scales are found in @fig-examples.
+Examples of flows at these different scales are found in @fig-examples.
 
 ::: {#fig-examples layout-ncol=2 fig-align=center}
-![](resized/inkdrop.png){height=5cm}
-![](resized/glacier.png){height=5cm}
+![](images/bloodflow.jpg){height=5cm}
+![](images/glacier.jpg){height=5cm}
 
-![](resized/tornado.png){height=5cm}
-![](resized/aeroplane.png){height=5cm}
+![](images/tornado.png){height=5cm}
+![](images/aeroplane.jpg){height=5cm}
 
-Flow at different scales: small (inkjet microdrops) to large (tornado);
-slow (glacial flow) to fast (aeronautics).
-::: -->
+Flow at different scales: small ([blood flow](https://commons.wikimedia.org/wiki/File:Red_Blood_Cell.jpg)) to large ([tornado](https://commons.wikimedia.org/wiki/File:Tornado_Waverly_Road_area_Lincoln_Nebraska_26_April_2024.png));
+slow ([glacial flow](https://commons.wikimedia.org/wiki/File:Konrad_Steffen_Glacier_Christiane_Leister.jpg)) to fast ([aeronautics](https://commons.wikimedia.org/wiki/File:Klm_cityhopper_fokker100_ph-kle_arp.jpg)).
+:::
 <!-- 
 Moreover, fluid flow phenomena can be seen (and heard!) all around us; some more examples are shown
 in @fig-everyday.
@@ -506,7 +506,7 @@ $$ {#eq-decomposition1}
 where we have decomposed $\partial_{x_j}  v_i$ into a rotational part
 and a shearing/extensional part; see @sec-vorticity-and-ros
 for further details. Writing the deformation this way allows us to identify the
-*vorticity* $\bfomega$ as half of the local rate of rotation in
+*vorticity* $\bfomega$ as twice the local rate of rotation in
 the fluid; in Cartesian coordinates, the vorticity can be computed by working out the determinant
 $$
 \bfomega 
