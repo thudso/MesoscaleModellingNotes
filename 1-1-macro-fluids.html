@@ -439,19 +439,24 @@ Figure&nbsp;1.1: Flow at different scales: small (<a href="https://commons.wikim
 </figcaption>
 </figure>
 </div>
-<!-- 
-Moreover, fluid flow phenomena can be seen (and heard!) all around us; some more examples are shown
-in @fig-everyday.
-
-::: {#fig-everyday layout-ncol=2 fig-align=center}
-![](resized/water_waves.png){height=5cm}
-![](resized/soundwaves.png){height=5cm}
-
-![](resized/flight.png){height=5cm}
-![](resized/weather.png){height=5cm}
-
-Everyday fluid phenomena - water waves, sound, flight and weather.
-::: -->
+<p>Moreover, fluid flow phenomena can be seen (and heard!) all around us; some more examples are shown in <a href="#fig-everyday" class="quarto-xref">Figure&nbsp;<span>1.2</span></a>.</p>
+<div id="fig-everyday" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-everyday-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<p><img src="images/waterwaves.jpg" style="height:5cm" class="figure-img"> <img src="images/soundwaves.jpg" style="height:5cm" class="figure-img"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<p><img src="images/birdflight.jpg" style="height:5cm" class="figure-img"> <img src="images/cloudcells.jpg" style="height:5cm" class="figure-img"></p>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-everyday-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.2: Everyday fluid phenomena - <a href="https://commons.wikimedia.org/wiki/File:Water_droplets_make_waves.jpg">water waves</a>, <a href="https://commons.wikimedia.org/wiki/File:Trumpet_Player%27s_Expressive_Performance_-_New_Orleans_Jazz_National_Historical_Park,_17_December_2022.jpg">sound</a>, <a href="https://commons.wikimedia.org/wiki/File:Eurasian_Oyster-catchers_in_flight_at_Balachadi,_Jamnagar,_Gujarat._AMSM7149.jpg">flight</a> and <a href="https://commons.wikimedia.org/wiki/File:Open-cell_and_closed-cell_clouds,_Pacific_Ocean_(MODIS_2016-02-08).jpg">weather</a>.
+</figcaption>
+</figure>
+</div>
 <p>While we have good intuition about how water behaves at human scales, fluid motion at extreme scales can often appear counter-intuitive. Nevertheless, it is remarkable that the same set of equations, the Navier-Stokes equations, can be used to describe the flow of both gases and liquids in huge number of the aforementioned situations. The study of fluids using these equations is often referred to as ‘fluid mechanics’, ‘fluid dynamics’ or ‘hydrodynamics’ and it assumes that the fluid can be idealised as a continuous medium, i.e.&nbsp;it uses continuum mechanics.</p>
 <p>The continuum approach is accurate when the length scale <span class="math inline">\ell</span> characterising molecular motion is much smaller than the dimensions of the flow <span class="math inline">L</span>, so that <span class="math inline">\ell/L \ll 1</span> (the continuum limit takes <span class="math inline">\ell/L \rightarrow 0</span>). Note that <span class="math inline">\ell/L</span> is a ‘dimensionless number/parameter’, which compares the size of two dimensional quantities - we will encounter more of these later. For gases, if <span class="math inline">\ell</span> is taken to be the mean free path (i.e.&nbsp;the average distance between molecular collisions) then <span class="math inline">\ell/L</span> is called the Knudsen number.</p>
 </section>
@@ -477,7 +482,7 @@ Everyday fluid phenomena - water waves, sound, flight and weather.
 <img src="tikz/Coordinates.svg" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lagrangian-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1.2: The motion of a material fluid element <span class="math inline">M</span> whose properties (e.g. velocity) can be described by Eulerian coordinates <span class="math inline">(x,y,z)</span> or Lagrangian ones <span class="math inline">(X,Y,Z)</span>. The Lagrangian coordinates remain frozen inside <span class="math inline">M</span> as it evolves and deforms in time (from <span class="math inline">0</span> to <span class="math inline">1</span> in this case), i.e. they follow material points as advected by the fluid velocity.
+Figure&nbsp;1.3: The motion of a material fluid element <span class="math inline">M</span> whose properties (e.g. velocity) can be described by Eulerian coordinates <span class="math inline">(x,y,z)</span> or Lagrangian ones <span class="math inline">(X,Y,Z)</span>. The Lagrangian coordinates remain frozen inside <span class="math inline">M</span> as it evolves and deforms in time (from <span class="math inline">0</span> to <span class="math inline">1</span> in this case), i.e. they follow material points as advected by the fluid velocity.
 </figcaption>
 </figure>
 </div>
@@ -486,7 +491,7 @@ Figure&nbsp;1.2: The motion of a material fluid element <span class="math inline
 x_i = f_i(t).
 </span> To extend this to a fluid modelled as a continuous medium we need to identify and follow the (infinitely many) material points which form the continuum.</p></li>
 <li><p>Material points in a fluid will be referred to as <em>fluid elements</em> or <em>fluid particles</em>, i.e.&nbsp;infinitesimal volumes of fluid which are advected with the fluid’s velocity <span class="math inline">{\boldsymbol{v}}</span> and hence are always composed of the same material.</p></li>
-<li><p>One way to uniquely identify each fluid element <span class="math inline">x_i</span> is by its Eulerian coordinates <span class="math inline">x_j(t=t_0) = X_j=(X_1,X_2,X_3)</span> at a reference (or initial) time <span class="math inline">t_0</span> and then allow these coordinates to move and deform with the fluid throughout its motion. The <span class="math inline">X_j</span> are then Lagrangian coordinates (see <a href="#fig-lagrangian" class="quarto-xref">Figure&nbsp;<span>1.2</span></a>) and the position of a fluid element <span class="math inline">x_i(t)</span> at a time <span class="math inline">t</span> is given by <span class="math display">
+<li><p>One way to uniquely identify each fluid element <span class="math inline">x_i</span> is by its Eulerian coordinates <span class="math inline">x_j(t=t_0) = X_j=(X_1,X_2,X_3)</span> at a reference (or initial) time <span class="math inline">t_0</span> and then allow these coordinates to move and deform with the fluid throughout its motion. The <span class="math inline">X_j</span> are then Lagrangian coordinates (see <a href="#fig-lagrangian" class="quarto-xref">Figure&nbsp;<span>1.3</span></a>) and the position of a fluid element <span class="math inline">x_i(t)</span> at a time <span class="math inline">t</span> is given by <span class="math display">
 x_i = f_i(X_j,t).
 </span></p></li>
 <li><p>Whilst in the Eulerian description one sits at a fixed position and watches the flow pass (like standing at the bank of a river), in the Lagrangian description we ‘follow the fluid’ (as in a boat flowing with the river or on a weather balloon).</p></li>
@@ -550,10 +555,18 @@ Example
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>If there is a concentration of pollutant <span class="math inline">c=c(x)</span> in a river that flows steadily with constant speed <span class="math inline">{\boldsymbol{v}}=(v_0,0,0)</span>, how does the concentration change in a fluid element that ‘follows the fluid’?</p>
-<p><img src="images/river.jpg" class="img-fluid" style="width:100.0%"></p>
-<p>A complementary video can be found <a href="https://www.youtube.com/watch?v=BLVY69SYVBQ">here</a>.</p>
+<p>If there is a concentration of pollutant <span class="math inline">c=c(x)</span> in a river that flows steadily with constant speed <span class="math inline">{\boldsymbol{v}}=(u_0,0,0)</span>, as shown in <a href="#fig-concentration" class="quarto-xref">Figure&nbsp;<span>1.4</span></a>, how does the concentration change in a fluid element that ‘follows the fluid’?</p>
 </div>
+</div>
+<div id="fig-concentration" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-concentration-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="tikz/Concentration.svg" style="height:5cm" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-concentration-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.4: Illustration of the evolution of concentration in a channel; a complementary video can be found <a href="https://www.youtube.com/watch?v=BLVY69SYVBQ">here</a>.
+</figcaption>
+</figure>
 </div>
 <ul>
 <li><p>The material derivative will be important when it comes to a consideration of the acceleration <span class="math inline">a_i</span> of a fluid element.</p></li>
@@ -574,9 +587,18 @@ Example
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>If we take a one-dimensional steady flow <span class="math inline">{\boldsymbol{v}}= (u(x),0,0)</span>, then what is the acceleration of fluid particles?</p>
-<p><img src="images/acceleration.jpg" class="img-fluid" style="width:100.0%"></p>
+<p>If we take a one-dimensional steady flow <span class="math inline">{\boldsymbol{v}}= (u(x),0,0)</span> as illustrated in <a href="#fig-1Dacceleration" class="quarto-xref">Figure&nbsp;<span>1.5</span></a>, then what is the acceleration of fluid particles?</p>
 </div>
+</div>
+<div id="fig-1Dacceleration" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-1Dacceleration-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="tikz/1DAcceleration.svg" style="height:8cm" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1Dacceleration-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.5: An illustration of a one-dimensional steady flow.
+</figcaption>
+</figure>
 </div>
 <p>In the Examples Sheet you will consider a <em>steady</em> flow in uniform rotation with angular velocity <span class="math inline">\Omega</span> with velocity given by <span class="math inline">(u,v,w)=(-\Omega y, \Omega x,0)</span>. As we know, fluid particles must be accelerating inwardly (centrifugal force) and you will see it is the convective acceleration that accounts for this term.</p>
 </section>
@@ -584,14 +606,14 @@ Example
 <section id="sec-kinematics" class="level2" data-number="1.7">
 <h2 data-number="1.7" class="anchored" data-anchor-id="sec-kinematics"><span class="header-section-number">1.7</span> Kinematics</h2>
 <p>The study of the deformation of continuous media (including solid and fluid dynamics) is a course in its own right, so we will only consider the concepts we will require to formulate the equations of fluid mechanics, with additional details contained in <a href="#sec-vorticity-and-ros" class="quarto-xref"><span>Section 1.8</span></a> and the video on Deformation of Continuous Media, <a href="https://www.youtube.com/watch?v=pqWwHxn6LNo">here</a>. In particular, we will attempt to understand how flow deforms fluid elements; as it is this (rate of) deformation that will generate the internal stress (and hence forces) required by our momentum balance equations (Newton II). This is in contrast to elasticity, where in the simplest case it is displacement that generates stress (via Hooke’s law).</p>
-<p>The velocity can be decomposed into fundamental components which specify the kinematics of the flow (the geometry of the motion), i.e.&nbsp;how small fluid elements are deformed by the flow. To do so, consider the flow at an infinitesimal distance <span class="math inline">\delta x_j</span> from a reference point <span class="math inline">x_j</span>, see <a href="#fig-deform" class="quarto-xref">Figure&nbsp;<span>1.3</span></a>.</p>
+<p>The velocity can be decomposed into fundamental components which specify the kinematics of the flow (the geometry of the motion), i.e.&nbsp;how small fluid elements are deformed by the flow. To do so, consider the flow at an infinitesimal distance <span class="math inline">\delta x_j</span> from a reference point <span class="math inline">x_j</span>, see <a href="#fig-deform" class="quarto-xref">Figure&nbsp;<span>1.6</span></a>.</p>
 <div id="fig-deform" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-deform-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/deform.jpg" class="img-fluid figure-img" style="width:100.0%">
+<img src="tikz/FlowKinematics.svg" style="height:6cm" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-deform-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1.3: Flow kinematics - how the flow velocity varies in the vicinity of (a distance <span class="math inline">\delta {\boldsymbol{x}}</span> from) a point <span class="math inline">{\boldsymbol{x}}</span>.
+Figure&nbsp;1.6: Flow kinematics - how the flow velocity varies in the vicinity of (a distance <span class="math inline">\delta {\boldsymbol{x}}</span> from) a point <span class="math inline">{\boldsymbol{x}}</span>.
 </figcaption>
 </figure>
 </div>
@@ -618,25 +640,60 @@ e_{ij} = \frac{1}{2} \left( \frac{\partial  v_i}{\partial x_j}+  \frac{\partial 
 <li>diagonal elements, which are associated with stretching and compressive motion, and</li>
 <li>off-diagonal elements, give the shear rate of strain, describing how much adjacent fluid elements slide past one another.</li>
 </ol>
-<div id="fig-deformation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-deformation" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-deformation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/deformationtypes.jpg" class="img-fluid figure-img" style="width:100.0%">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="tikz/ModesOfMotion-A.svg" style="height:5cm" class="figure-img"></p>
+<figcaption>Translation</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="tikz/ModesOfMotion-B.svg" style="height:5cm" class="figure-img"></p>
+<figcaption>Rotation</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="tikz/ModesOfMotion-C.svg" style="height:5cm" class="figure-img"></p>
+<figcaption>Extension</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="tikz/ModesOfMotion-D.svg" style="height:5cm" class="figure-img"></p>
+<figcaption>Shear</figcaption>
+</figure>
+</div>
+</div>
+</div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-deformation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1.4: Different modes of deformation to a fluid element (in 2D).
+Figure&nbsp;1.7: Different modes of deformation to a fluid element (in 2D).
 </figcaption>
 </figure>
 </div>
 <p>So we have seen that it is the vorticity and rate of strain that give us all of the information we require to understand how fluid elements are locally deformed, with the former telling us about the rotation of the flow and the latter about the relative motion of fluid elements (which generates viscous stress).</p>
-<p>An important class of flows we will encounter are those without vorticity <span class="math inline">{\boldsymbol{\omega}}={\boldsymbol{0}}</span>, and they are said to be <em>irrotational</em>. In such flows, each fluid element has no angular velocity. For example, we will see that fluid elements in the viscous boundary layer near a solid are rotational, so that these elements rotate end over end as they move parallel to the boundary, whereas elements outside this layer are irrotational (<a href="#fig-rotational" class="quarto-xref">Figure&nbsp;<span>1.5</span></a>).</p>
+<p>An important class of flows we will encounter are those without vorticity <span class="math inline">{\boldsymbol{\omega}}={\boldsymbol{0}}</span>, and they are said to be <em>irrotational</em>. In such flows, each fluid element has no angular velocity. For example, we will see that fluid elements in the viscous boundary layer near a solid are rotational, so that these elements rotate end over end as they move parallel to the boundary, whereas elements outside this layer are irrotational (<a href="#fig-rotational" class="quarto-xref">Figure&nbsp;<span>1.8</span></a>).</p>
 <div id="fig-rotational" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-rotational-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="images/boundarylayer.jpg" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rotational-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1.5: The difference between rotational (in the boundary layer) and irrotational flow (outside the layer). The crosses represent markers placed into the flow, which would rotate inside the boundary layer and not outside.
+Figure&nbsp;1.8: The difference between rotational (in the boundary layer) and irrotational flow (outside the layer). The crosses represent markers placed into the flow, which would rotate inside the boundary layer and not outside.
 </figcaption>
 </figure>
 </div>
@@ -665,14 +722,14 @@ v_i^T = v_i(x_j),\quad  v_i^R = r_{ij}~\delta x_j,\quad \text{and}\quad v_i^S = 
 </section>
 <section id="vorticity" class="level3">
 <h3 class="anchored" data-anchor-id="vorticity">Vorticity</h3>
-<p>Due to the antisymmetry of <span class="math inline">r_{ij}</span>, there are only 3 independent components. All of the diagonal elements are zero; for example <span class="math inline">r_{11}=-r_{11}</span> means that <span class="math inline">r_{11}=0</span>. In this case, we can rewrite the term <span class="math inline">v_i^R = r_{ij}~\delta x_j</span> in <a href="#eq-decomposition3" class="quarto-xref">Equation&nbsp;<span>1.4</span></a> as a cross product <span class="math inline">v_i^R = \epsilon_{ijk}\Omega_j \delta x_k</span> or <span class="math inline">{\boldsymbol{v}}^R = {\boldsymbol{\Omega}}\times\delta{\boldsymbol{x}}</span> (see <a href="#fig-rotation" class="quarto-xref">Figure&nbsp;<span>1.6</span></a>), where <span class="math inline">\Omega_j = (r_{32},r_{13},r_{21})</span> is the <em>rate of rotation vector</em> (you are encouraged to check this for yourself). Thus we see that this term is associated with rigid body rotation about the reference point with rotational rate <span class="math inline">{\boldsymbol{\Omega}}</span>. The direction of <span class="math inline">{\boldsymbol{\Omega}}</span> determines the axis of rotation, and the magnitude determines the speed of rotation.</p>
+<p>Due to the antisymmetry of <span class="math inline">r_{ij}</span>, there are only 3 independent components. All of the diagonal elements are zero; for example <span class="math inline">r_{11}=-r_{11}</span> means that <span class="math inline">r_{11}=0</span>. In this case, we can rewrite the term <span class="math inline">v_i^R = r_{ij}~\delta x_j</span> in <a href="#eq-decomposition3" class="quarto-xref">Equation&nbsp;<span>1.4</span></a> as a cross product <span class="math inline">v_i^R = \epsilon_{ijk}\Omega_j \delta x_k</span> or <span class="math inline">{\boldsymbol{v}}^R = {\boldsymbol{\Omega}}\times\delta{\boldsymbol{x}}</span> (see <a href="#fig-rotation" class="quarto-xref">Figure&nbsp;<span>1.9</span></a>), where <span class="math inline">\Omega_j = (r_{32},r_{13},r_{21})</span> is the <em>rate of rotation vector</em> (you are encouraged to check this for yourself). Thus we see that this term is associated with rigid body rotation about the reference point with rotational rate <span class="math inline">{\boldsymbol{\Omega}}</span>. The direction of <span class="math inline">{\boldsymbol{\Omega}}</span> determines the axis of rotation, and the magnitude determines the speed of rotation.</p>
 <div id="fig-rotation" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-rotation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="images/rotation.jpg" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rotation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1.6: Sketch illustrating the rigid body rotation <span class="math inline">{\boldsymbol{v}}^R = {\boldsymbol{\Omega}}\times\delta{\boldsymbol{x}}</span> induced a distance <span class="math inline">\delta{\boldsymbol{x}}</span> away from a point <span class="math inline">{\boldsymbol{x}}</span> by the rotation rate <span class="math inline">{\boldsymbol{\Omega}}</span>. Here, <span class="math inline">{\boldsymbol{\Omega}}</span> points out of the paper.
+Figure&nbsp;1.9: Sketch illustrating the rigid body rotation <span class="math inline">{\boldsymbol{v}}^R = {\boldsymbol{\Omega}}\times\delta{\boldsymbol{x}}</span> induced a distance <span class="math inline">\delta{\boldsymbol{x}}</span> away from a point <span class="math inline">{\boldsymbol{x}}</span> by the rotation rate <span class="math inline">{\boldsymbol{\Omega}}</span>. Here, <span class="math inline">{\boldsymbol{\Omega}}</span> points out of the paper.
 </figcaption>
 </figure>
 </div>
@@ -684,20 +741,20 @@ Figure&nbsp;1.6: Sketch illustrating the rigid body rotation <span class="math i
 </section>
 <section id="rate-of-strain-tensor" class="level3">
 <h3 class="anchored" data-anchor-id="rate-of-strain-tensor">Rate of Strain Tensor</h3>
-<p>Consider how the components of <span class="math inline">e_{ij}</span> deform an infinitesimal rectangular fluid element of size <span class="math inline">\delta x\times\delta y</span> (<a href="#fig-straincomponents" class="quarto-xref">Figure&nbsp;<span>1.7</span></a>) in a two-dimensional flow <span class="math inline">{\boldsymbol{v}}=(u(x,y,t),v(x,y,t),0)</span>. For simplicity, we will remove translation of the fluid element by considering flow relative to the point <span class="math inline">A</span>, so that a Taylor expansion gives the flow components at adjacent points to <span class="math inline">A</span> shown in <a href="#fig-straincomponents" class="quarto-xref">Figure&nbsp;<span>1.7</span></a>.</p>
+<p>Consider how the components of <span class="math inline">e_{ij}</span> deform an infinitesimal rectangular fluid element of size <span class="math inline">\delta x\times\delta y</span> (<a href="#fig-straincomponents" class="quarto-xref">Figure&nbsp;<span>1.10</span></a>) in a two-dimensional flow <span class="math inline">{\boldsymbol{v}}=(u(x,y,t),v(x,y,t),0)</span>. For simplicity, we will remove translation of the fluid element by considering flow relative to the point <span class="math inline">A</span>, so that a Taylor expansion gives the flow components at adjacent points to <span class="math inline">A</span> shown in <a href="#fig-straincomponents" class="quarto-xref">Figure&nbsp;<span>1.10</span></a>.</p>
 <div id="fig-straincomponents" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-straincomponents-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="images/deformation0.jpg" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-straincomponents-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1.7: The velocity components relative to a point A in a material element M at time <span class="math inline">t</span>.
+Figure&nbsp;1.10: The velocity components relative to a point A in a material element M at time <span class="math inline">t</span>.
 </figcaption>
 </figure>
 </div>
 <section id="extensional-strain-rate" class="level4">
 <h4 class="anchored" data-anchor-id="extensional-strain-rate">Extensional Strain Rate</h4>
-<p>From <a href="#fig-strained" class="quarto-xref">Figure&nbsp;<span>1.8</span></a> we can see that <em>extensional rate of strain</em> acts to increase the lengths of the sides. For example, taking the line <span class="math inline">AB</span>, in a time <span class="math inline">\delta t</span> the point B moves so that the new length of <span class="math inline">AB</span> at time <span class="math inline">t+\delta t</span> is <span id="eq-strain"><span class="math display">
+<p>From <a href="#fig-strained" class="quarto-xref">Figure&nbsp;<span>1.11</span></a> we can see that <em>extensional rate of strain</em> acts to increase the lengths of the sides. For example, taking the line <span class="math inline">AB</span>, in a time <span class="math inline">\delta t</span> the point B moves so that the new length of <span class="math inline">AB</span> at time <span class="math inline">t+\delta t</span> is <span id="eq-strain"><span class="math display">
 \delta x(t+\delta t) = \delta x(t) +  \underbrace{\frac{\partial u}{\partial x}\delta x(t)}_{\text{speed}}\,\underbrace{\vphantom{\frac{\partial u}{\partial x}}\delta t}_{\text{time}}.
 \tag{1.6}</span></span> Therefore, the (infinitesimal) strain (extension/original length) <span class="math display">
 \delta S_x
@@ -718,7 +775,7 @@ Figure&nbsp;1.7: The velocity components relative to a point A in a material ele
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-strained-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1.8: Left: deformation due to extensional strain on the material element at a time <span class="math inline">t+\delta t</span>. Right: influence of shear strain on the material element at a time <span class="math inline">t+\delta t</span>.
+Figure&nbsp;1.11: Left: deformation due to extensional strain on the material element at a time <span class="math inline">t+\delta t</span>. Right: influence of shear strain on the material element at a time <span class="math inline">t+\delta t</span>.
 </figcaption>
 </figure>
 </div>
@@ -728,7 +785,7 @@ Figure&nbsp;1.8: Left: deformation due to extensional strain on the material ele
 </section>
 <section id="shear-strain-rate" class="level4">
 <h4 class="anchored" data-anchor-id="shear-strain-rate">Shear Strain Rate</h4>
-<p>The <em>shear</em> rate of strain acts to drive the element from its rectangular shape. This can be quantified by measuring the angle between the sides. It can be shown that the angle <span class="math inline">\theta</span> at <span class="math inline">CAB</span> in <a href="#fig-straincomponents" class="quarto-xref">Figure&nbsp;<span>1.7</span></a> evolves according to <span class="math display">
+<p>The <em>shear</em> rate of strain acts to drive the element from its rectangular shape. This can be quantified by measuring the angle between the sides. It can be shown that the angle <span class="math inline">\theta</span> at <span class="math inline">CAB</span> in <a href="#fig-straincomponents" class="quarto-xref">Figure&nbsp;<span>1.10</span></a> evolves according to <span class="math display">
 -\frac{\partial \theta}{\partial t} = 2e_{12}.
 </span> You can check this as an example, if you like!</p>
 
