@@ -380,20 +380,21 @@ inviscid. This situation is typical for thin layers close to the solid
 boundaries---the so-called *boundary layers* and in wakes behind moving
 bodies.
 
-<!-- ::: {#fig-flowpastcylinder}
+::: {#fig-flowpastcylinder}
 ![](images/circular_cylinder.jpg){#fig-Flow past cylinder}
 
-Flow past cylinder at $\mathrm{Re}=3900 \gg 1$. Upstream of the
+Flow past cylinder at $\mathrm{Re}=2000 \gg 1$. Upstream of the
 cylinder (on the left) the flow is laminar, large-scale and almost
 inviscid except for a thin boundary layer close to the cylinder.
 Downstream (to the right), the flow contains small scales and its
-viscosity is important.
-::: -->
+viscosity is important. Figure 47 from [*An Album of Fluid Motion*](https://go.exlibris.link/59XsDr0L),
+Milton Van Dyke, 1982, Parabolic Press.
+:::
 
 This number is named after Osborne Reynolds (1842-1912) who realised
 that this combination of dimensional parameters controls the transition
 from a laminar to turbulent flow in a pipe.
-<!-- The apparatus used to
+The apparatus used to
 conduct these experiments, conducted in Manchester, is shown in
 @fig-reynolds.
 
@@ -408,8 +409,8 @@ you increase $\mathrm{Re}$ (e.g. by increasing the
 flow rate and hence $U$) you
 transition from a laminar state to a turbulent one in which dye injected
 into the fluid at the entrance is mixed with the surrounding
-fluid.
-::: -->
+fluid. Images from [Reynolds' 1883 paper on the subject](https://royalsocietypublishing.org/doi/10.1098/rstl.1883.0029).
+:::
 
 #### Stokes Flow
 

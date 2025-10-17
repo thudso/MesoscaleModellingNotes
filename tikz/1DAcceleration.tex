@@ -110,27 +110,38 @@
 
 \begin{document}
 \begin{tikzpicture}
-\fill[left color=white, right color=blue!50]
-(0,0) rectangle (8,2);
-\draw[thick] (0,2) -- (8,2);
-\draw[thick] (0,0) -- (8,0);
+  \begin{scope}[shift={(0,4)}]
+  \fill[blue!10]
+    (0,-2) -- (0,2) -- (4,1) -- (10,1) -- (10,-1) -- (4,-1) -- cycle;
+  % Walls
+  \draw[thick] (0,-2) -- (4,-1) -- (10,-1);
+  \draw[thick] (0,+2) -- (4,+1) -- (10,+1);
+  
+  \draw[->] (0,0) -- (10.5,0) node[above] {$x$};
 
-\draw[->] (0,0) -- (8.3,0) node[above] {$x$};
-\draw[->] (0,0) -- (0,2.3) node[right] {$y$};
+  \draw[dashed] (0.5,-1.825) -- node[above left] {$u_1$} (0.5,1.825);
+  \foreach \y in {-1.4, -1.0, -0.6, -0.2, 0.2, 0.6, 1.0, 1.4}
+  {
+    \draw[->] (0.5,\y) -- (0.8,\y);
+  }
 
-\draw[dashed] (1,0) -- node[left] {$u_0$} (1,2);
-\foreach \y in {0.2, 0.6, 1.0, 1.4, 1.8}
-{
-\draw[->] (1,\y) -- (1.4,\y);
-}
+  
+  \draw[dashed] (5,-1) -- node[above left] {$u_2$} (5,1);
+  \foreach \y in {-0.75, -0.25, 0.25, 0.75}
+  {
+    \draw[->] (5,\y) -- (5.6,\y);
+  }
 
-\node[blue] at (4.75,1.6) {$c(x)$};
+  % Fluid blobs
+  \draw[dashed] (1.5,0.6) circle (0.4) node {$M$};
+  \draw[dashed] (6.5,0.4) circle (0.6 and 0.25) node {$M$};
+\end{scope}
 
-\draw[dashed] (3,1) circle (0.4) node {$M$};
-\node at (3,0.4) {$t=0$};
-
-
-\draw[dashed] (6.5,1) circle (0.4) node {$M$};
-\node at (6.5,0.4) {$t=1$};
+\begin{scope}[shift={(0,-0.5)}]
+  \draw[->] (0,0) -- (10,0) node[above] {$x$};
+  \draw[->] (0,0) -- (0,2) node[right] {$u(x)$};
+  \draw[domain=0:10, samples=200, smooth, thick, blue]
+    plot (\x,{1.2+0.8*tanh(0.5*(\x-2.5))});
+\end{scope}
 \end{tikzpicture}
 \end{document}

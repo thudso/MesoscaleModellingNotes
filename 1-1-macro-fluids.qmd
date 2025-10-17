@@ -193,19 +193,19 @@ Examples of flows at these different scales are found in @fig-examples.
 Flow at different scales: small ([blood flow](https://commons.wikimedia.org/wiki/File:Red_Blood_Cell.jpg)) to large ([tornado](https://commons.wikimedia.org/wiki/File:Tornado_Waverly_Road_area_Lincoln_Nebraska_26_April_2024.png));
 slow ([glacial flow](https://commons.wikimedia.org/wiki/File:Konrad_Steffen_Glacier_Christiane_Leister.jpg)) to fast ([aeronautics](https://commons.wikimedia.org/wiki/File:Klm_cityhopper_fokker100_ph-kle_arp.jpg)).
 :::
-<!-- 
+
 Moreover, fluid flow phenomena can be seen (and heard!) all around us; some more examples are shown
 in @fig-everyday.
 
 ::: {#fig-everyday layout-ncol=2 fig-align=center}
-![](resized/water_waves.png){height=5cm}
-![](resized/soundwaves.png){height=5cm}
+![](images/waterwaves.jpg){height=5cm}
+![](images/soundwaves.jpg){height=5cm}
 
-![](resized/flight.png){height=5cm}
-![](resized/weather.png){height=5cm}
+![](images/birdflight.jpg){height=5cm}
+![](images/cloudcells.jpg){height=5cm}
 
-Everyday fluid phenomena - water waves, sound, flight and weather.
-::: -->
+Everyday fluid phenomena - [water waves](https://commons.wikimedia.org/wiki/File:Water_droplets_make_waves.jpg), [sound](https://commons.wikimedia.org/wiki/File:Trumpet_Player%27s_Expressive_Performance_-_New_Orleans_Jazz_National_Historical_Park,_17_December_2022.jpg), [flight](https://commons.wikimedia.org/wiki/File:Eurasian_Oyster-catchers_in_flight_at_Balachadi,_Jamnagar,_Gujarat._AMSM7149.jpg) and [weather](https://commons.wikimedia.org/wiki/File:Open-cell_and_closed-cell_clouds,_Pacific_Ocean_(MODIS_2016-02-08).jpg).
+:::
 
 While we have good intuition about how water behaves at human scales,
 fluid motion at extreme scales can often appear counter-intuitive.
@@ -421,14 +421,17 @@ $$
 
 ::: {.callout-caution title="Example"}
 If there is a concentration of pollutant $c=c(x)$ in a
-river that flows steadily with constant speed $\bfv=(v_0,0,0)$,
+river that flows steadily with constant speed $\bfv=(u_0,0,0)$, as shown in @fig-concentration,
 how does the concentration change in a fluid element that 'follows the
 fluid'?
-
-![](images/river.jpg){width=100%}
-
-A complementary video can be found [here](https://www.youtube.com/watch?v=BLVY69SYVBQ).
 ::::
+
+::: {#fig-concentration}
+![](tikz/Concentration.svg){height=5cm}
+
+Illustration of the evolution of concentration in a channel; a complementary video can be found
+[here](https://www.youtube.com/watch?v=BLVY69SYVBQ).
+:::
 
 - The material derivative will be important when it comes to a
   consideration of the acceleration $a_i$ of a fluid element.
@@ -451,12 +454,14 @@ $(\bfv  \cdot \nabla) \bfv$ due to the spatial variation of
 the velocity field---this is the convective acceleration.
 
 ::: {.callout-caution title="Example"}
-If we take a one-dimensional steady flow
-$\bfv = (u(x),0,0)$, then what is the acceleration of fluid
-particles?
+If we take a one-dimensional steady flow $\bfv = (u(x),0,0)$ as illustrated in @fig-1Dacceleration,
+then what is the acceleration of fluid particles? 
+:::
 
-![](images/acceleration.jpg){width=100%}
+::: {#fig-1Dacceleration}
+![](tikz/1DAcceleration.svg){height=8cm}
 
+An illustration of a one-dimensional steady flow.
 :::
 
 In the Examples Sheet you will consider a *steady* flow in uniform
@@ -486,7 +491,7 @@ an infinitesimal distance $\delta x_j$ from a reference point $x_j$, see
 
 ::: {#fig-deform}
 
-![](images/deform.jpg){width=100%}
+![](tikz/FlowKinematics.svg){height=6cm}
 
 Flow kinematics - how the flow velocity varies in the vicinity of (a
 distance $\delta \bfx$ from) a point
@@ -537,9 +542,15 @@ further decomposed into:
   a. diagonal elements, which are associated with stretching and compressive motion, and
   b. off-diagonal elements, give the shear rate of strain, describing how much adjacent fluid elements slide past one another.
 
-::: {#fig-deformation}
+::: {#fig-deformation layout-ncol=2}
 
-![](images/deformationtypes.jpg){width=100%}
+![Translation](tikz/ModesOfMotion-A.svg){height=5cm}
+
+![Rotation](tikz/ModesOfMotion-B.svg){height=5cm}
+
+![Extension](tikz/ModesOfMotion-C.svg){height=5cm}
+
+![Shear](tikz/ModesOfMotion-D.svg){height=5cm}
 
 Different modes of deformation to a fluid element (in
 2D).

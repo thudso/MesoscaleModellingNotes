@@ -4,7 +4,8 @@
 \usepackage{tikz-3dplot}
 \usepackage{amsmath,bm,array}
 \usepackage{amsfonts,amsthm,titlesec}
-
+\usetikzlibrary{arrows.meta}
+\tikzset{>={Stealth[round]}}
 
 \newcommand{\bbA}{\mathbb{A}}
 \newcommand{\bbB}{\mathbb{B}}
@@ -109,28 +110,13 @@
 
 
 \begin{document}
-\begin{tikzpicture}
-\fill[left color=white, right color=blue!50]
-(0,0) rectangle (8,2);
-\draw[thick] (0,2) -- (8,2);
-\draw[thick] (0,0) -- (8,0);
-
-\draw[->] (0,0) -- (8.3,0) node[above] {$x$};
-\draw[->] (0,0) -- (0,2.3) node[right] {$y$};
-
-\draw[dashed] (1,0) -- node[left] {$u_0$} (1,2);
-\foreach \y in {0.2, 0.6, 1.0, 1.4, 1.8}
-{
-\draw[->] (1,\y) -- (1.4,\y);
-}
-
-\node[blue] at (4.75,1.6) {$c(x)$};
-
-\draw[dashed] (3,1) circle (0.4) node {$M$};
-\node at (3,0.4) {$t=0$};
-
-
-\draw[dashed] (6.5,1) circle (0.4) node {$M$};
-\node at (6.5,0.4) {$t=1$};
-\end{tikzpicture}
+  \begin{tikzpicture}
+    \useasboundingbox (-2,-2) rectangle (2,2);
+    \node (A) at (-1,-1) [inner sep=0pt] {};
+    \node (B) at (+1,-1) [inner sep=0pt] {};
+    \node (C) at (+1,+1) [inner sep=0pt] {};
+    \node (D) at (-1,+1) [inner sep=0pt] {};
+    \draw[thick] (A) rectangle (C);
+    \draw[thick,dashed,blue] ($(A)+(0.2,0.2)$) rectangle ($(C)+(0.2,0.2)$);
+  \end{tikzpicture}
 \end{document}

@@ -4,7 +4,8 @@
 \usepackage{tikz-3dplot}
 \usepackage{amsmath,bm,array}
 \usepackage{amsfonts,amsthm,titlesec}
-
+\usetikzlibrary{arrows.meta}
+\tikzset{>={Stealth[round]}}
 
 \newcommand{\bbA}{\mathbb{A}}
 \newcommand{\bbB}{\mathbb{B}}
@@ -107,30 +108,35 @@
 \def\Cap{\mathrm{Ca}}
 \def\Sto{\mathrm{St}}
 
-
 \begin{document}
-\begin{tikzpicture}
-\fill[left color=white, right color=blue!50]
-(0,0) rectangle (8,2);
-\draw[thick] (0,2) -- (8,2);
-\draw[thick] (0,0) -- (8,0);
+\begin{tikzpicture}[>=stealth, scale=1]
+  \begin{scope}
+    \clip (-2.5,-2) rectangle (2.5,2);
+    \begin{scope}[rotate = 45]
+    \foreach \x in {-3,-2.5,-2,-1.5,-1,-0.5,0,0.5,1,1.5,2,2.5,3} {
+      \foreach \y in {-3,-2.5,-2,-1.5,-1,-0.5,0,0.5,1,1.5,2,2.5,3} {
+        % Define vector field
+        \pgfmathsetmacro{\u}{1/(1+\y*\y/4)};
+        \pgfmathsetmacro{\v}{-\y/(1+\y*\y/4)};
+        % Normalize vector length
+        \pgfmathsetmacro{\un}{0.4*\u};
+        \pgfmathsetmacro{\vn}{0.4*\v};
+        \draw[->, thick, opacity=0.2] (\x-\un/2,\y-\vn/2) -- ++(\un,\vn);
+      }
+    }
 
-\draw[->] (0,0) -- (8.3,0) node[above] {$x$};
-\draw[->] (0,0) -- (0,2.3) node[right] {$y$};
-
-\draw[dashed] (1,0) -- node[left] {$u_0$} (1,2);
-\foreach \y in {0.2, 0.6, 1.0, 1.4, 1.8}
-{
-\draw[->] (1,\y) -- (1.4,\y);
-}
-
-\node[blue] at (4.75,1.6) {$c(x)$};
-
-\draw[dashed] (3,1) circle (0.4) node {$M$};
-\node at (3,0.4) {$t=0$};
-
-
-\draw[dashed] (6.5,1) circle (0.4) node {$M$};
-\node at (6.5,0.4) {$t=1$};
+    \node[label={left:$\bfx$}] (A) at (-1,1) {};
+    \node (B) at (-0.75,0) {};
+    \draw[ultra thick] (A.center) -- (B.center) node[fill=white,below] {$\bfx+\delta\bfx$} ;
+    
+    \fill (A.center) circle (2pt);
+    \draw[->,ultra thick, blue] (A.center) -- ($(A.center) + 1.2*(1.2/4,-1.2/4)$) node[fill=white,above right,inner sep=1pt] {$\bfv(\bfx)$};
+    
+    \fill (B.center) circle (2pt);
+    \draw[->,ultra thick, blue] (B.center) -- ($(B.center) + 1.2*(0.4,0)$) node[fill=white,right,inner sep=1pt] {$\bfv(\bfx+\delta\bfx)$};
+    
+  \end{scope}
+\end{scope}
+  
 \end{tikzpicture}
 \end{document}
