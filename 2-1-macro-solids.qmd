@@ -1,6 +1,6 @@
 {{< include macros.qmd >}}
 
-# Linear Elasticity Theory {#sec-sol-basics}
+# Elasticity Theory {#sec-sol-basics}
 
 As mentioned in the introduction to this part of the module, we typically focus on a
 *Lagrangian* description in solid mechanics. Whereas in fluids we solve for the   *velocity* and *pressure* fields $\bfv$ and $p$, in solids we solve for either the *deformation* map or *displacement* field, which we discuss in detail here. We also formulate the equations of linear elasticity, which describe the simplest equilibrium
@@ -721,11 +721,16 @@ constitutive assumption that
 $\bfS= \mathbb{C}\bfeps$, the relationship
 that
 $\bfeps= \frac12(\nabla\bfu+\nabla\bfu^T)$
-and substitute into the force balance equation, we get the system of
-equations
+and substitute into the force balance equation, we get the following system of
+equations, known to some as the Navier equation, or the equations of isotropic 
+linear elastostatics.
+
+::: {.callout-important title="The Navier equation"}
 $$
 \frac{E}{(1+\nu)(1-2\nu)}\nabla(\nabla\cdot\bfu) + \frac{E}{2(1+\nu)}\nabla^2\bfu+ \rho g\bfe_3 = \bfzero.
-$$
+$$ {#eq-Nav}
+:::
+
 We have chosen to write the equations in terms of the Young's modulus $E$ and 
 Poisson ratio $\nu$, but note that we could have written them in terms of any two of 
 the elastic moduli described above.
@@ -774,12 +779,11 @@ The full linear elastic problem requires us to solve the system of partial diffe
 $$
 \begin{aligned}
     \frac{E}{(1+\nu)(1-2\nu)}\nabla(\nabla\cdot\bfu) + \frac{E}{2(1+\nu)}\nabla^2\bfu+ \rho g\bfe_3 &= \bfzero && \text{in }B,\\
-    \bfS\bfn&= \bft&& \text{on }\Gamma_N,\\
-    \bfu&= \bfu_0 && \text{on }\Gamma_D.
+    \bfS\bfn&= \bft_N&& \text{on }\Gamma_N,\\
+    \bfu&= \bfu_D && \text{on }\Gamma_D.
 \end{aligned}
 $$ {#eq-isotropic_elast_forcebalance}
-Note there are
-in general 3 partial differential equations for 3 components of the
+Note there are in general 3 partial differential equations for 3 components of the
 displacement at points inside the domain, and 3 conditions at each
 boundary point. This is therefore a closed set of equations, and in
 general it has smooth solutions (away from corners and other nasty
@@ -881,3 +885,49 @@ are:
 There are also further ways to reduce the equations of elasticity based on the fact
 that we may be considering an elastic body which is *thin* in some dimensions; this
 is something we will explore further later in the module.
+
+## Linear Elastodynamics*
+While we will do so in this module, we do not need to limit ourselves to static problems in
+elasticity. Another important aspect of elastic structures is to understand their dynamics;
+in particular these often manifest as *vibrations* and *waves*. The Navier-Lamé equation, or
+the equation of isotropic linear elastodynamics is:
+$$
+  \rho\frac{\partial^2\bfu}{\partial t^2} = \frac{E}{(1+\nu)(1-2\nu)}\nabla(\nabla\cdot\bfu) 
+  + \frac{E}{2(1+\nu)}\nabla^2\bfu.
+$$ {#eq-NL}
+In this case, the displacement is treated as a function of time, so that $\bfu = \bfu(\bfx,t)$, and
+the term on the left hand side of the equation represents the 'mass times acceleration' part of
+Newton's second law, where $\rho$ is the mass density of the elastic solid.
+
+In general, the full elastodynamics problem will involve both boundary conditions and initial conditions. These are typically again a combination of (possibly time-dependent) fixed displacement and applied stress conditions, along with prescribed initial displacement and velocity, so @eq-NL is augmented with conditions
+$$
+\begin{aligned}
+    \bfS(\bfx,t)\bfn(\bfx)&= \bft_N(\bfx,t)&& \text{on }\Gamma_N,\\
+    \bfu(\bfx,t)&= \bfu_D(\bfx,t) && \text{on }\Gamma_D,\\
+    \bfu(\bfx,0)& = \bfu_0(\bfx) && \text{at }t=0,\\
+    \frac{\partial\bfu}{\partial t}(\bfx,0)& = \bfv_0(\bfx) && \text{at }t=0.
+\end{aligned}
+$$
+
+Solutions of @eq-NL are wave-like, but unlike the standard wave equation, have multiple associated wave speeds. One mode involves the elastic material oscillating parallel to the direction of propagation, called a *pressure* or *p-wave*, and the other involves the material oscillating perpendicularly to the direction of propagation, known as a *shear* or *s-wave*. These two sorts of wave propagate at different speeds: the p-wave speed $c_\mathrm{p}$ and the s-wave speed, $c_\mathrm{s}$ have expressions
+$$
+c_{\mathrm{p}} = \sqrt{\frac{E(1-\nu)}{\rho(1+\nu)(1-2\nu)}}\quad\text{and}\quad c_{\mathrm{s}} = \sqrt{\frac{E}{2\rho(1+\nu)}}.
+$$
+You can check that it is always the case that $c_\mathrm{p}>c_{\mathrm{s}}$, so s-waves always travel more slowly than
+p-waves. This feature of linear elasticity finds practical application: by 
+monitoring the Earth's crust for these two kinds of waves at a range of monitoring stations, it is possible to assess where an earthquake or nuclear weapons test occurred on the earth's surface, along with when the event occured and how much energy was released.
+
+## Beyond isotropic linear elasticity*
+Isotropic linear elasticity theory has its limits, but a range of more complicated theories exist
+(all well beyond the scope of this module!) that can be used to make predictions in other settings:
+
+- When material is bent significantly, the small strain assumption made in linear elasticity can break down.
+  This means it becomes necessary to use nonlinear elasticity equations to capture the behaviour accurately.
+  In such theories, a nonlinear stress-strain constitutive relation is used, rather than the linear relation used
+  to arrive at the equations above.
+- When material breaks or permanently deforms, we need more sophisticated fracture and plasticity theories to
+  predict what happens. These typically involve extra fields, time-varying boundaries, or other complicated ways of 
+  determining stress and strains.
+- Finally, the temperature of a body often has a significant effect on the elastic properties of the material. In cases
+  where the temperature of the body varies a lot in time or space, we may need to couple the stress-strain relation
+  to a temperature field, which satisfies it's own heat equation too.

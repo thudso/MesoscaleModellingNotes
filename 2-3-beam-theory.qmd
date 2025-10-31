@@ -1,0 +1,521 @@
+{{< include macros.qmd >}}
+
+# Beam theory
+
+While the equations of linear elasticity in three dimensions can be studied directly with Finite Elements
+(and indeed, this is a standard computational task in some parts of industrial R&D), it can be very useful
+to work with reduced versions of the full elasticity equations. Originally, these reduced theories were
+developed because they were more analytically tractable in the days before computers, but they still offer a lot of 
+physical insight and can be solved more quickly via computational methods than a full finite element simulation,
+as we will explore.
+
+Some terms used to describe various different forms of thin elastic materials under specific types of load are:
+
+- *Membranes*: two-dimensional objects that do not meaningfully resist shearing, and support only in-plane tension.
+    Examples include drumskins and and the surfaces of rubber balloons.
+- *Plates*: two-dimensional objects that support both tension in-plane and out-of-plane bending.
+    Examples include sheets of glass, plastic and metal.
+- *Shells*: two-dimensional objects that are initially in a curved state, and resist bending away from that shape.
+    Examples include the panels of car bodywork and metal cans.
+- *Bars*: one-dimensional objects that are subject only to tension and compression along their length (as in the previous lecture).
+    Examples include the supporting columns of a building.
+- *Rods*: one-dimensional objects that can flex easily in any direction perpendicularl to their length.
+    Examples include hair and bamboo canes.
+- *Beams*: one-dimensional objects that bend more easily in one direction perpendicular to their length.
+    Examples include the supporting joists of the floor of buildings and rulers.
+
+Each of the above examples can be modelled with a slightly different set of reduced equations, typically with
+fewer fields ot solve for. Among the various reduced theories that exist, we focus here on *beam theory*,
+a version of which dates back to Leonhard Euler and Johannes Bernoulli in the middle of the 18th century.
+
+::: {#fig-thin-structures layout-ncol=3}
+
+![](images/balloons.jpg){height=5cm}
+![](images/rebar.jpg){height=5cm}
+
+![](images/metalplate.jpg){height=5cm}
+![](images/bamboo.jpg){height=5cm}
+
+![](images/shell.jpg){height=5cm}
+![](images/purlin.jpg){height=5cm}
+
+On the first row, some 2D thin structures: membranes (balloons), plates (metal sheet) and a shell (a domed roof).
+On the second row, some 1D thin structures: bars (rebar), rods (bamboo) and beams (girders supporting a roof).
+:::
+
+## The beam equation
+As mentioned above, a *beam* is a long thin object which resists tension, compression and bending.
+Unlike the column example we considered in
+the last chapter, in this case we are interested mainly in deformations which occur *perpendicular* to the
+extended axis of the object, rather than parallel to it. Taking the axis to be in the $X$-direction, we will
+consider significant deflections of the object in the $Z$-direction only, so we are mostly concerned with the third
+component of the displacement $\bfu=(u,v,w)$. The equation which approximates how such objects behave under loads
+is known as *the beam equation*.
+
+::: {.callout-important title="The beam equation"}
+$$
+-EI\frac{\mathrm{d}^4w}{\mathrm{d}X^4}+T\frac{\mathrm{d}^2w}{\mathrm{d}X^2}+f=0,
+$$ {#eq-beam}
+where:
+
+- $E$ is the Young's modulus,
+- $I$ is the second moment of the cross-sectional area,
+- $T$ is the tension, and
+- $f$ is the effective applied load.
+:::
+
+We will not directly derive this equation from the equations of linear elasticity, as doing so is a
+quite a long and complicated story, but we can show that it seems reasonable as an effective model
+by the argument presented below.
+
+### Derivation of the beam equation
+Consider a segment of beam, which when undeformed, lies between $X_0$ and $X_0 +\delta X$. 
+We assume that any displacement in the $X$ and $Y$ directions is negligible. In the $Z$-direction,
+the endpoints of this segment move to $w(X_0)$ and $w(X_0+\delta X)$. If $\theta$ is the angle the
+segment makes to the $X$-axis after displacement, then assuming that $\frac{\partial w}{\partial X}$ is small, we have
+$$
+\sin\theta = \frac{w(X_0+\delta X)- w(X_0)}{\sqrt{(w(X_0+\delta X)-w(X_0))^2+\delta x^2}}\approx \frac{\partial w}{\partial X}(X_0).
+$$
+A similar approximation leads us to approximate
+$$
+\cos\theta = \frac{\delta X}{\sqrt{(w(X_0+\delta X)-w(X_0))^2+\delta x^2}} \approx 1.
+$$
+
+Next, we resolve the forces on the segment of the beam in the $(X,Z)$ plane, assuming that no significant forces are applied in the $Y$ direction. We suppose that the forces on the ends of the segment have a tangential component $T$ pointing along the axis of the beam, and a normal component $N$, pointing perpendicularly to the axis of the beam. On the remaining parts of the beam, we assume that any applied forces in the normal direction to the beam. Resolving forces in the $X$-direction first, we have
+$$
+T(X_0+\delta X)\cos\theta(X_0+\delta X)-T(X_0)\cos\theta(X_0) = 0.
+$$
+Dividing through by $\delta X$ and sending $\delta X\to 0$, we obtain
+$$
+\frac{\partial T}{\partial X} = 0,
+$$
+where we use the approximation that
+$\cos\theta\approx 1$, and
+so $T$ is constant along the beam.
+
+Next, we resolve in the $Z$-direction. We suppose that any applied forces act approximately in the normal direction, and are described by a density per unit length $f$.
+Summing the forces acting on the ends of the beam, using the fact that $T$ is constant, and replacing
+$\sin\theta$ by $\frac{\partial w}{\partial X}$ and $\cos\theta$ by $1$, we have
+$$
+N(X_0+\delta X)-N(X_0)+T\frac{\partial w}{\partial X}(X_0+\delta X)-T\frac{\partial w}{\partial X}(X_0)+f(X_0)\delta X = 0.
+$$
+Dividing through by $\delta X$ and taking a limit as before, we obtain
+$$
+\frac{\partial N}{\partial X}+T\frac{\partial^2 w}{\partial X^2}+f = 0.
+$$ {#eq-beam-derivation}
+
+To close the system, we need to find a description of the normal component of force $N$. To do so, we will assume that
+the beam can support reasonably large moments $M$ across the ends of the segment. A balance of torques taken about the point $(X_0, w(X_0))$ leads to
+$$
+N(X_0+\delta X)\delta X-M(X_0+\delta X)+M(X_0) = 0.
+$$
+Rearranging, dividing through by $\delta X$ and again taking limits gives
+$$
+N =\frac{\partial M}{\partial X}.
+$$
+Substituting this in to @eq-beam-derivation, we have
+$$
+\frac{\partial^2 M}{\partial X^2}+T\frac{\partial^2 w}{\partial X^2}+f = 0.
+$$
+
+Finally, we make a constitutive assumption about the moment $M$ acting across the beam at any point. We assume that the bending
+moment is related to the curvature of the beam, so $M = -B\frac{\partial^2w}{\partial X^2}$.
+This constitutive relation says that increasing the moments at the ends of a segment increases
+the curvature of the beam in between (and vice versa).
+This finally gives us the result that
+$$
+-B\frac{\partial^4 w}{\partial X^4}+T\frac{\partial^2 w}{\partial X^2}+f = 0.
+$$
+This equation, with $B= EI$, is exactly @eq-beam.
+
+### Dimensional analysis
+
+We'll now make some comments on the dimensonal aspect of the quantities in the equation above:
+
+- $T$ is the magnitude of the tensile force acting along the beam, so has dimensions of force.
+- $w$ and $X$ both have dimensions of length.
+- $f$ has units of force per unit length; note this is consistent with the dimensions of the second term.
+
+To be consistent with these observations, $B$ must have dimensions of force times length$^2$. In fact, a good approximation for $B$ in practice is to use the Young's modulus $E$ multiplied by an area moment $I.$ The Young's modulus has dimensions of stress (i.e. force per unit area), so $I$ has units of length$^4$, and is approximately given by
+$$
+I = \iint_A Z^2\,\mathrm{d}Y\mathrm{d}Z,
+$$
+where $A$ is a region representing the cross-section of the beam in the $(Y,Z)$ plane, with coordinates taken at the centre of area of the cross-section. For a beam with a rectangular cross section of height $H$ and width $W$, we have
+$I=\frac{WH^3}{12}$, which indeed has the right dimensions.
+
+## An analytic solution
+We now find an analytic solution to the beam equation in a particular case that will serve as a benchmark for numerical implementation.
+
+Along with the equation itself, we need 4 boundary conditions for this equation as there are four derivatives.
+The particular boundary equations we consider here are called *clamped* boundary conditions, where we
+prescribe both the vertical displacement $w$ and the derivative $\frac{\mathrm{d}w}{\mathrm{d}X}$, which
+as explained above, approximates the angle at which the beam is fixed.
+
+In particular, we will consider a beam of length $2$, with $-1<X<1$ which has clamped ends. 
+Assuming the beam is clamped flat, and there is no tension in the beam, we arrive at the problem
+$$
+\begin{aligned}
+    EI\frac{\mathrm{d}^4w}{\mathrm{d}X^4} &= f && -1<X<1\\
+    \frac{\mathrm{d}w}{\mathrm{d}X} &= 0 && X=\pm 1\\
+    w &= 0 && X=\pm 1,
+\end{aligned}
+$$ {#eq-strong-beam}
+where $f$ represents the load applied to the beam.
+
+We choose to apply a constant load $\sigma$ over a short interval  at the centre of the beam, $-\varepsilon<X<\varepsilon$, where $\varepsilon$ is the proportion of the beam which is supporting the load. This means that $f$ has the form
+$$
+f(X) = \begin{cases}
+    0 & -1<X\leq -\varepsilon,\\
+    -\sigma & -\varepsilon<X<+\varepsilon,\\
+    0 & +\varepsilon\leq X<+1,
+\end{cases}
+$$
+and so we wish to solve
+$$
+EIw'''' = \begin{cases}
+0 & -1<X<-\varepsilon\\
+-\sigma & -\varepsilon\leq X\leq+\varepsilon\\
+0 & +\varepsilon<X<+1.
+\end{cases}
+$$
+Integrating, we have
+$$
+EIw''' = \begin{cases}
+a_0+\sigma\varepsilon & -1<X<-\varepsilon\\
+a_0-\sigma X & -\varepsilon\leq X\leq+\varepsilon\\
+a_0-\sigma\varepsilon & +\varepsilon<X<+1,
+\end{cases}
+$$
+where we have taken care to ensure that $w'''$ is continuous at the points
+$X=\pm\varepsilon$. Integrating again, we obtain
+$$
+EIw'' = \begin{cases}
+a_1+a_0X+\sigma\varepsilon X+\tfrac12\sigma\varepsilon^2 & -1<X<-\varepsilon\\
+a_1+a_0X-\tfrac12\sigma X^2 & -\varepsilon\leq X\leq+\varepsilon\\
+a_1+a_0X-\sigma\varepsilon X+\tfrac12\sigma\varepsilon^2 & +\varepsilon<X<+1.
+\end{cases}
+$$
+Again, we have chosen the constants on each part of the domain carefully to ensure continuity at the points $X=\pm\varepsilon$.
+Integrating twice more, and using the same continuity requirements, we find
+$$
+EIw = \begin{cases}
+a_3+a_2X+\tfrac12a_1X^2+\tfrac16a_0X^3
++\tfrac16\sigma\varepsilon X^3+\tfrac14\sigma\varepsilon^2 X^2+\tfrac16\sigma\varepsilon^3X+\tfrac1{24}\sigma\varepsilon^4 & -1<X<-\varepsilon\\
+a_3+a_2X+\tfrac12a_1X^2+\tfrac16a_0X^3
+-\tfrac1{24}\sigma X^4 & -\varepsilon\leq X\leq+\varepsilon\\
+a_3+a_2X+\tfrac12a_1X^2+\tfrac16a_0X^3
+-\tfrac16\sigma\varepsilon X^3+\tfrac14\sigma\varepsilon^2 X^2-\tfrac16\sigma\varepsilon^3X+\tfrac1{24}\sigma\varepsilon^4 & +\varepsilon<X<+1,
+\end{cases}
+$$
+We can now use the boundary conditions $w'= 0$ at $X=\pm L$ to find some of the coefficients (we can also use symmetry to ). Subbing in and solving, and after a lot of algebraic manipulation, we arrive at the solution
+$$
+w(X) = \begin{cases}
+\frac{\sigma\varepsilon}{12EI}(1+X)^2(\varepsilon^2-1+2X) & -1<X\leq -\varepsilon,\\
+\frac{\sigma}{24EI}(-X^4+(6\varepsilon -6\varepsilon^2+2\varepsilon^3)X^2-(2\varepsilon -2\varepsilon^2+\varepsilon^3)) &
+-\varepsilon<X<+\varepsilon,\\
+\frac{\sigma\varepsilon}{12EI}(1-X)^2(\varepsilon^2-2X-1) & +\varepsilon\leq X<1.
+\end{cases}
+$$
+You can verify for yourself that this is a solution to the original problem, and a plot of the solution in a particular case is shown in @fig-loadedbeam.
+
+```{python}
+#| echo: false
+#| label: fig-loadedbeam
+#| fig-cap: "A plot of the solution to the beam equation. Here σ=E=I=1 and ε=0.1."
+import numpy as np
+import matplotlib.pyplot as plt
+sigma = 1
+E = 1
+I = 1
+eps = 0.1
+xleft = np.arange(-1,-eps,0.02)
+xcentre = np.arange(-eps,eps,0.02)
+xright = np.arange(eps+0.02,1,0.02)
+plt.plot(xleft,(sigma*eps)/(12*E*I) * (1+xleft)**2 * (eps**2 -1 + 2*xleft),'r')
+plt.plot(xright,(sigma*eps)/(12*E*I) * (1-xright)**2 * (eps**2 -1 - 2*xright),'r',label='Deformed plate')
+plt.plot(xcentre,(-xcentre**4+(6*eps-6*eps**2+2*eps**3)*xcentre**2-(2*eps-2*eps**3+eps**4))*(sigma)/(24*E*I),'b',label='Loaded section')
+plt.scatter([-eps,eps],[-eps*(1-eps)**2*(1+2*eps-eps**2)*sigma/(12*E*I),-eps*(1-eps)**2*(1+2*eps-eps**2)*sigma/(12*E*I)],color='b',marker='o')
+plt.plot(np.arange(-1,1,0.05),np.zeros(40),'r:',label='Original position')
+
+plt.xlabel('Position, X')
+plt.ylabel('Displacement, w(X)')
+plt.legend()
+plt.ylim([-0.05,0.05])
+plt.xticks(np.arange(-1,1.1,0.2))
+plt.show()
+```
+
+Notice that if we define $F=\sigma\varepsilon$, and consider the limit where $\varepsilon\to0$ while $F$ is constant, the limiting solution is
+$$
+w(X) = \begin{cases}
+-\frac{F}{12EI}(1+X)^2(1-2X) & -1<X<0\\
+-\frac{F}{12EI}(1-X)^2(1+2X) & 0<X<+1
+\end{cases}
+$$
+
+## Finite elements for the beam equation
+We now discuss a finite element approximation of solutions to the beam equation @eq-beam. We follow the same
+procedure as we did in the previous chapter: write down the strong form, derive a weak form, and discretise using
+a set of shape functions. We discuss the various steps below, and you will implement aspects of this in the
+workshop this week.
+
+### Weak form
+To construct a finite element approximation for the beam equation, we need to find an appropriate weak form.
+Recall the strong form of the problem, given in @eq-strong-beam.
+$$
+\begin{aligned}
+    EI\frac{\mathrm{d}^4w}{\mathrm{d}X^4} &= f && -1<X<1\\
+    \frac{\mathrm{d}w}{\mathrm{d}X} &= 0 && X=\pm 1\\
+    w &= 0 && X=\pm 1.
+\end{aligned}
+$$
+As in @sec-fem, we multiply by a test function $\varphi$ and integrate by parts. In this case, we
+have
+$$
+\int_{-1}^1 EI\frac{\mathrm{d}^4w}{\mathrm{d}X^4}\varphi\,\mathrm{d}X=\int_{-1}^1 f \varphi\,\mathrm{d}X.
+$$
+Integrating the fourth-order derivative term by parts twice, we have:
+$$
+\begin{aligned}
+\int_{-1}^1 EI\frac{\mathrm{d}^4w}{\mathrm{d}X^4}\varphi\,\mathrm{d}X
+&= EI\left[\frac{\mathrm{d}^3w}{\mathrm{d}X^3}\varphi\right]_{X=-1}^{X=1}-\int_{-1}^1 EI\frac{\mathrm{d}^3w}{\mathrm{d}X^3}\frac{\mathrm{d}\varphi}{\mathrm{d}X}\,\mathrm{d}X\\
+&= EI\left[\frac{\mathrm{d}^3w}{\mathrm{d}X^3}\varphi\right]_{X=-1}^{X=1}-EI\left[\frac{\mathrm{d}^2w}{\mathrm{d}X^2}\frac{\mathrm{d}\varphi}{\mathrm{d}X}\right]_{X=-1}^{X=1}+\int_{-1}^1 EI\frac{\mathrm{d}^2w}{\mathrm{d}X^2}\frac{\mathrm{d}^2\varphi}{\mathrm{d}X^2}\,\mathrm{d}X
+\end{aligned}
+$$
+Putting everything together, we find that a solution to @eq-beam must satisfy
+$$
+EI\left[\frac{\mathrm{d}^3w}{\mathrm{d}X^3}\varphi\right]_{X=-1}^{X=1}-EI\left[\frac{\mathrm{d}^2w}{\mathrm{d}X^2}\frac{\mathrm{d}\varphi}{\mathrm{d}X}\right]_{X=-1}^{X=1}+\int_{-1}^1 EI\frac{\mathrm{d}^2w}{\mathrm{d}X^2}\frac{\mathrm{d}^2\varphi}{\mathrm{d}X^2}\,\mathrm{d}X
+=\int_{-1}^1 f \varphi\,\mathrm{d}X
+$$
+for any test function $\varphi$. We note that we can make the evaluation terms vanish by requiring that the
+test function $\varphi$ satisfies $\varphi(\pm1)=0$ and $\frac{\mathrm{d}\varphi}{\mathrm{d}X}(\pm1)=0$, and this is
+what we will do. As such, the final weak form is
+$$
+\int_{-1}^1 EI\frac{\mathrm{d}^2w}{\mathrm{d}X^2}\frac{\mathrm{d}^2\varphi}{\mathrm{d}X^2}\,\mathrm{d}X
+=\int_{-1}^1 f \varphi\,\mathrm{d}X,
+$$
+which must hold for all test functions $\varphi$ satisfying the
+conditions $\varphi(\pm1)=\frac{\mathrm{d}\varphi}{\mathrm{d}X}(\pm1)=0$.
+Note that these are the same boundary conditions we impose on the solution
+$w$; if we had other boundary conditions imposed on $w$, this would not 
+necessarily be the right approach.
+
+### Basis functions
+As in @sec-fem, we will take a Galerkin approach to this problem, so we will write approximate solutions and test functions in the form
+$$
+u^h = \sum_i d_i N_i
+\quad\text{and}\quad
+\varphi^h = \sum_{i}w_i N_i.
+$$
+To make sense of weak solutions to this problem, it turns out that the basis functions we should use should be continuous
+and have continuous derivatives at the end points. Recall that above we proposed that $\varphi(\pm1)=\frac{\mathrm{d}\varphi}{\mathrm{d}X}(\pm1)=0$, so this is consistent with the idea that we need to be able to evaluate the function and its derivative at the endpoints of intervals.
+
+One possible way to ensure enough smoothness for the shape functions is to choose 4 independent polynomials which
+are set by prescribing the function and derivative values at the endpoints of each element. In particular, that means
+we demand that
+$$
+\begin{aligned}
+N_0(0) &= 1, & \frac{\mathrm{d}N_0}{\mathrm{d}X}(0) &=0, & N_0(1) &= 0, & \frac{\mathrm{d}N_0}{\mathrm{d}X}(1) &=0, \\
+N_1(0) &= 0, & \frac{\mathrm{d}N_1}{\mathrm{d}X}(0) &=1, & N_1(1) &= 0, & \frac{\mathrm{d}N_1}{\mathrm{d}X}(1) &=0, \\
+N_2(0) &= 0, & \frac{\mathrm{d}N_2}{\mathrm{d}X}(0) &=0, & N_2(1) &= 1, & \frac{\mathrm{d}N_2}{\mathrm{d}X}(1) &=0, \\
+N_3(0) &= 0, & \frac{\mathrm{d}N_3}{\mathrm{d}X}(0) &=0, & N_3(1) &= 0, & \frac{\mathrm{d}N_3}{\mathrm{d}X}(1) &=1.
+\end{aligned}
+$$
+If $N_i$ are cubic polynomials of the form $N_i(X) = a_i + b_i X+ c_i X^2+ d_i X^3$, we can find four independent
+functions which satisfy these requirements. They are:
+$$
+\begin{aligned}
+N_0(\xi) &= 1-3\xi^2+2\xi^3\\
+N_1(\xi) &= \xi(1-\xi)^2\\
+N_2(\xi) &= 3\xi^2-2\xi^3\\
+N_3(\xi) &= \xi^2(\xi-1).
+\end{aligned}
+$$
+These functions have a special name: they are cubic Hermite splines, as they
+are cubic functions on an interval which are completely determined by their
+values and derivatives at the endpoints.
+The profiles of these functions and their first derivatives are shown in @fig-cubic-hermite.
+
+```{python}
+#| label: fig-cubic-hermite
+#| fig-cap: "The cubic Hermite spline shape functions on the interval 0≤ξ≤1."
+#| fig-subcap: 
+#|   - "Shape functions."
+#|   - "Derivatives of shape functions."
+#| layout-ncol: 2
+#| echo: false
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+xs = np.arange(0,1.01,0.01)
+plt.plot(xs,1-3*xs**2+2*xs**3,label="N₀")
+plt.plot(xs,xs*(1-xs)**2,label="N₁")
+plt.plot(xs,3*xs**2-2*xs**3,label="N₂")
+plt.plot(xs,xs**2*(xs-1),label="N₃")
+plt.xlabel("ξ")
+plt.ylabel("Value of function")
+plt.legend()
+plt.show()
+
+plt.plot(xs,-6*xs+6*xs**2,label="N₀'")
+plt.plot(xs,(1-xs)**2-2*xs*(1-xs),label="N₁'")
+plt.plot(xs,6*xs-6*xs**2,label="N₂'")
+plt.plot(xs,2*xs*(xs-1)+xs**2,label="N₃'")
+plt.xlabel("ξ")
+plt.ylabel("Value of derivative")
+plt.legend()
+plt.show()
+```
+
+These functions have the property that if we prescribe the values of
+a function $g$ and it's first derivatives at the end of the interval, we
+can get an approximation of the function by defining the *interpolant*
+$$
+\mathcal{I}g(\xi) = g(0)N_0(\xi)+g'(0)N_1(\xi)+g(1)N_2(\xi)+g'(1)N_3(\xi).
+$$
+To see this in operation, see @fig-cubic-interpolation
+
+```{python}
+#| label: fig-cubic-interpolation
+#| fig-cap: "The function g(ξ)=sin(3ξ) and its cubic interpolant over the interval 0≦ξ≦1. Note that the function value and first derivative agree at the endpoints."
+#| echo: false
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+g = lambda xi : np.sin(3 * xi)
+dg = lambda xi : 3*np.cos(3 * xi)
+
+N0 = lambda xi : 1-3*(xi**2)+2*(xi**3)
+N1 = lambda xi : xi*(1-xi)**2
+N2 = lambda xi : 3*(xi**2)-2*xi**3
+N3 = lambda xi : (xi**2)*(xi-1)
+
+Ig = lambda xi : g(0)*N0(xi)+dg(0)*N1(xi)+g(1)*N2(xi)+dg(1)*N3(xi)
+
+xs = np.arange(0,1.01,0.01)
+plt.plot(xs,g(xs),label="Function, g(ξ)")
+plt.plot(xs,Ig(xs),label="Cubic interpolant, Ig(ξ)")
+plt.xlabel("ξ")
+plt.ylabel("Value of function")
+plt.legend()
+plt.show()
+```
+
+
+## Solids Coursework Project Option 1 {#sec-sol-proj1}
+
+This project is entitled **Finite Element Simulation of a thin structure**, and is one
+of two project options you will have in this section of the module. The second will be
+described in @sec-sol-proj2.
+
+### Project aims
+You should write an approximately 10 page report that demonstrates:
+
+- Engagement with the literature on thin elastic structures;
+- Computational results for equilibria under a variety of loading conditions; and
+- Validation of code against your own analytic results as well as
+  experimental and/or theoretical results from the published literature.
+
+### Other loading conditions and boundary conditions
+
+In deriving the analytic solution above, we assumed some rather specific things about how
+the load was distributed, and the boundary conditions which apply.
+Some other options for boundary conditions include:
+
+- 'simply supported', where the displacement is fixed but the beam ends are free to rotate, and
+- 'free', where the displacement and angle of the beam are not fixed, but instead the applied shear
+    and bending moments are both zero.
+
+Changing these conditions will change the weak form of the equation, and so when deriving a finite element discretisation,will also alter the requirements we make on the test functions at the end.
+
+Another feature of the solution we derived above was that we assumed that the tension parameter $T$ was zero.
+This need not be the case: for example the beam could be stretched or compressed along its length, corresponding
+to a value of $T$ which is positive or negative. In the latter case,
+it can be shown that for special values of $T$ which depend on the boundary conditions and the size of the domain,
+situations can arise where there is not a unique solution to the beam equation. One way of interpreting this is
+that the lack of uniqueness indicates that the beam is buckling under these loading conditions. Buckled solutions
+are common for thin structures: a piece of paper under compression can bend both up and down under the same
+loading conditions, see @fig-buckled.
+
+::: {#fig-buckled layout-ncol=2}
+
+![](resized/buckled-up-small.png){height=5cm}
+
+![](resized/buckled-down-small.png){height=5cm}
+
+A piece of paper under identical loading conditions supports two buckled solutions.
+:::
+
+### Higher-order finite elements
+
+Above, we proposed the use of cubic splines as shape functions, which means that all of our approximate
+solutions will be continuous and have continuous derivatives at the endpoints of the elements.
+As the loading function $f$ we chose to use is discontinuous, it turns out that this is the right choice:
+we can't expect our solutions to be any smoother than this.
+
+However, if the loading function $f$ were continuous, we could expect that approximate solutions have continuous second
+derivatives at the endpoints of the elements. In this case, we could change our shape functions on each element, requiring now
+that
+$$
+\begin{aligned}
+N_0(0) &= 1, & \frac{\mathrm{d}N_0}{\mathrm{d}X}(0) &=0, & \frac{\mathrm{d}^2N_0}{\mathrm{d}X^2}(0) &=0, 
+    & N_0(1) &= 0, & \frac{\mathrm{d}N_0}{\mathrm{d}X}(1) &=0, & \frac{\mathrm{d}^2N_0}{\mathrm{d}X^2}(1) &=0, \\
+N_1(0) &= 0, & \frac{\mathrm{d}N_1}{\mathrm{d}X}(0) &=1, & \frac{\mathrm{d}^2N_1}{\mathrm{d}X^2}(0) &=0, 
+    & N_1(1) &= 0, & \frac{\mathrm{d}N_1}{\mathrm{d}X}(1) &=0, & \frac{\mathrm{d}^2N_1}{\mathrm{d}X^2}(1) &=0, \\
+N_2(0) &= 0, & \frac{\mathrm{d}N_2}{\mathrm{d}X}(0) &=0, & \frac{\mathrm{d}^2N_2}{\mathrm{d}X^2}(0) &=1, 
+    & N_2(1) &= 0, & \frac{\mathrm{d}N_2}{\mathrm{d}X}(1) &=0, & \frac{\mathrm{d}^2N_2}{\mathrm{d}X^2}(1) &=0, \\
+N_3(0) &= 0, & \frac{\mathrm{d}N_3}{\mathrm{d}X}(0) &=0, & \frac{\mathrm{d}^2N_3}{\mathrm{d}X^2}(0) &=0, 
+    & N_3(1) &= 1, & \frac{\mathrm{d}N_3}{\mathrm{d}X}(1) &=0, & \frac{\mathrm{d}^2N_3}{\mathrm{d}X^2}(1) &=0, \\
+N_4(0) &= 0, & \frac{\mathrm{d}N_4}{\mathrm{d}X}(0) &=0, & \frac{\mathrm{d}^2N_4}{\mathrm{d}X^2}(0) &=0, 
+    & N_4(1) &= 0, & \frac{\mathrm{d}N_4}{\mathrm{d}X}(1) &=1, & \frac{\mathrm{d}^2N_4}{\mathrm{d}X^2}(1) &=0, \\
+N_5(0) &= 0, & \frac{\mathrm{d}N_5}{\mathrm{d}X}(0) &=0, & \frac{\mathrm{d}^2N_5}{\mathrm{d}X^2}(0) &=0, 
+    & N_5(1) &= 0, & \frac{\mathrm{d}N_5}{\mathrm{d}X}(1) &=0, & \frac{\mathrm{d}^2N_5}{\mathrm{d}X^2}(1) &=1.
+\end{aligned}
+$$
+This naturally leads to picking 6 quintic shape functions on each element.
+
+### Project ideas
+The suggestions below are intended to give you ideas of what can be
+done, but you should feel free to follow your own path if you wish.
+
+The starting point for this project is to implement the finite element method for the beam
+equation as considered within the Week 3 Workshop.
+Two possible extensions are to explore nonlinear theories, the derivation
+of the beam equations.
+
+#### Comparison with a full 3D finite element solution
+
+In the workshop this week, you will be provided with instructions and code that will allow
+you to solve a full 3D finite element beam problem using the open source FEM package called
+FeNiCs. As mentioned, beam theory is an approximate theory which is valid when structures are
+thin, and so taking the solution generated from this code, you can assess whether the solution generated
+by your solver and the analytic solution derived above match.
+
+#### Dynamics and vibration
+The form of the beam equation we have used above is static, i.e. it governs beams which are at equilibirium. One possible form of dynamical equation for the beam equation (where no load $f$ is applied) is
+$$
+\bar{\rho}\frac{\partial^2 w}{\partial t^2} = -EI\frac{\partial^4w}{\partial X^4}+T\frac{\partial^2 w}{\partial X^2},
+$$
+where $\bar{\rho}$ is the density of the beam per unit length. The equation needs appropriate initial and boundary conditions.
+
+Since the equation is linear, we can seek solutions which are oscillatory in time, taking the form
+$$
+w(X,t) = \cos(\Omega t)\bar{w}(X),
+$$
+where $\Omega$ is the frequency of oscillation.
+Subbing this in to the equation above, we
+get
+$$
+-\Omega^2\bar{\rho} \bar{w}(X)= -EI\frac{\partial^4\bar{w}}{\partial X^4} + T\frac{\partial^2 \bar{w}}{\partial X^2}.
+$$
+We can view this as an eigenvalue problem for the differential equation: we need to find special vibrational frequencies $\Omega$ and corresponding modes $\bar{w}$ which describe oscillations. In certain situations, these can be found analytically. A project idea is to do this and find a corresponding numerical approach to do the same using your finite element solver.
+
+#### Going further
+Some ideas for further investigation include:
+
+- Dynamics
+- Higher-order finite elements
+- Nonlinear beam theories
+

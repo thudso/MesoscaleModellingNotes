@@ -22,7 +22,7 @@ book:
       chapters:
         - 2-1-macro-solids.qmd
         - 2-2-finite-elements.qmd
-    #     - 2-3-FEM.qmd
+        - 2-3-beam-theory.qmd
     #     - 2-4-2D-FEM.qmd
     #     - 2-5-FEM-error.qmd
     
