@@ -512,10 +512,3 @@ $$
 $$
 We can view this as an eigenvalue problem for the differential equation: we need to find special vibrational frequencies $\Omega$ and corresponding modes $\bar{w}$ which describe oscillations. In certain situations, these can be found analytically. A project idea is to do this and find a corresponding numerical approach to do the same using your finite element solver.
 
-#### Going further
-Some ideas for further investigation include:
-
-- Dynamics
-- Higher-order finite elements
-- Nonlinear beam theories
-
